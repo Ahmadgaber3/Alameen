@@ -19,12 +19,14 @@
             --bg: #f8f9fa; 
             --main-text: #212529; 
             --desc-text: #6c757d;
-            --accent: #ff9800; 
-            --yellow-gold: #e67e22;
-            --address-tag: #ff9800;
+            /* درجة اللون البرتقالي المأخوذة من زر الصورة */
+            --accent: #e65100; 
+            --accent-hover: #d84315;
+            --yellow-gold: #e65100;
+            --address-tag: #e65100;
             --white: #ffffff; 
             --glass: rgba(255, 255, 255, 0.95);
-            --success-dark: #27ae60; 
+            --success-dark: #2e7d32; 
             --header-bg: #ffffff;
             --card-shadow: rgba(0, 0, 0, 0.08);
             --border-color: rgba(0, 0, 0, 0.08);
@@ -35,7 +37,7 @@
             --bg: #121212; 
             --main-text: #f5f6fa;
             --desc-text: #b2bec3;
-            --yellow-gold: #ffa726;
+            --yellow-gold: #ff8f00;
             --white: #1e1e1e;
             --glass: rgba(30, 30, 30, 0.95);
             --header-bg: #1e1e1e;
@@ -56,7 +58,7 @@
         /* --- شاشة الترحيب --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(circle, rgba(255, 152, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%), url('images/splash-bg.jpg');
+            background-image: radial-gradient(circle, rgba(230, 81, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%), url('images/splash-bg.jpg');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -143,7 +145,7 @@
             display: flex; flex-direction: column; gap: 4px;
         }
         .branch-option-card:hover, .branch-option-card.selected {
-            border-color: var(--accent); background: rgba(255, 152, 0, 0.08); transform: translateY(-2px);
+            border-color: var(--accent); background: rgba(230, 81, 0, 0.08); transform: translateY(-2px);
         }
         .branch-option-name { font-size: 1rem; font-weight: 800; color: var(--main-text); display: flex; align-items: center; gap: 8px; }
         .branch-option-address { font-size: 0.8rem; color: var(--desc-text); font-weight: 600; }
@@ -173,7 +175,7 @@
         .app-inner-sub { font-size: 0.95rem; font-weight: 700; color: var(--main-text); margin-bottom: 2px; }
 
         .selected-branch-badge {
-            background: rgba(255, 152, 0, 0.12); color: var(--accent);
+            background: rgba(230, 81, 0, 0.12); color: var(--accent);
             border: 1px solid var(--accent); border-radius: 20px;
             padding: 2px 10px; font-size: 0.78rem; font-weight: 800;
             margin-top: 2px; cursor: pointer; display: inline-flex;
@@ -189,7 +191,7 @@
         }
         .admin-trigger-btn:active { transform: scale(0.9); }
 
-        /* --- شريط الأقسام المطور --- */
+        /* --- شريط الأقسام --- */
         .category-nav { 
             display: flex; 
             overflow-x: auto; 
@@ -245,7 +247,7 @@
         .food-card { background: var(--white); border-radius: 20px; margin-bottom: 12px; display: flex; padding: 12px 14px; gap: 12px; align-items: center; box-shadow: 0 3px 12px var(--card-shadow); border: 1px solid var(--border-color); transition: opacity 0.3s ease; }
         .food-card.disabled-item { opacity: 0.5; filter: grayscale(0.3); }
         
-        /* تكبير الصورة إلى 105x105 */
+        /* حجم الصورة 105x105 */
         .item-img-box { width: 105px; height: 105px; border-radius: 16px; overflow: hidden; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
@@ -281,12 +283,50 @@
             background: var(--accent);
             color: white;
             border-color: var(--accent);
-            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(230, 81, 0, 0.3);
         }
 
-        .order-btn { background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: background 0.3s ease, box-shadow 0.3s ease; }
-        .order-btn:disabled { background: #888 !important; cursor: not-allowed; box-shadow: none !important; }
-        .order-btn.added { background: var(--success-dark); color: white; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
+        /* --- تصميم زر اطلب الآن المطابق للصورة وحالة تم الطلب --- */
+        .order-btn { 
+            background: var(--accent); 
+            color: #ffffff; 
+            border: 1px solid var(--accent); 
+            padding: 8px 18px; 
+            border-radius: 12px; 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.28);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 90px;
+        }
+        .order-btn:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 16px rgba(230, 81, 0, 0.35);
+        }
+        .order-btn:active {
+            transform: scale(0.95);
+        }
+        .order-btn:disabled { 
+            background: #888 !important; 
+            border-color: #888 !important;
+            cursor: not-allowed; 
+            box-shadow: none !important; 
+        }
+        
+        /* تأثير الزر الأخضر الشفاف عند الطلب */
+        .order-btn.added { 
+            background: rgba(46, 125, 50, 0.15) !important; 
+            color: #2e7d32 !important; 
+            border: 1.5px solid #2e7d32 !important;
+            box-shadow: 0 2px 10px rgba(46, 125, 50, 0.2) !important; 
+            pointer-events: none;
+        }
+        
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
         .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
@@ -304,7 +344,6 @@
         
         .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
         
-        /* تعديل بيانات المصمم */
         .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
         .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
 
@@ -319,7 +358,7 @@
 
         .order-type-container { display: flex; background: var(--bg); padding: 6px; border-radius: 16px; margin: 15px 0; gap: 6px; border: 1px solid var(--border-color); }
         .order-type-btn { flex: 1; border: none; background: transparent; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--desc-text); transition: all 0.3s ease; }
-        .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2); }
+        .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2); }
 
         .user-fields input { background: var(--bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; }
         #uAddr { transition: all 0.3s ease; }
@@ -347,7 +386,7 @@
         }
         
         .success-icon-wrapper {
-            width: 90px; height: 90px; background: rgba(39, 174, 96, 0.12);
+            width: 90px; height: 90px; background: rgba(46, 125, 50, 0.12);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             margin-bottom: 20px; border: 2px solid var(--success-dark);
         }
@@ -375,7 +414,7 @@
 
         .admin-tabs { display: flex; gap: 8px; margin-bottom: 15px; background: var(--bg); padding: 5px; border-radius: 16px; border: 1px solid var(--border-color); }
         .admin-tab { flex: 1; padding: 10px; border: none; background: transparent; font-weight: 700; font-size: 0.85rem; border-radius: 12px; cursor: pointer; color: var(--desc-text); transition: 0.3s; }
-        .admin-tab.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2); }
+        .admin-tab.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2); }
 
         .admin-section { display: none; }
         .admin-section.active { display: block; }
@@ -412,7 +451,7 @@
         .order-log-card { background: var(--bg); padding: 16px; border-radius: 18px; margin-bottom: 14px; border-right: 5px solid var(--accent); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-left: 1px solid var(--border-color); }
         .order-log-header-info { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 10px; }
         .order-log-time { font-size: 0.8rem; font-weight: 700; color: var(--desc-text); }
-        .order-log-type-badge { background: rgba(255, 152, 0, 0.1); color: var(--accent); padding: 3px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; }
+        .order-log-type-badge { background: rgba(230, 81, 0, 0.1); color: var(--accent); padding: 3px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; }
         
         .order-info-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
         .order-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
@@ -508,7 +547,6 @@
                 </div>
 
                 <div id="tabStatus" class="admin-section active">
-                    <!-- قائمة اختيار الفرع داخل لوحة التحكم -->
                     <div class="admin-branch-select-box">
                         <label for="adminBranchSelector">الفرع المراد إدارته 📍:</label>
                         <select id="adminBranchSelector" onchange="changeAdminBranch(this.value)"></select>
@@ -566,7 +604,7 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
             <div id="cartItemsList"></div>
-            <div style="margin: 20px 0; padding: 15px; background: rgba(255, 152, 0, 0.08); border-radius: 18px; display: flex; justify-content: space-between;">
+            <div style="margin: 20px 0; padding: 15px; background: rgba(230, 81, 0, 0.08); border-radius: 18px; display: flex; justify-content: space-between;">
                 <b>المجموع</b>
                 <b id="totalAmount">0 ج.م</b>
             </div>
@@ -594,7 +632,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        // إعدادات مشروع فايربيز الخاص بك
         const firebaseConfig = {
           apiKey: "AIzaSyAUwDoxvhwCWb3FUtpA2NwmP7qBm5eYOuE",
           authDomain: "makkah-restaurant.firebaseapp.com",
@@ -655,7 +692,6 @@
             return result;
         }
 
-        // دالة تنظيف القيمة من الرموز والمسافات
         function cleanVal(val) {
             if (!val) return '';
             let v = val.replace(/[-"']/g, '').trim();
@@ -695,7 +731,7 @@
                         img = `${IMAGES_PATH}default.jpg`;
                     }
 
-                    // التحقق الدقيق من وجود أحجام متعددة للصنف
+                    // التحقق من وجود أحجام
                     let variants = [];
                     if (priceS !== '' && priceD !== '') {
                         variants = [
@@ -733,7 +769,6 @@
             }
         }
 
-        // الاستماع المباشر للمنيو من فايربيز (Realtime)
         function listenToRealtimeMenu() {
             const { doc, onSnapshot } = window.firebaseModules;
             const db = window.db;
@@ -989,7 +1024,7 @@
 
                 let isEnabled = itemStatusMap[item.name] !== false;
                 let disabledClass = isEnabled ? '' : 'disabled-item';
-                let btnText = isEnabled ? 'اطلب' : 'موقف حالياً';
+                let btnText = isEnabled ? 'اطلب الان' : 'موقف حالياً';
 
                 const safeName = item.name.replace(/'/g, "\\'");
                 const safeImg = item.img.replace(/'/g, "\\'");
@@ -1065,8 +1100,14 @@
             let numericPrice = parseFloat(price) || 0;
             
             cart.push({name: name, price: numericPrice, displayPrice: price, img: img, category: category || ''});
-            btn.innerText = 'تم الطلب'; btn.classList.add('added');
-            setTimeout(() => { btn.innerText = 'اطلب'; btn.classList.remove('added'); }, 2000);
+            
+            // تحويل الزر إلى زر أخضر شفاف مكتوب فيه تم الطلب مع علامة صح
+            btn.innerHTML = '✓ تم الطلب'; 
+            btn.classList.add('added');
+            setTimeout(() => { 
+                btn.innerHTML = 'اطلب الان'; 
+                btn.classList.remove('added'); 
+            }, 2000);
             
             const fly = document.createElement('div'); fly.className = 'fly-item'; fly.innerHTML = '🍗'; fly.style.left = e.clientX + 'px'; fly.style.top = e.clientY + 'px'; document.body.appendChild(fly);
             const cartBtn = document.getElementById('cartBtn'); const cartPos = cartBtn.getBoundingClientRect();
@@ -1404,3 +1445,4 @@
     </script>
 </body>
 </html>
+
