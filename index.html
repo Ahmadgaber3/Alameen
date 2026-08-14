@@ -16,9 +16,9 @@
     <style>
         /* --- الوضع الافتراضي: النهاري (Light Mode) --- */
         :root {
-            --bg: #f8f9fa; 
-            --main-text: #212529; 
-            --desc-text: #6c757d;
+            --bg: #f1f3f5; 
+            --main-text: #1a1a1a; 
+            --desc-text: #555e68;
             --accent: #e65100; 
             --accent-hover: #d84315;
             --yellow-gold: #e65100;
@@ -27,21 +27,21 @@
             --glass: rgba(255, 255, 255, 0.95);
             --success-dark: #2e7d32; 
             --header-bg: #ffffff;
-            --card-shadow: rgba(0, 0, 0, 0.08);
-            --border-color: rgba(0, 0, 0, 0.08);
+            --card-shadow: rgba(0, 0, 0, 0.12);
+            --border-color: #d1d5db;
         }
 
         /* --- الوضع الليلي عند التفعيل (Dark Mode) --- */
         body.dark-mode {
-            --bg: #121212; 
-            --main-text: #f5f6fa;
-            --desc-text: #b2bec3;
+            --bg: #0f1115; 
+            --main-text: #f8fafc;
+            --desc-text: #94a3b8;
             --yellow-gold: #ff8f00;
-            --white: #1e1e1e;
-            --glass: rgba(30, 30, 30, 0.95);
-            --header-bg: #1e1e1e;
-            --card-shadow: rgba(0, 0, 0, 0.4);
-            --border-color: rgba(255, 255, 255, 0.08);
+            --white: #1a1e24;
+            --glass: rgba(26, 30, 36, 0.95);
+            --header-bg: #1a1e24;
+            --card-shadow: rgba(0, 0, 0, 0.55);
+            --border-color: #334155;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -341,33 +341,43 @@
         #uAddr { transition: all 0.2s ease; }
         .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
 
-        /* --- تصميم شاشة نجاح الطلب --- */
+        /* --- تصميم شاشة نجاح الطلب مع زر فتح الشات المباشر --- */
         .success-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75); z-index: 5000; display: none;
             justify-content: center; align-items: center; padding: 20px;
-            cursor: pointer;
         }
         .success-card {
             background: var(--white); width: 100%; max-width: 380px;
-            border-radius: 28px; padding: 35px 25px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-radius: 28px; padding: 30px 22px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             animation: smoothFadeIn 0.25s ease-out;
             display: flex; flex-direction: column; align-items: center;
-            cursor: default;
         }
         
         .success-icon-wrapper {
-            width: 90px; height: 90px; background: rgba(46, 125, 50, 0.12);
+            width: 80px; height: 80px; background: rgba(46, 125, 50, 0.12);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; border: 2px solid var(--success-dark);
+            margin-bottom: 15px; border: 2px solid var(--success-dark);
         }
         .success-icon-wrapper svg {
-            width: 50px; height: 50px; fill: var(--success-dark);
+            width: 45px; height: 45px; fill: var(--success-dark);
         }
 
-        .success-title { font-size: 1.4rem; font-weight: 800; color: var(--main-text); margin-bottom: 10px; }
-        .success-sub { font-size: 0.95rem; color: var(--desc-text); font-weight: 600; line-height: 1.5; margin: 0; }
+        .success-title { font-size: 1.3rem; font-weight: 800; color: var(--main-text); margin-bottom: 8px; }
+        .success-sub { font-size: 0.88rem; color: var(--desc-text); font-weight: 600; line-height: 1.4; margin-bottom: 16px; }
+
+        .success-chat-btn {
+            background: #25D366; color: white; border: none; padding: 12px 20px;
+            border-radius: 14px; font-weight: 800; font-size: 0.9rem; cursor: pointer;
+            width: 100%; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .success-close-btn {
+            background: var(--bg); color: var(--main-text); border: 1px solid var(--border-color);
+            padding: 10px 20px; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; width: 100%;
+        }
 
         /* ========================================================
            لوحة التحكم الرئيسية + النوافذ الطائرة
@@ -469,7 +479,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.78);
             z-index: 5500;
             display: none;
             justify-content: center;
@@ -482,10 +492,10 @@
             width: 100%;
             max-width: 460px;
             border-radius: 28px;
-            padding: 22px;
+            padding: 20px;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
             animation: smoothFadeIn 0.2s cubic-bezier(0.25, 1, 0.5, 1);
             border: 1px solid var(--border-color);
             will-change: transform, opacity;
@@ -500,7 +510,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
@@ -586,15 +596,15 @@
         .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
 
         /* ========================================================
-           تصميم كارت الأوردر المطور والمنظم في السجل
+           كارت الأوردر فائق التباين والوضوح
            ======================================================== */
         .order-pro-card {
             background: var(--white);
-            border: 1.5px solid var(--border-color);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            border: 2px solid var(--border-color);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 18px var(--card-shadow);
             position: relative;
             overflow: hidden;
         }
@@ -613,63 +623,86 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed var(--border-color);
-            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1.5px dashed var(--border-color);
+            margin-bottom: 10px;
         }
 
         .order-id-badge {
-            background: rgba(230, 81, 0, 0.1);
+            background: rgba(230, 81, 0, 0.12);
             color: var(--accent);
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.82rem;
             font-weight: 900;
         }
+
+        .order-actions-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-app-btn {
+            background: #25D366;
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+            transition: transform 0.15s ease;
+        }
+        .chat-app-btn:active { transform: scale(0.95); }
 
         .delete-single-order-btn {
             background: rgba(255, 59, 48, 0.12);
             color: #ff3b30;
             border: 1px solid rgba(255, 59, 48, 0.25);
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-weight: 900;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            transition: all 0.15s ease;
         }
         .delete-single-order-btn:hover {
             background: #ff3b30;
             color: #ffffff;
-            transform: scale(1.08);
         }
 
         .order-info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .info-pill {
             background: var(--bg);
-            padding: 7px 10px;
-            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            border-radius: 10px;
             font-size: 0.78rem;
             display: flex;
-            flex-direction: column;
-            gap: 2px;
+            align-items: center;
+            justify-content: space-between;
         }
         .info-pill.full-width {
             grid-column: span 2;
         }
         .info-pill-title {
             color: var(--desc-text);
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 700;
         }
         .info-pill-value {
@@ -679,22 +712,22 @@
 
         .order-items-box {
             background: var(--bg);
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 10px 12px;
             margin-bottom: 10px;
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-color);
         }
         .order-items-box-title {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 800;
             color: var(--accent);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             display: block;
         }
         .order-items-content {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: var(--main-text);
-            line-height: 1.6;
+            line-height: 1.5;
             white-space: pre-line;
             font-weight: 700;
         }
@@ -703,21 +736,73 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            border-top: 1.5px solid var(--border-color);
         }
         .order-type-tag {
             background: rgba(46, 125, 50, 0.12);
             color: #2e7d32;
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 8px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 800;
         }
         .order-total-price {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 900;
             color: var(--yellow-gold);
+        }
+
+        /* ========================================================
+           نافذة الشات المباشر داخل التطبيق (In-App Live Chat)
+           ======================================================== */
+        .chat-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); z-index: 6000; display: none;
+            justify-content: center; align-items: center; padding: 14px;
+        }
+        .chat-box-card {
+            background: var(--white); width: 100%; max-width: 440px; height: 80vh;
+            border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: smoothFadeIn 0.25s ease-out;
+            border: 1px solid var(--border-color);
+        }
+        .chat-header {
+            background: var(--accent); color: white; padding: 14px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header-info { display: flex; flex-direction: column; }
+        .chat-header-title { font-size: 0.95rem; font-weight: 900; }
+        .chat-header-sub { font-size: 0.75rem; opacity: 0.9; }
+        .chat-close-btn { background: rgba(255,255,255,0.25); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-weight: 900; cursor: pointer; }
+        
+        .chat-messages-area {
+            flex: 1; padding: 14px; overflow-y: auto; display: flex;
+            flex-direction: column; gap: 10px; background: var(--bg);
+        }
+        .chat-bubble {
+            max-width: 80%; padding: 8px 14px; border-radius: 16px; font-size: 0.85rem; font-weight: 700;
+            line-height: 1.4; position: relative; word-wrap: break-word;
+        }
+        .chat-bubble.admin {
+            align-self: flex-start; background: var(--accent); color: white; border-bottom-right-radius: 4px;
+        }
+        .chat-bubble.client {
+            align-self: flex-end; background: var(--white); color: var(--main-text); border: 1px solid var(--border-color); border-bottom-left-radius: 4px;
+        }
+        .chat-bubble-time { font-size: 0.65rem; opacity: 0.75; display: block; margin-top: 3px; text-align: left; }
+
+        .chat-input-bar {
+            padding: 10px 14px; background: var(--white); border-top: 1px solid var(--border-color);
+            display: flex; gap: 8px; align-items: center;
+        }
+        .chat-input-bar input {
+            flex: 1; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color);
+            background: var(--bg); color: var(--main-text); font-size: 0.88rem; outline: none;
+        }
+        .chat-send-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 16px;
+            border-radius: 12px; font-weight: 800; cursor: pointer;
         }
     </style>
 </head>
@@ -767,16 +852,38 @@
 
     <div id="menuList" class="menu-list"></div>
 
-    <!-- نافذة نجاح الطلب -->
-    <div class="success-modal" id="successModal" onclick="closeSuccessModal()">
-        <div class="success-card" onclick="event.stopPropagation()">
+    <!-- نافذة نجاح الطلب مع زر شات الأوردر للزبون -->
+    <div class="success-modal" id="successModal">
+        <div class="success-card">
             <div class="success-icon-wrapper">
                 <svg viewBox="0 0 24 24">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                 </svg>
             </div>
             <h2 class="success-title">تم استلام طلبك بنجاح!</h2>
-            <p class="success-sub">جاري تجهيز طلبك بكل عناية، شكراً لثقتك بـ مطعم بروست الأمين.</p>
+            <p class="success-sub" id="successOrderText">جاري تجهيز طلبك، يمكنك التحدث مباشرة مع إدارة المطعم من داخل التطبيق.</p>
+            <button class="success-chat-btn" id="clientOpenChatBtn" onclick="openClientChatFromSuccess()">💬 شات وتواصل مع المطعم</button>
+            <button class="success-close-btn" onclick="closeSuccessModal()">إغلاق ومتابعة</button>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         نافذة الشات المباشر داخل التطبيق (Live In-App Chat Modal)
+         ======================================================== -->
+    <div class="chat-modal" id="chatModal" onclick="if(event.target==this) closeChatModal()">
+        <div class="chat-box-card">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-header-title" id="chatTitle">محادثة الأوردر</span>
+                    <span class="chat-header-sub" id="chatSub">محادثة مباشرة مع المطعم</span>
+                </div>
+                <button class="chat-close-btn" onclick="closeChatModal()">✕</button>
+            </div>
+            <div class="chat-messages-area" id="chatMessagesArea"></div>
+            <div class="chat-input-bar">
+                <input type="text" id="chatInputField" placeholder="اكتب رسالتك هنا..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button class="chat-send-btn" onclick="sendChatMessage()">إرسال</button>
+            </div>
         </div>
     </div>
 
@@ -790,7 +897,6 @@
                 <button class="admin-close" onclick="closeAdminPanel()">✕</button>
             </div>
             
-            <!-- نموذج إدخال كلمة السر في كل مرة -->
             <div id="adminAuthView">
                 <div class="pass-form">
                     <p style="margin-bottom: 12px; font-weight: 700; font-size: 0.9rem; text-align: center; color: var(--desc-text);">أدخل كلمة مرور الإدارة للمتابعة:</p>
@@ -799,7 +905,6 @@
                 </div>
             </div>
 
-            <!-- عرض شبكة الكروت بعد إدخال كلمة السر -->
             <div id="adminDashboardView" style="display: none;">
                 <div class="admin-cards-grid">
                     <!-- كارت 1: إدارة الأصناف -->
@@ -815,7 +920,7 @@
                         <div class="card-badge-num gray">2</div>
                         <div class="card-avatar-box blue-bg">📜</div>
                         <div class="card-title">الطلبات الواردة</div>
-                        <div class="card-subtitle">متابعة الطلبات المباشرة، العناوين وأرقام الزبائن</div>
+                        <div class="card-subtitle">متابعة الطلبات المباشرة والشات الداخلي مع العملاء</div>
                     </div>
 
                     <!-- كارت 3: تغيير كلمة المرور -->
@@ -863,15 +968,15 @@
         </div>
     </div>
 
-    <!-- نافذة 2: الطلبات الواردة الطائرة مع الحذف المنفرد -->
+    <!-- نافذة 2: الطلبات الواردة الطائرة مع الشات المباشر الداخلي -->
     <div class="floating-sub-modal" id="logsModal" onclick="if(event.target==this) closeFloatingModal('logsModal')">
         <div class="floating-card-box">
             <div class="floating-header">
                 <h4>📜 الطلبات الواردة (Live)</h4>
                 <button class="admin-close" onclick="closeFloatingModal('logsModal')">✕</button>
             </div>
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
-                <button onclick="clearOrderLogs()" style="background: #ff3b30; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(255, 59, 48, 0.25);">🗑️ حذف جميع الطلبات</button>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                <button onclick="clearOrderLogs()" style="background: #ff3b30; color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 6px rgba(255, 59, 48, 0.25);">🗑️ حذف جميع الطلبات</button>
             </div>
             <div id="adminOrdersLogsList">لا توجد طلبات مسجلة حتى الآن.</div>
         </div>
@@ -980,6 +1085,10 @@
         let selectedOrderType = 'delivery';
         let itemStatusMap = {}; 
         let orderLogsList = [];
+
+        let currentActiveChatOrderId = null;
+        let currentChatUserType = 'admin'; 
+        let chatUnsubscribe = null;
 
         const branchesData = [
             { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
@@ -1211,9 +1320,7 @@
                 renderAdminOrdersLogs();
 
                 if (!isFirstLoad && snapshot.docChanges().some(change => change.type === 'added')) {
-                    if (document.getElementById('adminDashboardView').style.display === 'block') {
-                        playHighPriorityOrderAlert();
-                    }
+                    playHighPriorityOrderAlert();
                 }
                 isFirstLoad = false;
             });
@@ -1440,6 +1547,9 @@
             }
         }
 
+        let lastPlacedOrderId = null;
+        let lastPlacedOrderName = '';
+
         async function sendToWA() {
             const n = document.getElementById('uName').value.trim();
             const p = document.getElementById('uPhone').value.trim();
@@ -1459,6 +1569,8 @@
             }).join('\n');
 
             const randomOrderId = Math.floor(1000 + Math.random() * 9000);
+            lastPlacedOrderId = randomOrderId;
+            lastPlacedOrderName = n;
 
             try {
                 const { collection, addDoc } = window.firebaseModules;
@@ -1478,6 +1590,8 @@
             } catch (err) {
                 console.log("Error saving order:", err);
             }
+
+            playHighPriorityOrderAlert();
 
             const waNumber = currentSelectedBranch.phone; 
             const textMsg = encodeURIComponent(
@@ -1500,17 +1614,19 @@
             cart = [];
             updateCart();
 
+            document.getElementById('successOrderText').innerText = `تم تسجيل طلبك رقم #${randomOrderId} بنجاح. يمكنك التحدث في شات مباشر مع المطعم لمتابعة تجهيز وتوصيل أوردرك!`;
             document.getElementById('successModal').style.display = 'flex';
-            setTimeout(() => {
-                closeSuccessModal();
-            }, 4000);
         }
 
         function closeSuccessModal() {
             document.getElementById('successModal').style.display = 'none';
         }
 
-        // فتح لوحة التحكم مع إلزامية كتابة كلمة السر في كل مرة
+        function openClientChatFromSuccess() {
+            closeSuccessModal();
+            openInAppChat(lastPlacedOrderId, lastPlacedOrderName, 'client');
+        }
+
         function openAdminPanel() {
             document.getElementById('adminPassInput').value = '';
             document.getElementById('adminAuthView').style.display = 'block';
@@ -1645,7 +1761,7 @@
             }
         }
 
-        // عرض كروت الطلبات المنظمة مع زر الحذف المنفرد (✕)
+        // كروت الطلبات فائقة التباين والوضوح مع الشات المباشر الداخلي
         function renderAdminOrdersLogs() {
             const container = document.getElementById('adminOrdersLogsList');
             if (!container) return;
@@ -1655,36 +1771,42 @@
                 return;
             }
 
-            container.innerHTML = orderLogsList.map(order => `
+            container.innerHTML = orderLogsList.map(order => {
+                const safeCustomerName = (order.name || 'عميل').replace(/'/g, "\\'");
+
+                return `
                 <div class="order-pro-card">
                     <div class="order-card-header">
-                        <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
                             <span class="order-id-badge">طلب #${order.orderId || ''}</span>
-                            <span style="font-size:0.75rem; color:var(--desc-text); font-weight:700;">${order.dateFormatted || ''}</span>
+                            <span style="font-size:0.72rem; color:var(--desc-text); font-weight:800;">${order.dateFormatted || ''}</span>
                         </div>
-                        <button class="delete-single-order-btn" title="حذف هذا الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
+                        <div class="order-actions-top">
+                            <button class="chat-app-btn" onclick="openInAppChat('${order.orderId}', '${safeCustomerName}', 'admin')">💬 شات الأوردر</button>
+                            <button class="delete-single-order-btn" title="حذف هذا الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
+                        </div>
                     </div>
 
                     <div class="order-info-grid">
                         <div class="info-pill">
-                            <span class="info-pill-title">👤 العميل:</span>
+                            <span class="info-pill-title">العميل:</span>
                             <span class="info-pill-value">${order.name || 'غير محدد'}</span>
                         </div>
                         <div class="info-pill">
-                            <span class="info-pill-title">📞 الهاتف:</span>
+                            <span class="info-pill-title">الهاتف:</span>
                             <span class="info-pill-value"><a href="tel:${order.phone}" style="color:var(--accent); text-decoration:none;">${order.phone || ''}</a></span>
                         </div>
                         <div class="info-pill">
-                            <span class="info-pill-title">📍 الفرع:</span>
+                            <span class="info-pill-title">الفرع:</span>
                             <span class="info-pill-value">فرع ${order.branch || 'الرئيسي'}</span>
                         </div>
                         <div class="info-pill">
-                            <span class="info-pill-title">🛵 النوع:</span>
+                            <span class="info-pill-title">النوع:</span>
                             <span class="info-pill-value">${order.type || ''}</span>
                         </div>
                         ${order.address ? `
                         <div class="info-pill full-width">
-                            <span class="info-pill-title">🏠 العنوان:</span>
+                            <span class="info-pill-title">العنوان:</span>
                             <span class="info-pill-value">${order.address}</span>
                         </div>` : ''}
                     </div>
@@ -1698,11 +1820,87 @@
                         <span class="order-type-tag">${order.type || 'طلب جديد'}</span>
                         <span class="order-total-price">الإجمالي: ${order.total || 0} ج.م</span>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
-        // دالة حذف طلب منفرد بعلامة ✕
+        // ========================================================
+        // منطق الشات المباشر داخل التطبيق (In-App Chat Logic)
+        // ========================================================
+        function openInAppChat(orderId, clientName, userType) {
+            if (!orderId) return;
+            currentActiveChatOrderId = String(orderId);
+            currentChatUserType = userType; 
+
+            document.getElementById('chatTitle').innerText = `محادثة أوردر #${orderId}`;
+            document.getElementById('chatSub').innerText = userType === 'admin' ? `العميل: ${clientName}` : `محادثة حية مع إدارة المطعم`;
+            document.getElementById('chatInputField').value = '';
+
+            document.getElementById('chatModal').style.display = 'flex';
+            listenToChatMessages(currentActiveChatOrderId);
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+            if (chatUnsubscribe) {
+                chatUnsubscribe();
+                chatUnsubscribe = null;
+            }
+        }
+
+        function listenToChatMessages(orderId) {
+            const { collection, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            if (chatUnsubscribe) chatUnsubscribe();
+
+            const messagesContainer = document.getElementById('chatMessagesArea');
+            messagesContainer.innerHTML = '<p style="text-align:center; padding:15px; color:var(--desc-text); font-weight:700;">جاري تحميل الرسائل...</p>';
+
+            chatUnsubscribe = onSnapshot(collection(db, "order_chats", orderId, "messages"), (snapshot) => {
+                const msgs = [];
+                snapshot.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
+                msgs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+                if (msgs.length === 0) {
+                    messagesContainer.innerHTML = '<p style="text-align:center; padding:20px; color:var(--desc-text); font-weight:700;">لا توجد رسائل سابقة. ابدأ المحادثة الآن!</p>';
+                    return;
+                }
+
+                messagesContainer.innerHTML = msgs.map(m => {
+                    const bubbleClass = m.sender === 'admin' ? 'admin' : 'client';
+                    return `
+                    <div class="chat-bubble ${bubbleClass}">
+                        ${m.text}
+                        <span class="chat-bubble-time">${m.timeFormatted || ''}</span>
+                    </div>`;
+                }).join('');
+
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInputField');
+            const text = input.value.trim();
+            if (!text || !currentActiveChatOrderId) return;
+
+            input.value = '';
+
+            try {
+                const { collection, addDoc } = window.firebaseModules;
+                const db = window.db;
+                await addDoc(collection(db, "order_chats", currentActiveChatOrderId, "messages"), {
+                    text: text,
+                    sender: currentChatUserType,
+                    timestamp: Date.now(),
+                    timeFormatted: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+                });
+            } catch (e) {
+                console.error("خطأ أثناء إرسال الرسالة:", e);
+            }
+        }
+
         async function deleteSingleOrder(orderDocId) {
             if (!confirm("هل أنت متأكد من حذف هذا الطلب من السجل؟")) return;
             try {
@@ -1714,7 +1912,6 @@
             }
         }
 
-        // دالة حذف جميع الطلبات
         async function clearOrderLogs() {
             if (!confirm("هل أنت متأكد من رغبتك في مسح كافة الطلبات من السجل نهائياً؟")) return;
             try {
