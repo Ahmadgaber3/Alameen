@@ -53,10 +53,9 @@
             padding-bottom: 90px; 
         }
 
-        /* --- شاشة الترحيب (تفتيح الخلفية وإلغاء التعتيم) --- */
+        /* --- شاشة الترحيب --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* إلغاء طبقة السواد واستخدام خلفية ناصعة ومضيئة */
             background-image: radial-gradient(circle, rgba(255, 152, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%), url('images/splash-bg.jpg');
             background-size: cover;
             background-position: center center;
@@ -190,31 +189,100 @@
         }
         .admin-trigger-btn:active { transform: scale(0.9); }
 
+        /* --- شريط الأقسام المطور --- */
         .category-nav { 
-            display: flex; overflow-x: auto; white-space: nowrap; padding: 8px 10px; gap: 12px; 
-            scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); width: 100%; 
-            border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); 
-            scroll-behavior: smooth; margin-top: 4px;
+            display: flex; 
+            overflow-x: auto; 
+            white-space: nowrap; 
+            padding: 10px 14px; 
+            gap: 16px; 
+            scrollbar-width: none; 
+            background: var(--glass); 
+            backdrop-filter: blur(20px); 
+            width: 100%; 
+            border-top: 1px solid var(--border-color); 
+            border-bottom: 1px solid var(--border-color); 
+            scroll-behavior: smooth; 
+            margin-top: 4px;
+            -webkit-overflow-scrolling: touch;
         }
         .category-nav::-webkit-scrollbar { display: none; }
-        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
-        .cat-img-box { width: 52px; height: 52px; border-radius: 16px; background: #e0e0e0; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
+
+        .cat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-width: max-content; 
+            flex-shrink: 0; 
+            padding: 0 4px;
+            cursor: pointer; 
+        }
+
+        .cat-img-box { 
+            width: 54px; 
+            height: 54px; 
+            border-radius: 16px; 
+            background: #e0e0e0; 
+            overflow: hidden; 
+            border: 2.5px solid transparent; 
+            transition: 0.3s; 
+        }
         .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.05); }
-        .cat-item span { font-size: 0.75rem; font-weight: 700; color: var(--desc-text); margin-top: 3px; }
+
+        .cat-item span { 
+            font-size: 0.78rem; 
+            font-weight: 700; 
+            color: var(--desc-text); 
+            margin-top: 5px; 
+            white-space: nowrap;
+            text-align: center;
+        }
+        .cat-item.active span { color: var(--accent); }
         
         .menu-list { padding: 12px 15px; max-width: 600px; margin: auto; }
         
-        .food-card { background: var(--white); border-radius: 20px; margin-bottom: 12px; display: flex; padding: 12px 16px; gap: 14px; align-items: center; box-shadow: 0 3px 12px var(--card-shadow); border: 1px solid var(--border-color); transition: opacity 0.3s ease; }
+        .food-card { background: var(--white); border-radius: 20px; margin-bottom: 12px; display: flex; padding: 12px 14px; gap: 12px; align-items: center; box-shadow: 0 3px 12px var(--card-shadow); border: 1px solid var(--border-color); transition: opacity 0.3s ease; }
         .food-card.disabled-item { opacity: 0.5; filter: grayscale(0.3); }
         
-        .item-img-box { width: 110px; height: 110px; border-radius: 16px; overflow: hidden; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        /* تكبير الصورة إلى 105x105 */
+        .item-img-box { width: 105px; height: 105px; border-radius: 16px; overflow: hidden; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 95px; }
-        .food-name { font-weight: 700; font-size: 0.95rem; color: var(--main-text); padding-left: 10px; }
-        .food-desc { font-size: 0.78rem; color: var(--desc-text); line-height: 1.3; margin-top: 2px; margin-bottom: 6px; }
+        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 100px; }
+        .food-name { font-weight: 800; font-size: 0.95rem; color: var(--main-text); padding-left: 8px; }
+        
+        /* تصغير خط الوصف */
+        .food-desc { font-size: 0.72rem; color: var(--desc-text); line-height: 1.25; margin-top: 2px; margin-bottom: 4px; }
         .food-price { font-weight: 800; color: var(--yellow-gold); font-size: 0.95rem; white-space: nowrap; display: inline-block; }
+
+        /* --- تصميم أزرار اختيار الأحجام --- */
+        .variants-container {
+            display: flex;
+            gap: 6px;
+            margin: 4px 0 6px 0;
+            flex-wrap: wrap;
+        }
+        .variant-btn {
+            background: var(--bg);
+            border: 1.5px solid var(--border-color);
+            color: var(--main-text);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .variant-btn:hover {
+            border-color: var(--accent);
+        }
+        .variant-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+        }
 
         .order-btn { background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: background 0.3s ease, box-shadow 0.3s ease; }
         .order-btn:disabled { background: #888 !important; cursor: not-allowed; box-shadow: none !important; }
@@ -235,6 +303,8 @@
         .social-btn-link svg { width: 24px; height: 24px; fill: white; }
         
         .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
+        
+        /* تعديل بيانات المصمم */
         .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
         .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
 
@@ -310,6 +380,16 @@
         .admin-section { display: none; }
         .admin-section.active { display: block; }
 
+        .admin-branch-select-box {
+            background: var(--bg); border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 10px 14px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .admin-branch-select-box label { font-weight: 800; font-size: 0.88rem; color: var(--accent); }
+        .admin-branch-select-box select {
+            background: var(--white); border: 1px solid var(--border-color); padding: 8px 12px;
+            border-radius: 10px; font-weight: 700; color: var(--main-text); outline: none; cursor: pointer;
+        }
+
         .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: var(--bg); border-radius: 16px; margin-bottom: 10px; border: 1px solid var(--border-color); }
         .switch-label { font-weight: 700; font-size: 0.9rem; color: var(--main-text); }
         
@@ -320,10 +400,11 @@
         input:checked + .slider { background-color: var(--success-dark); }
         input:checked + .slider:before { transform: translateX(24px); }
 
-        .admin-global-actions { display: flex; gap: 10px; margin-bottom: 15px; }
-        .admin-action-btn { flex: 1; padding: 10px; border: none; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-global-actions { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .admin-action-btn { flex: 1; min-width: 130px; padding: 10px; border: none; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-enable-all { background: var(--success-dark); }
         .btn-disable-all { background: var(--accent); }
+        .btn-sync-sheet { background: #3498db; width: 100%; flex-basis: 100%; }
 
         .pass-form input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg); color: var(--main-text); margin-bottom: 12px; font-size: 0.95rem; text-align: center; }
         .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
@@ -359,7 +440,6 @@
         <div class="branch-modal-content">
             <h2 class="branch-modal-title">اختر الفرع الأقرب إليك 📍</h2>
             <p class="branch-modal-sub">سيتم توجيه طلبك مباشرة إلى الفرع المختار</p>
-            
             <div id="branchesList"></div>
         </div>
     </div>
@@ -367,7 +447,6 @@
     <!-- الهيدر -->
     <header>
         <div class="header-top">
-            <!-- تبديل الوضع (الافتراضي هو الهلال لتفعيل الليلي) -->
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
             <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
             <div class="header-logo-container">
@@ -429,9 +508,16 @@
                 </div>
 
                 <div id="tabStatus" class="admin-section active">
+                    <!-- قائمة اختيار الفرع داخل لوحة التحكم -->
+                    <div class="admin-branch-select-box">
+                        <label for="adminBranchSelector">الفرع المراد إدارته 📍:</label>
+                        <select id="adminBranchSelector" onchange="changeAdminBranch(this.value)"></select>
+                    </div>
+
                     <div class="admin-global-actions">
                         <button class="admin-action-btn btn-enable-all" onclick="setAllItemsStatus(true)">✅ تشغيل جميع الأصناف</button>
                         <button class="admin-action-btn btn-disable-all" onclick="setAllItemsStatus(false)">🛑 إيقاف جميع الأصناف</button>
+                        <button class="admin-action-btn btn-sync-sheet" onclick="manualSyncMenuFromSheet()">🔄 تحديث ومزامنة المنيو من جوجل شيت فوراً</button>
                     </div>
                     <div id="adminItemsList">جاري تحميل الأصناف...</div>
                 </div>
@@ -471,8 +557,8 @@
 
         <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
         <div class="dev-credit">
-            Designed by eng / Anas Gaber shehata
-            <a href="tel:01003800314">📞 01003800314</a>
+            Designed by eng / Ahmed Jaber
+            <a href="tel:01030252806">📞 01030252806</a>
         </div>
     </footer>
 
@@ -508,13 +594,16 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+        // إعدادات مشروع فايربيز الخاص بك
         const firebaseConfig = {
-            apiKey: window.env?.FIREBASE_API_KEY || "AIzaSyDYwPVwpsvPcEaJGKp9Eia5...",
-            authDomain: "hayahkitchen-7bb13.firebaseapp.com",
-            projectId: "hayahkitchen-7bb13",
-            storageBucket: "hayahkitchen-7bb13.firebasestorage.app",
-            messagingSenderId: "611946824630",
-            appId: "1:611946824630:web:c934ebf9e1524a2209f717"
+          apiKey: "AIzaSyAUwDoxvhwCWb3FUtpA2NwmP7qBm5eYOuE",
+          authDomain: "makkah-restaurant.firebaseapp.com",
+          databaseURL: "https://makkah-restaurant-default-rtdb.firebaseio.com",
+          projectId: "makkah-restaurant",
+          storageBucket: "makkah-restaurant.firebasestorage.app",
+          messagingSenderId: "974492409250",
+          appId: "1:974492409250:web:9bfa2523b8f598489526fb",
+          measurementId: "G-3TMKVN9R5H"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -528,13 +617,14 @@
 
     <script>
         const IMAGES_PATH = "./images/"; 
+        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTA4Xr8wQ9COOV3ZTkrJHRnt3T6Rd_W4fzL-0jSxf8KxAFYwlAQXvCy5_Q9lVRpTz3lddtozuWGL8rM/pub?output=csv";
+
         let menuData = [], cart = [];
         let currentTotal = 0; 
         let selectedOrderType = 'delivery';
         let itemStatusMap = {}; 
         let orderLogsList = [];
 
-        // قائمة الفروع
         const branchesData = [
             { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
             { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201010430950', altPhone: '01155766404' },
@@ -542,53 +632,158 @@
         ];
 
         let currentSelectedBranch = branchesData[0]; 
+        let adminSelectedBranchId = branchesData[0].id;
+        let menuUnsubscribe = null;
+        let realtimeMenuUnsubscribe = null;
 
-        const defaultMenuData = [
-            // برجر بيف - دبل
-            { category: "برجر بيف", name: "كلاسيك (دبل)", desc: "قطعة برجر وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "170", img: `${IMAGES_PATH}classic-burger.jpg` },
-            { category: "برجر بيف", name: "جامبو (دبل)", desc: "قطعة برجر محشي جبنة موتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "175", img: `${IMAGES_PATH}jumbo-burger.jpg` },
-            { category: "برجر بيف", name: "هالابينووو (دبل)", desc: "قطعة برجر بفلفل هالابينو وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "175", img: `${IMAGES_PATH}halabinu-burger.jpg` },
-            { category: "برجر بيف", name: "كرامليز (دبل)", desc: "قطعة برجر محشي جبنة وبصل مكرمل وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "185", img: `${IMAGES_PATH}caramelize-burger.jpg` },
-            { category: "برجر بيف", name: "جوسي لوسي (دبل)", desc: "قطعة برجر محشي جبنة موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "190", img: `${IMAGES_PATH}juicy-lucy.jpg` },
-            { category: "برجر بيف", name: "مشروم (دبل)", desc: "قطعة برجر محشي جبنة مع مشروم وموتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "195", img: `${IMAGES_PATH}mushroom-burger.jpg` },
-            { category: "برجر بيف", name: "سبيشال الأمين (دبل)", desc: "قطعة برجر محشي جبنة وأصابع موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "205", img: `${IMAGES_PATH}special-alameen.jpg` },
+        function parseCSVLine(line) {
+            let result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
 
-            // برجر بيف - سينجل
-            { category: "برجر بيف", name: "كلاسيك (سينجل)", desc: "قطعة برجر وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "125", img: `${IMAGES_PATH}classic-burger.jpg` },
-            { category: "برجر بيف", name: "جامبو (سينجل)", desc: "قطعة برجر محشي جبنة موتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "135", img: `${IMAGES_PATH}jumbo-burger.jpg` },
-            { category: "برجر بيف", name: "هالابينووو (سينجل)", desc: "قطعة برجر بفلفل هالابينو وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "135", img: `${IMAGES_PATH}halabinu-burger.jpg` },
-            { category: "برجر بيف", name: "كرامليز (سينجل)", desc: "قطعة برجر محشي جبنة وبصل مكرمل وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "140", img: `${IMAGES_PATH}caramelize-burger.jpg` },
-            { category: "برجر بيف", name: "جوسي لوسي (سينجل)", desc: "قطعة برجر محشي جبنة موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "145", img: `${IMAGES_PATH}juicy-lucy.jpg` },
-            { category: "برجر بيف", name: "مشروم (سينجل)", desc: "قطعة برجر محشي جبنة مع مشروم وموتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "150", img: `${IMAGES_PATH}mushroom-burger.jpg` },
-            { category: "برجر بيف", name: "سبيشال الأمين (سينجل)", desc: "قطعة برجر محشي جبنة وأصابع موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "160", img: `${IMAGES_PATH}special-alameen.jpg` },
+        // دالة تنظيف القيمة من الرموز والمسافات
+        function cleanVal(val) {
+            if (!val) return '';
+            let v = val.replace(/[-"']/g, '').trim();
+            return v === '' ? '' : v;
+        }
 
-            // الإضافات (Extra)
-            { category: "الإضافات", name: "قطعة دجاج بروست (ورك/صدر)", desc: "Broasted chicken piece", price: "60 / 70", img: `${IMAGES_PATH}broasted-piece.jpg` },
-            { category: "الإضافات", name: "قطعة استريبس مقرمش", desc: "Crispy strips", price: "55", img: `${IMAGES_PATH}crispy-strips.jpg` },
-            { category: "الإضافات", name: "باكيت بطاطس صغير", desc: "Small Fries", price: "30", img: `${IMAGES_PATH}small-fries.jpg` },
-            { category: "الإضافات", name: "باكيت بطاطس كبير", desc: "Large Fries", price: "50", img: `${IMAGES_PATH}large-fries.jpg` },
-            { category: "الإضافات", name: "علبة بطاطس عائلية", desc: "Family Fries Box", price: "75", img: `${IMAGES_PATH}family-fries.jpg` },
-            { category: "الإضافات", name: "بطاطس شيدر", desc: "Cheddar Fries", price: "85", img: `${IMAGES_PATH}cheddar-fries.jpg` },
-            { category: "الإضافات", name: "كول سلو", desc: "Cabbage salad - Cloe slow", price: "35", img: `${IMAGES_PATH}coleslaw.jpg` },
-            { category: "الإضافات", name: "أرز مبهر", desc: "Spiced rice", price: "40", img: `${IMAGES_PATH}spiced-rice.jpg` },
-            { category: "الإضافات", name: "ريزو تيستي", desc: "Rizzo Testy", price: "90", img: `${IMAGES_PATH}rizzo.jpg` },
-            { category: "الإضافات", name: "صوص شيدر", desc: "Cheddar sauce", price: "35", img: `${IMAGES_PATH}cheddar-sauce.jpg` },
-            { category: "الإضافات", name: "صوص باربيكيو", desc: "BBQ sauce", price: "35", img: `${IMAGES_PATH}bbq-sauce.jpg` },
-            { category: "الإضافات", name: "صوص تايجر", desc: "Tiger sauce", price: "35", img: `${IMAGES_PATH}tiger-sauce.jpg` },
-            { category: "الإضافات", name: "صوص حار", desc: "Hot sauce", price: "35", img: `${IMAGES_PATH}hot-sauce.jpg` },
-            { category: "الإضافات", name: "تومية", desc: "Tomia", price: "30", img: `${IMAGES_PATH}tomia.jpg` },
-            { category: "الإضافات", name: "1 قطعة خبز كايزر", desc: "1 Bun bread", price: "7", img: `${IMAGES_PATH}bun-bread.jpg` },
-            { category: "الإضافات", name: "4 كيس كاتشب", desc: "4 Bags of Ketchup", price: "6", img: `${IMAGES_PATH}ketchup.jpg` },
+        async function fetchMenuFromGoogleSheet() {
+            try {
+                const freshUrl = GOOGLE_SHEET_CSV_URL + '&t=' + Date.now();
+                const response = await fetch(freshUrl);
+                if (!response.ok) throw new Error("تعذر جلب ملف الشيت");
+                
+                const csvText = await response.text();
+                const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0);
+                
+                if (lines.length <= 1) return [];
 
-            // الركن السوري
-            { category: "الركن السوري", name: "شاورما كيزر دجاج", desc: "ساندوتش شاورما دجاج سوري كيزر", price: "45", img: `${IMAGES_PATH}shawarma-kaiser.jpg` },
-            { category: "الركن السوري", name: "شاورما دجاج مدخن", desc: "ساندوتش شاورما دجاج مدخن", price: "75", img: `${IMAGES_PATH}shawarma-smoked.jpg` },
-            { category: "الركن السوري", name: "بطاطس سوري", desc: "ساندوتش بطاطس بالطريقة السورية", price: "35", img: `${IMAGES_PATH}syrian-fries.jpg` },
-            { category: "الركن السوري", name: "بطاطس مودزريلا", desc: "ساندوتش بطاطس مع جبنة موزاريلا غنية", price: "45", img: `${IMAGES_PATH}syrian-mozzarella.jpg` },
-            { category: "الركن السوري", name: "ميكس سوري", desc: "ساندوتش ميكس سوري مشكل", price: "80", img: `${IMAGES_PATH}syrian-mix.jpg` }
-        ];
+                const items = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = parseCSVLine(lines[i]);
+                    if (cols.length < 2 || !cols[1]) continue;
 
-        // دالة تبديل الثيم: النهاري هو الافتراضي والضغط يحوله لليلي
+                    const category = cols[0] ? cols[0].trim() : "عام";
+                    const name = cols[1] ? cols[1].trim() : "";
+                    
+                    const priceNormal = cleanVal(cols[2]);
+                    const priceL = cleanVal(cols[3]);
+                    const priceM = cleanVal(cols[4]);
+                    const priceD = cleanVal(cols[5]);
+                    const priceS = cleanVal(cols[6]);
+                    const desc = cols[7] ? cols[7].trim() : "";
+                    let img = cols[8] ? cols[8].trim() : "";
+
+                    if (img && !img.startsWith('http://') && !img.startsWith('https://') && !img.startsWith('./')) {
+                        img = `${IMAGES_PATH}${img}`;
+                    } else if (!img) {
+                        img = `${IMAGES_PATH}default.jpg`;
+                    }
+
+                    // التحقق الدقيق من وجود أحجام متعددة للصنف
+                    let variants = [];
+                    if (priceS !== '' && priceD !== '') {
+                        variants = [
+                            { size: 'سينجل', price: priceS },
+                            { size: 'دبل', price: priceD }
+                        ];
+                    } else if (priceM !== '' && priceL !== '') {
+                        variants = [
+                            { size: 'ميديام', price: priceM },
+                            { size: 'لارج', price: priceL }
+                        ];
+                    }
+
+                    let defaultPrice = "0";
+                    if (variants.length > 0) {
+                        defaultPrice = variants[0].price;
+                    } else {
+                        defaultPrice = priceNormal || priceL || priceM || priceD || priceS || "0";
+                    }
+
+                    items.push({
+                        id: `item_${i}`,
+                        category: category,
+                        name: name,
+                        desc: desc,
+                        img: img,
+                        price: defaultPrice,
+                        variants: variants.length > 0 ? variants : null
+                    });
+                }
+                return items;
+            } catch (err) {
+                console.error("خطأ أثناء جلب وتوزيع بيانات الشيت:", err);
+                return [];
+            }
+        }
+
+        // الاستماع المباشر للمنيو من فايربيز (Realtime)
+        function listenToRealtimeMenu() {
+            const { doc, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            if (realtimeMenuUnsubscribe) realtimeMenuUnsubscribe();
+
+            realtimeMenuUnsubscribe = onSnapshot(doc(db, "menu_data", "main_menu"), async (docSnap) => {
+                if (docSnap.exists() && docSnap.data().items && docSnap.data().items.length > 0) {
+                    menuData = docSnap.data().items;
+                    preloadImages(menuData);
+                    renderNav();
+                    if (document.getElementById('adminModal').style.display === 'flex') {
+                        renderAdminItemsList();
+                    }
+                } else {
+                    await syncSheetToFirebase();
+                }
+            }, (error) => {
+                console.error("خطأ في الاتصال بالفايربيز:", error);
+            });
+        }
+
+        async function syncSheetToFirebase() {
+            try {
+                const fetchedData = await fetchMenuFromGoogleSheet();
+                if (fetchedData && fetchedData.length > 0) {
+                    menuData = fetchedData;
+                    const { doc, setDoc } = window.firebaseModules;
+                    const db = window.db;
+                    await setDoc(doc(db, "menu_data", "main_menu"), {
+                        items: fetchedData,
+                        lastUpdated: Date.now()
+                    });
+                    preloadImages(menuData);
+                    renderNav();
+                }
+            } catch (e) {
+                console.error("فشل مزامنة الشيت مع فايربيز:", e);
+            }
+        }
+
+        async function manualSyncMenuFromSheet() {
+            if (!confirm("هل تريد سحب أحدث البيانات من شيت جوجل ونشرها فوراً لكل العملاء؟")) return;
+            const btn = document.querySelector('.btn-sync-sheet');
+            if (btn) btn.innerText = "⏳ جاري التحديث والنشر...";
+            await syncSheetToFirebase();
+            if (btn) btn.innerText = "🔄 تحديث ومزامنة المنيو من جوجل شيت فوراً";
+            alert("تم تحديث المنيو في فايربيز وظهر فوراً لكل المستخدمين!");
+        }
+
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -626,11 +821,13 @@
             }, intervalTime);
         }
 
-        window.addEventListener('firebase-ready', async () => {
-            const { doc, onSnapshot, collection } = window.firebaseModules;
+        function listenToBranchMenuStatus(branchId) {
+            if (menuUnsubscribe) menuUnsubscribe();
+            
+            const { doc, onSnapshot } = window.firebaseModules;
             const db = window.db;
 
-            onSnapshot(doc(db, "menu_status", "items"), (docSnap) => {
+            menuUnsubscribe = onSnapshot(doc(db, "menu_status", branchId), (docSnap) => {
                 if (docSnap.exists()) {
                     itemStatusMap = docSnap.data();
                 } else {
@@ -641,6 +838,14 @@
                     if(activeCat) filterCat(activeCat.innerText);
                 }
             });
+        }
+
+        window.addEventListener('firebase-ready', async () => {
+            const { doc, onSnapshot, collection } = window.firebaseModules;
+            const db = window.db;
+
+            listenToBranchMenuStatus(currentSelectedBranch.id);
+            listenToRealtimeMenu();
 
             onSnapshot(doc(db, "settings", "password"), (docSnap) => {
                 if (docSnap.exists()) {
@@ -706,31 +911,18 @@
             startCreativeCounter();
             renderFooterBranches();
 
-            try {
-                menuData = defaultMenuData;
-                preloadImages(menuData);
-                renderNav();
-
-                setTimeout(() => {
-                    document.getElementById('splash-screen').classList.add('splash-hidden');
-                    
-                    const savedBranchId = localStorage.getItem('selected_branch_id');
-                    if (savedBranchId) {
-                        const b = branchesData.find(x => x.id === savedBranchId);
-                        if (b) selectBranch(b, false);
-                        else showBranchModal();
-                    } else {
-                        showBranchModal();
-                    }
-                    initPWA(); 
-                }, 2000);
-
-            } catch (e) { 
-                setTimeout(() => {
-                    document.getElementById('splash-screen').classList.add('splash-hidden');
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('splash-hidden');
+                
+                const savedBranchId = localStorage.getItem('selected_branch_id');
+                if (savedBranchId) {
+                    const b = branchesData.find(x => x.id === savedBranchId);
+                    if (b) selectBranch(b, false);
+                    else showBranchModal();
+                } else {
                     showBranchModal();
-                }, 2000);
-            }
+                }
+            }, 2000);
         }
 
         function renderFooterBranches() {
@@ -763,6 +955,8 @@
             localStorage.setItem('selected_branch_id', branchObj.id);
             document.getElementById('currentBranchBadge').innerText = `📍 فرع: ${branchObj.name} (تغيير)`;
             document.getElementById('branchModal').style.display = 'none';
+            
+            listenToBranchMenuStatus(branchObj.id);
         }
 
         function openSelectedBranchWA() {
@@ -787,9 +981,11 @@
                 el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
             
-            document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map(item => {
-                let rawPrice = item.price;
-                let displayPrice = rawPrice + ' ج.م';
+            document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item, idx) => {
+                const hasVariants = item.variants && item.variants.length > 0;
+                const initialPrice = hasVariants ? item.variants[0].price : item.price;
+                const initialSize = hasVariants ? item.variants[0].size : '';
+                const displayPrice = initialPrice + ' ج.م';
 
                 let isEnabled = itemStatusMap[item.name] !== false;
                 let disabledClass = isEnabled ? '' : 'disabled-item';
@@ -797,30 +993,78 @@
 
                 const safeName = item.name.replace(/'/g, "\\'");
                 const safeImg = item.img.replace(/'/g, "\\'");
-                const safePrice = rawPrice.replace(/'/g, "\\'");
+                const cardId = `card_${idx}`;
+
+                let variantsHtml = '';
+                if (hasVariants) {
+                    variantsHtml = `
+                    <div class="variants-container">
+                        ${item.variants.map((v, vIdx) => `
+                            <button type="button" class="variant-btn ${vIdx === 0 ? 'active' : ''}" 
+                                onclick="selectVariant(this, '${cardId}', '${v.price}', '${v.size}')">
+                                ${v.size}
+                            </button>
+                        `).join('')}
+                    </div>`;
+                }
 
                 return `
-                <div class="food-card ${disabledClass}" data-category="${item.category}" data-price="${rawPrice}">
+                <div class="food-card ${disabledClass}" id="${cardId}" 
+                     data-category="${item.category}" 
+                     data-base-name="${safeName}" 
+                     data-current-size="${initialSize}" 
+                     data-current-price="${initialPrice}">
                     <div class="item-img-box"><img src="${item.img}" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
                     <div class="food-info">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
                             <span class="food-name">${item.name}</span>
-                            <span class="food-price">${displayPrice}</span>
+                            <span class="food-price" id="${cardId}_price">${displayPrice}</span>
                         </div>
                         ${item.desc ? `<p class="food-desc">${item.desc}</p>` : ''}
+                        ${variantsHtml}
                         <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 6px;">
-                            <button class="order-btn" ${!isEnabled ? 'disabled' : ''} onclick="addToCart(event, this, '${safeName}', '${safeImg}', '${safePrice}')">${btnText}</button>
+                            <button class="order-btn" ${!isEnabled ? 'disabled' : ''} onclick="orderCardItem(event, this, '${cardId}', '${safeName}', '${safeImg}')">${btnText}</button>
                         </div>
                     </div>
                 </div>`;
             }).join('');
         }
 
-        function addToCart(e, btn, name, img, price) {
-            const card = btn.closest('.food-card'); const category = card.dataset.category || '';
+        function selectVariant(btn, cardId, price, size) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const buttons = card.querySelectorAll('.variant-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const priceEl = document.getElementById(`${cardId}_price`);
+            if (priceEl) priceEl.innerText = `${price} ج.م`;
+
+            card.dataset.currentSize = size;
+            card.dataset.currentPrice = price;
+        }
+
+        function orderCardItem(e, btn, cardId, baseName, img) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            const category = card.dataset.category || '';
+            const currentPrice = card.dataset.currentPrice || '0';
+            const currentSize = card.dataset.currentSize || '';
+
+            let finalName = baseName;
+            if (currentSize) {
+                finalName = `${baseName} (${currentSize})`;
+            }
+
+            addToCart(e, btn, finalName, img, currentPrice, category);
+        }
+
+        function addToCart(e, btn, name, img, price, category) {
             let numericPrice = parseFloat(price) || 0;
             
-            cart.push({name: name, price: numericPrice, displayPrice: price, img: img, category: category});
+            cart.push({name: name, price: numericPrice, displayPrice: price, img: img, category: category || ''});
             btn.innerText = 'تم الطلب'; btn.classList.add('added');
             setTimeout(() => { btn.innerText = 'اطلب'; btn.classList.remove('added'); }, 2000);
             
@@ -942,7 +1186,8 @@
                 localStorage.setItem('admin_access_count', accessCount);
                 document.getElementById('adminAuthView').style.display = 'none';
                 document.getElementById('adminDashboardView').style.display = 'block';
-                renderAdminItemsList();
+                initAdminBranchSelector();
+                fetchAdminBranchItems(adminSelectedBranchId);
             } else {
                 document.getElementById('adminAuthView').style.display = 'block';
                 document.getElementById('adminDashboardView').style.display = 'none';
@@ -951,6 +1196,36 @@
 
         function closeAdminPanel() {
             document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function initAdminBranchSelector() {
+            const selector = document.getElementById('adminBranchSelector');
+            selector.innerHTML = branchesData.map(b => 
+                `<option value="${b.id}" ${b.id === adminSelectedBranchId ? 'selected' : ''}>فرع ${b.name}</option>`
+            ).join('');
+        }
+
+        async function changeAdminBranch(branchId) {
+            adminSelectedBranchId = branchId;
+            fetchAdminBranchItems(branchId);
+        }
+
+        let adminBranchStatusMap = {};
+
+        async function fetchAdminBranchItems(branchId) {
+            const { doc, getDoc } = window.firebaseModules;
+            const db = window.db;
+            try {
+                const docSnap = await getDoc(doc(db, "menu_status", branchId));
+                if (docSnap.exists()) {
+                    adminBranchStatusMap = docSnap.data();
+                } else {
+                    adminBranchStatusMap = {};
+                }
+                renderAdminItemsList();
+            } catch (e) {
+                console.error("خطأ في جلب بيانات فرع الإدارة:", e);
+            }
         }
 
         async function verifyAdminPassword() {
@@ -968,7 +1243,8 @@
                     document.getElementById('adminPassInput').value = '';
                     document.getElementById('adminAuthView').style.display = 'none';
                     document.getElementById('adminDashboardView').style.display = 'block';
-                    renderAdminItemsList();
+                    initAdminBranchSelector();
+                    fetchAdminBranchItems(adminSelectedBranchId);
                 } else {
                     alert("كلمة المرور غير صحيحة!");
                 }
@@ -987,7 +1263,7 @@
 
             if (tabName === 'status') {
                 document.getElementById('tabStatus').classList.add('active');
-                renderAdminItemsList();
+                fetchAdminBranchItems(adminSelectedBranchId);
             } else if (tabName === 'logs') {
                 document.getElementById('tabLogs').classList.add('active');
             } else if (tabName === 'password') {
@@ -1003,106 +1279,88 @@
             }
 
             container.innerHTML = menuData.map(item => {
-                let isEnabled = itemStatusMap[item.name] !== false;
+                let isEnabled = adminBranchStatusMap[item.name] !== false;
                 const safeName = item.name.replace(/'/g, "\\'");
+
                 return `
-                    <div class="switch-row">
-                        <span class="switch-label">${item.name} <small style="color:var(--desc-text)">(${item.category})</small></span>
-                        <label class="switch">
-                            <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleItemStatus('${safeName}', this.checked)">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                `;
+                <div class="switch-row">
+                    <span class="switch-label">${item.name} (${item.category})</span>
+                    <label class="switch">
+                        <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleItemStatus('${safeName}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>`;
             }).join('');
         }
 
         async function toggleItemStatus(itemName, status) {
-            itemStatusMap[itemName] = status;
+            adminBranchStatusMap[itemName] = status;
             try {
                 const { doc, setDoc } = window.firebaseModules;
                 const db = window.db;
-                await setDoc(doc(db, "menu_status", "items"), itemStatusMap, { merge: true });
+                await setDoc(doc(db, "menu_status", adminSelectedBranchId), adminBranchStatusMap, { merge: true });
             } catch (e) {
-                console.log("Error updating status:", e);
+                console.error("خطأ في تحديث حالة الصنف للفرع:", e);
             }
         }
 
         async function setAllItemsStatus(status) {
             menuData.forEach(item => {
-                itemStatusMap[item.name] = status;
+                adminBranchStatusMap[item.name] = status;
             });
-            renderAdminItemsList();
             try {
                 const { doc, setDoc } = window.firebaseModules;
                 const db = window.db;
-                await setDoc(doc(db, "menu_status", "items"), itemStatusMap, { merge: true });
+                await setDoc(doc(db, "menu_status", adminSelectedBranchId), adminBranchStatusMap);
+                renderAdminItemsList();
             } catch (e) {
-                console.log("Error updating all status:", e);
+                console.error("خطأ في تحديث كافة الأصناف:", e);
             }
         }
 
         function renderAdminOrdersLogs() {
             const container = document.getElementById('adminOrdersLogsList');
-            if (!orderLogsList || orderLogsList.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:15px; color:var(--desc-text);">لا توجد طلبات مسجلة حتى الآن.</p>';
+            if (!container) return;
+
+            if (orderLogsList.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--desc-text); font-weight:700;">لا توجد طلبات مسجلة حتى الآن.</p>';
                 return;
             }
 
             container.innerHTML = orderLogsList.map(order => `
                 <div class="order-log-card">
                     <div class="order-log-header-info">
-                        <span class="order-log-time">🕒 ${order.dateFormatted || 'منذ قليل'}</span>
-                        <span class="order-log-type-badge">${order.branch || 'الفرع الرئيسي'} | ${order.type}</span>
+                        <span class="order-log-type-badge">📍 فرع ${order.branch || 'غير محدد'} - ${order.type}</span>
+                        <span class="order-log-time">${order.dateFormatted || ''}</span>
                     </div>
-                    
                     <div class="order-info-group">
-                        <div class="order-info-row">
-                            <span class="order-info-label">رقم الطلب:</span>
-                            <span class="order-info-value">#${order.orderId || '---'}</span>
-                        </div>
-                        <div class="order-info-row">
-                            <span class="order-info-label">الاسم:</span>
-                            <span class="order-info-value">${order.name}</span>
-                        </div>
-                        <div class="order-info-row">
-                            <span class="order-info-label">الهاتف:</span>
-                            <span class="order-info-value" style="direction: ltr; text-align: right;">${order.phone}</span>
-                        </div>
-                        <div class="order-info-row">
-                            <span class="order-info-label">العنوان:</span>
-                            <span class="order-info-value" style="font-weight: 600; font-size: 0.85rem;">${order.address}</span>
-                        </div>
+                        <div class="order-info-row"><span class="order-info-label">الاسم:</span><span class="order-info-value">${order.name}</span></div>
+                        <div class="order-info-row"><span class="order-info-label">الموبايل:</span><span class="order-info-value"><a href="tel:${order.phone}" style="color:var(--accent); text-decoration:none;">${order.phone}</a></span></div>
+                        ${order.address ? `<div class="order-info-row"><span class="order-info-label">العنوان:</span><span class="order-info-value">${order.address}</span></div>` : ''}
                     </div>
-
                     <div class="order-log-details-box">
-                        <span class="order-log-details-title">تفاصيل الأصناف المطلوبة:</span>
+                        <span class="order-log-details-title">تفاصيل الطلب (#${order.orderId || ''}):</span>
                         <div class="order-log-items-text">${order.itemsText}</div>
-                    </div>
-
-                    <div class="order-log-total-row">
-                        <span>الإجمالي الكلي:</span>
-                        <span>${order.total} ج.م</span>
+                        <div class="order-log-total-row">
+                            <span>الإجمالي:</span>
+                            <span>${order.total} ج.م</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
         async function clearOrderLogs() {
-            if(!confirm("هل أنت متأكد من مسح جميع سجل الطلبات؟")) return;
+            if(!confirm("هل أنت تأكد من رغبتك في مسح كافة الطلبات من السجل؟")) return;
             try {
                 const { collection, getDocs, deleteDoc, doc } = window.firebaseModules;
                 const db = window.db;
                 const querySnapshot = await getDocs(collection(db, "orders_log"));
-                let deletes = [];
-                querySnapshot.forEach((d) => {
-                    deletes.push(deleteDoc(doc(db, "orders_log", d.id)));
+                querySnapshot.forEach(async (d) => {
+                    await deleteDoc(doc(db, "orders_log", d.id));
                 });
-                await Promise.all(deletes);
-                orderLogsList = [];
-                renderAdminOrdersLogs();
-            } catch(e) {
-                alert("حدث خطأ أثناء مسح السجل");
+            } catch (e) {
+                alert("حدث خطأ أثناء حذف السجل");
             }
         }
 
@@ -1111,51 +1369,36 @@
             const newPass = document.getElementById('newAdminPass').value;
             const confirmPass = document.getElementById('confirmAdminPass').value;
 
-            if(!currentPass || !newPass || !confirmPass) {
-                return alert("يرجى ملء جميع حقول كلمات المرور!");
+            if (!currentPass || !newPass || !confirmPass) {
+                return alert("يرجى ملء جميع الحقول");
             }
-            if(newPass !== confirmPass) {
-                return alert("كلمة المرور الجديدة غير متطابقة مع تأكيد كلمة المرور!");
+            if (newPass !== confirmPass) {
+                return alert("كلمة المرور الجديدة غير متطابقة");
             }
 
             try {
                 const { doc, getDoc, setDoc } = window.firebaseModules;
                 const db = window.db;
                 const passDoc = await getDoc(doc(db, "settings", "password"));
-                const currentServerPass = passDoc.exists() ? passDoc.data().value : "1234";
+                const realCurrent = passDoc.exists() ? passDoc.data().value : "1234";
 
-                if (currentPass !== currentServerPass) {
-                    return alert("كلمة المرور الحالية غير صحيحة!");
+                if (currentPass !== realCurrent) {
+                    return alert("كلمة المرور الحالية غير صحيحة");
                 }
 
-                const newVersion = 'v_' + Date.now();
-                await setDoc(doc(db, "settings", "password"), { value: newPass, version: newVersion });
-                
-                localStorage.setItem('is_restaurant_owner', 'true');
+                const newVersion = Date.now().toString();
+                await setDoc(doc(db, "settings", "password"), {
+                    value: newPass,
+                    version: newVersion
+                });
+
                 localStorage.setItem('owner_pass_version', newVersion);
-                localStorage.setItem('admin_access_count', '1');
-                
                 alert("تم تحديث كلمة المرور بنجاح!");
                 document.getElementById('currentAdminPass').value = '';
                 document.getElementById('newAdminPass').value = '';
                 document.getElementById('confirmAdminPass').value = '';
             } catch (e) {
-                alert("حدث خطأ أثناء تحديث كلمة المرور");
-            }
-        }
-
-        function initPWA() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').then(reg => {
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                window.location.reload();
-                            }
-                        });
-                    });
-                }).catch(err => console.log('SW registration failed:', err));
+                alert("حدث خطأ أثناء حفظ كلمة المرور الجديدة");
             }
         }
     </script>
