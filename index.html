@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بروست الأمين | المنيو الرسمي</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="الأمين">
+    <link rel="apple-touch-icon" href="images/alameen-logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- الوضع الافتراضي: النهاري (Light Mode) --- */
+        :root {
+            --bg: #f8f9fa; 
+            --main-text: #212529; 
+            --desc-text: #6c757d;
+            --accent: #ff9800; 
+            --yellow-gold: #e67e22;
+            --address-tag: #ff9800;
+            --white: #ffffff; 
+            --glass: rgba(255, 255, 255, 0.95);
+            --success-dark: #27ae60; 
+            --header-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- الوضع الليلي عند التفعيل (Dark Mode) --- */
+        body.dark-mode {
+            --bg: #121212; 
+            --main-text: #f5f6fa;
+            --desc-text: #b2bec3;
+            --yellow-gold: #ffa726;
+            --white: #1e1e1e;
+            --glass: rgba(30, 30, 30, 0.95);
+            --header-bg: #1e1e1e;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; transition: background 0.3s, color 0.3s; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--main-text); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            padding-bottom: 90px; 
+        }
+
+        /* --- شاشة الترحيب --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/splash-bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            display: flex; justify-content: center; align-items: flex-end;
+            padding: 0 20px 190px 20px;
+            transition: 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        .loader-content { 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 320px;
+            padding: 0 20px;
+        }
+
+        .loading-bar { 
+            width: 100%; 
+            max-width: 240px; 
+            height: 6px; 
+            background: rgba(255, 255, 255, 0.25); 
+            margin: 0 auto 15px auto; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            position: relative; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .loading-bar span { 
+            display: block; 
+            width: 0%; 
+            height: 100%; 
+            background: var(--accent); 
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+        
+        .creative-counter {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--accent);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 8px 22px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 152, 0, 0.35);
+        }
+        .creative-counter span {
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        /* --- مودال اختيار الفرع --- */
+        .branch-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); z-index: 8888; display: none;
+            justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .branch-modal-content {
+            background: var(--white); width: 100%; max-width: 420px;
+            border-radius: 28px; padding: 25px 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .branch-modal-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .branch-modal-sub { font-size: 0.85rem; color: var(--desc-text); margin-bottom: 20px; font-weight: 600; }
+        
+        .branch-option-card {
+            background: var(--bg); border: 2px solid var(--border-color);
+            border-radius: 18px; padding: 15px; margin-bottom: 12px;
+            text-align: right; cursor: pointer; transition: all 0.3s ease;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .branch-option-card:hover, .branch-option-card.selected {
+            border-color: var(--accent); background: rgba(255, 152, 0, 0.08); transform: translateY(-2px);
+        }
+        .branch-option-name { font-size: 1rem; font-weight: 800; color: var(--main-text); display: flex; align-items: center; gap: 8px; }
+        .branch-option-address { font-size: 0.8rem; color: var(--desc-text); font-weight: 600; }
+
+        /* --- الهيدر والعناصر --- */
+        header { 
+            background: var(--header-bg); 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px var(--card-shadow);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 10px 0 0 0;
+        }
+        .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 5px; }
+        
+        .header-logo-container { width: 85px; height: 85px; border-radius: 50%; background: transparent; padding: 0; box-shadow: 0 6px 20px var(--card-shadow); overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2.5px solid var(--accent); }
+        .header-logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        
+        .theme-toggle { position: absolute; right: 20px; top: 0; width: 42px; height: 42px; background: var(--bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; border: 1px solid var(--border-color); color: var(--main-text); box-shadow: 0 2px 8px var(--card-shadow); }
+        .cart-trigger-container { position: absolute; left: 20px; top: 0; }
+        .cart-trigger { width: 42px; height: 42px; background: var(--bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; position: relative; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid var(--border-color); box-shadow: 0 2px 8px var(--card-shadow); cursor: pointer; }
+        .cart-trigger.shake { animation: cartShake 0.5s ease-in-out; }
+        @keyframes cartShake { 0%, 100% { transform: scale(1) rotate(0deg); } 20%, 60% { transform: scale(1.15) rotate(-10deg); } 40%, 80% { transform: scale(1.15) rotate(10deg); } }
+        .badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--white); transform: scale(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .badge.show { transform: scale(1); }
+        
+        /* تقليل المسافات لرفع الأقسام لأعلى */
+        .header-brand-info { text-align: center; width: 100%; padding: 2px 15px 6px 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+        .app-inner-title { font-size: 1.25rem; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; line-height: 1.2; }
+        .app-inner-sub { font-size: 0.95rem; font-weight: 700; color: var(--main-text); margin-bottom: 2px; }
+
+        .selected-branch-badge {
+            background: rgba(255, 152, 0, 0.12); color: var(--accent);
+            border: 1px solid var(--accent); border-radius: 20px;
+            padding: 2px 10px; font-size: 0.78rem; font-weight: 800;
+            margin-top: 2px; cursor: pointer; display: inline-flex;
+            align-items: center; gap: 4px;
+        }
+
+        .admin-trigger-btn {
+            position: absolute; right: 70px; top: 0; width: 42px; height: 42px;
+            background: var(--bg); border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 1.2rem; border: 1px solid var(--border-color);
+            color: var(--main-text); box-shadow: 0 2px 8px var(--card-shadow);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .admin-trigger-btn:active { transform: scale(0.9); }
+
+        .category-nav { 
+            display: flex; overflow-x: auto; white-space: nowrap; padding: 8px 10px; gap: 12px; 
+            scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); width: 100%; 
+            border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); 
+            scroll-behavior: smooth; margin-top: 4px;
+        }
+        .category-nav::-webkit-scrollbar { display: none; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
+        .cat-img-box { width: 52px; height: 52px; border-radius: 16px; background: #e0e0e0; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
+        .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.05); }
+        .cat-item span { font-size: 0.75rem; font-weight: 700; color: var(--desc-text); margin-top: 3px; }
+        
+        .menu-list { padding: 12px 15px; max-width: 600px; margin: auto; }
+        
+        .food-card { background: var(--white); border-radius: 20px; margin-bottom: 12px; display: flex; padding: 12px 16px; gap: 14px; align-items: center; box-shadow: 0 3px 12px var(--card-shadow); border: 1px solid var(--border-color); transition: opacity 0.3s ease; }
+        .food-card.disabled-item { opacity: 0.5; filter: grayscale(0.3); }
+        
+        .item-img-box { width: 110px; height: 110px; border-radius: 16px; overflow: hidden; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 95px; }
+        .food-name { font-weight: 700; font-size: 0.95rem; color: var(--main-text); padding-left: 10px; }
+        .food-desc { font-size: 0.78rem; color: var(--desc-text); line-height: 1.3; margin-top: 2px; margin-bottom: 6px; }
+        .food-price { font-weight: 800; color: var(--yellow-gold); font-size: 0.95rem; white-space: nowrap; display: inline-block; }
+
+        .order-btn { background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: background 0.3s ease, box-shadow 0.3s ease; }
+        .order-btn:disabled { background: #888 !important; cursor: not-allowed; box-shadow: none !important; }
+        .order-btn.added { background: var(--success-dark); color: white; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
+        .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
+
+        .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
+        
+        .branches-container { margin: 15px 0; font-size: 0.82rem; color: var(--desc-text); text-align: right; background: var(--bg); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .branch-item { margin-bottom: 8px; }
+        .branch-item strong { color: var(--accent); display: block; }
+        
+        .social-icons-box { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
+        .social-btn-link { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; }
+        .social-btn-link:hover { transform: scale(1.1); }
+        .social-btn-link.fb-color { background: #1877F2; }
+        .social-btn-link.wa-color { background: #25D366; }
+        .social-btn-link svg { width: 24px; height: 24px; fill: white; }
+        
+        .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
+        .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
+        .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: none; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--white); width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; max-height: 90vh; overflow-y: auto; color: var(--main-text); }
+        .cart-item-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: 18px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .cart-item-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 700; font-size: 0.9rem; color: var(--main-text); }
+        .cart-item-price { color: var(--yellow-gold); font-weight: 800; font-size: 0.85rem; display: block; }
+        .remove-btn { color: #ff3b30; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
+
+        .order-type-container { display: flex; background: var(--bg); padding: 6px; border-radius: 16px; margin: 15px 0; gap: 6px; border: 1px solid var(--border-color); }
+        .order-type-btn { flex: 1; border: none; background: transparent; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--desc-text); transition: all 0.3s ease; }
+        .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2); }
+
+        .user-fields input { background: var(--bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; }
+        #uAddr { transition: all 0.3s ease; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+
+        /* --- تصميم شاشة نجاح الطلب --- */
+        .success-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); z-index: 5000; display: none;
+            justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+        .success-card {
+            background: var(--white); width: 100%; max-width: 380px;
+            border-radius: 28px; padding: 35px 25px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: successPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: center;
+            cursor: default;
+        }
+        @keyframes successPop {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .success-icon-wrapper {
+            width: 90px; height: 90px; background: rgba(39, 174, 96, 0.12);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; border: 2px solid var(--success-dark);
+        }
+        .success-icon-wrapper svg {
+            width: 50px; height: 50px; fill: var(--success-dark);
+            animation: checkCheck 0.5s ease-in-out forwards;
+        }
+        @keyframes checkCheck {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            70% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .success-title { font-size: 1.4rem; font-weight: 800; color: var(--main-text); margin-bottom: 10px; }
+        .success-sub { font-size: 0.95rem; color: var(--desc-text); font-weight: 600; line-height: 1.5; margin: 0; }
+
+        /* لوحة التحكم */
+        .admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 4000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); padding: 15px; }
+        .admin-box { background: var(--white); width: 100%; max-width: 480px; border-radius: 28px; padding: 22px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; }
+        .admin-header h3 { font-size: 1.2rem; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .admin-close { background: var(--bg); border: 1px solid var(--border-color); width: 35px; height: 35px; border-radius: 50%; font-weight: 800; cursor: pointer; color: var(--main-text); display: flex; align-items: center; justify-content: center; }
+
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 15px; background: var(--bg); padding: 5px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .admin-tab { flex: 1; padding: 10px; border: none; background: transparent; font-weight: 700; font-size: 0.85rem; border-radius: 12px; cursor: pointer; color: var(--desc-text); transition: 0.3s; }
+        .admin-tab.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2); }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: var(--bg); border-radius: 16px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .switch-label { font-weight: 700; font-size: 0.9rem; color: var(--main-text); }
+        
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--success-dark); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        .admin-global-actions { display: flex; gap: 10px; margin-bottom: 15px; }
+        .admin-action-btn { flex: 1; padding: 10px; border: none; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-enable-all { background: var(--success-dark); }
+        .btn-disable-all { background: var(--accent); }
+
+        .pass-form input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg); color: var(--main-text); margin-bottom: 12px; font-size: 0.95rem; text-align: center; }
+        .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
+
+        .order-log-card { background: var(--bg); padding: 16px; border-radius: 18px; margin-bottom: 14px; border-right: 5px solid var(--accent); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-left: 1px solid var(--border-color); }
+        .order-log-header-info { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 10px; }
+        .order-log-time { font-size: 0.8rem; font-weight: 700; color: var(--desc-text); }
+        .order-log-type-badge { background: rgba(255, 152, 0, 0.1); color: var(--accent); padding: 3px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; }
+        
+        .order-info-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+        .order-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .order-info-label { font-weight: 700; color: var(--desc-text); min-width: 65px; }
+        .order-info-value { font-weight: 800; color: var(--main-text); }
+
+        .order-log-details-box { background: var(--white); padding: 12px; border-radius: 12px; margin-top: 8px; border: 1px solid var(--border-color); }
+        .order-log-details-title { font-size: 0.85rem; font-weight: 800; color: var(--accent); margin-bottom: 6px; display: block; }
+        .order-log-items-text { font-size: 0.85rem; color: var(--main-text); line-height: 1.6; white-space: pre-line; }
+        .order-log-total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border-color); font-weight: 800; font-size: 0.95rem; color: var(--yellow-gold); }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الترحيب -->
+    <div id="splash-screen">
+        <div class="loader-content">
+            <div class="loading-bar"><span id="progressBarFill"></span></div>
+            <div class="creative-counter">جاري التحضير... <span id="loadPercentage">0</span>%</div>
+        </div>
+    </div>
+
+    <!-- نافذة اختيار الفرع -->
+    <div class="branch-modal" id="branchModal">
+        <div class="branch-modal-content">
+            <h2 class="branch-modal-title">اختر الفرع الأقرب إليك 📍</h2>
+            <p class="branch-modal-sub">سيتم توجيه طلبك مباشرة إلى الفرع المختار</p>
+            
+            <div id="branchesList"></div>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="header-top">
+            <!-- تبديل الوضع (الافتراضي هو الهلال لتفعيل الليلي) -->
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+            <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
+            <div class="header-logo-container">
+                <img src="images/alameen-logo.png" class="header-logo" alt="لوجو مطعم الأمين" onerror="this.src='images/default.jpg'">
+            </div>
+            <div class="cart-trigger-container">
+                <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
+                    <span class="badge" id="cartBadge">0</span>
+                    <span style="font-size: 1.3rem;">🛒</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-brand-info">
+            <div class="app-inner-title">بروست الأمين</div>
+            <div class="app-inner-sub">Fried Chicken & Burger</div>
+            <div class="selected-branch-badge" onclick="showBranchModal()" id="currentBranchBadge">
+                📍 جاري تحديد الفرع... (تغيير)
+            </div>
+        </div>
+        <div class="category-nav" id="catNav"></div>
+    </header>
+
+    <div id="menuList" class="menu-list"></div>
+
+    <!-- نافذة نجاح الطلب -->
+    <div class="success-modal" id="successModal" onclick="closeSuccessModal()">
+        <div class="success-card" onclick="event.stopPropagation()">
+            <div class="success-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+            </div>
+            <h2 class="success-title">تم استلام طلبك بنجاح!</h2>
+            <p class="success-sub">جاري تجهيز طلبك بكل عناية، شكراً لثقتك بـ مطعم بروست الأمين.</p>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div class="admin-modal" id="adminModal" onclick="if(event.target==this) closeAdminPanel()">
+        <div class="admin-box">
+            <div class="admin-header">
+                <h3>⚙️ واجهة الإدارة والتحكم</h3>
+                <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+            </div>
+            
+            <div id="adminAuthView">
+                <div class="pass-form">
+                    <p style="margin-bottom: 12px; font-weight: 700; font-size: 0.9rem; text-align: center; color: var(--desc-text);">أدخل كلمة مرور الإدارة للمتابعة:</p>
+                    <input type="password" id="adminPassInput" placeholder="كلمة المرور">
+                    <button onclick="verifyAdminPassword()">دخول لوحة التحكم</button>
+                </div>
+            </div>
+
+            <div id="adminDashboardView" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('status', event)">📦 حالة الأصناف</button>
+                    <button class="admin-tab" onclick="switchAdminTab('logs', event)">📜 سجل الطلبات</button>
+                    <button class="admin-tab" onclick="switchAdminTab('password', event)">🔑 كلمة السر</button>
+                </div>
+
+                <div id="tabStatus" class="admin-section active">
+                    <div class="admin-global-actions">
+                        <button class="admin-action-btn btn-enable-all" onclick="setAllItemsStatus(true)">✅ تشغيل جميع الأصناف</button>
+                        <button class="admin-action-btn btn-disable-all" onclick="setAllItemsStatus(false)">🛑 إيقاف جميع الأصناف</button>
+                    </div>
+                    <div id="adminItemsList">جاري تحميل الأصناف...</div>
+                </div>
+
+                <div id="tabLogs" class="admin-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <b style="font-size: 0.9rem;">الطلبات الواردة (Live):</b>
+                        <button onclick="clearOrderLogs()" style="background: #ff3b30; color: white; border: none; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">حذف السجل</button>
+                    </div>
+                    <div id="adminOrdersLogsList">لا توجد طلبات مسجلة حتى الآن.</div>
+                </div>
+
+                <div id="tabPassword" class="admin-section">
+                    <div class="pass-form">
+                        <p style="margin-bottom: 10px; font-weight: 700; font-size: 0.85rem; color: var(--desc-text);">تغيير كلمة مرور الإدارة:</p>
+                        <input type="password" id="currentAdminPass" placeholder="كلمة المرور الحالية">
+                        <input type="password" id="newAdminPass" placeholder="كلمة المرور الجديدة">
+                        <input type="password" id="confirmAdminPass" placeholder="تأكيد كلمة المرور الجديدة">
+                        <button onclick="updateAdminPassword()">حفظ كلمة المرور الجديدة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="restaurant-footer">
+        <div class="branches-container" id="footerBranchesContainer"></div>
+
+        <div class="social-icons-box">
+            <a href="https://facebook.com" target="_blank" class="social-btn-link fb-color" title="فيسبوك">
+                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="javascript:void(0)" onclick="openSelectedBranchWA()" class="social-btn-link wa-color" title="واتساب الفرع">
+                <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.528 2.022 14.056.996 11.43.996c-5.442 0-9.87 4.372-9.874 9.799-.001 1.742.483 3.442 1.398 4.914l-.995 3.637 3.737-.971zm10.873-6.53c-.293-.146-1.734-.852-2.001-.95-.267-.099-.463-.146-.659.146-.195.293-.759.95-.93 1.146-.171.195-.341.219-.634.073-.293-.146-1.239-.456-2.361-1.456-.872-.777-1.46-1.738-1.632-2.031-.171-.293-.018-.452.129-.597.132-.131.293-.341.44-.512.146-.171.195-.293.293-.488.098-.195.049-.366-.024-.512-.074-.146-.659-1.586-.902-2.17-.238-.574-.479-.496-.659-.506-.171-.008-.366-.01-.562-.01-.195 0-.513.073-.781.366-.269.293-1.025 1.001-1.025 2.441 0 1.439 1.049 2.83 1.196 3.025.146.195 2.064 3.15 5.003 4.415.699.301 1.244.482 1.67.618.703.223 1.344.192 1.85.117.564-.083 1.734-.707 1.978-1.39.244-.683.244-1.269.171-1.39-.073-.122-.269-.195-.562-.342z"/></svg>
+            </a>
+        </div>
+
+        <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
+        <div class="dev-credit">
+            Designed by eng / Anas Gaber shehata
+            <a href="tel:01003800314">📞 01003800314</a>
+        </div>
+    </footer>
+
+    <div class="modal" id="cartModal" onclick="if(event.target==this) toggleCart(false)">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">طلباتك</h2>
+            <div id="cartItemsList"></div>
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255, 152, 0, 0.08); border-radius: 18px; display: flex; justify-content: space-between;">
+                <b>المجموع</b>
+                <b id="totalAmount">0 ج.م</b>
+            </div>
+
+            <div class="order-type-container">
+                <button type="button" class="order-type-btn active" id="deliveryBtn" onclick="setOrderType('delivery')">
+                    🛵 دليفري
+                </button>
+                <button type="button" class="order-type-btn" id="takeawayBtn" onclick="setOrderType('takeaway')">
+                    🛍️ تيك اواي
+                </button>
+            </div>
+
+            <div class="user-fields">
+                <input type="text" id="uName" placeholder="الاسم بالكامل">
+                <input type="tel" id="uPhone" placeholder="رقم الموبايل">
+                <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
+            </div>
+            <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: window.env?.FIREBASE_API_KEY || "AIzaSyDYwPVwpsvPcEaJGKp9Eia5...",
+            authDomain: "hayahkitchen-7bb13.firebaseapp.com",
+            projectId: "hayahkitchen-7bb13",
+            storageBucket: "hayahkitchen-7bb13.firebasestorage.app",
+            messagingSenderId: "611946824630",
+            appId: "1:611946824630:web:c934ebf9e1524a2209f717"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.firebaseModules = { doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs };
+        
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+
+    <script>
+        const IMAGES_PATH = "./images/"; 
+        let menuData = [], cart = [];
+        let currentTotal = 0; 
+        let selectedOrderType = 'delivery';
+        let itemStatusMap = {}; 
+        let orderLogsList = [];
+
+        // قائمة الفروع
+        const branchesData = [
+            { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
+            { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201010430950', altPhone: '01155766404' },
+            { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201274505042', altPhone: '01055388545' }
+        ];
+
+        let currentSelectedBranch = branchesData[0]; 
+
+        const defaultMenuData = [
+            // برجر بيف - دبل
+            { category: "برجر بيف", name: "كلاسيك (دبل)", desc: "قطعة برجر وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "170", img: `${IMAGES_PATH}classic-burger.jpg` },
+            { category: "برجر بيف", name: "جامبو (دبل)", desc: "قطعة برجر محشي جبنة موتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "175", img: `${IMAGES_PATH}jumbo-burger.jpg` },
+            { category: "برجر بيف", name: "هالابينووو (دبل)", desc: "قطعة برجر بفلفل هالابينو وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "175", img: `${IMAGES_PATH}halabinu-burger.jpg` },
+            { category: "برجر بيف", name: "كرامليز (دبل)", desc: "قطعة برجر محشي جبنة وبصل مكرمل وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "185", img: `${IMAGES_PATH}caramelize-burger.jpg` },
+            { category: "برجر بيف", name: "جوسي لوسي (دبل)", desc: "قطعة برجر محشي جبنة موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "190", img: `${IMAGES_PATH}juicy-lucy.jpg` },
+            { category: "برجر بيف", name: "مشروم (دبل)", desc: "قطعة برجر محشي جبنة مع مشروم وموتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "195", img: `${IMAGES_PATH}mushroom-burger.jpg` },
+            { category: "برجر بيف", name: "سبيشال الأمين (دبل)", desc: "قطعة برجر محشي جبنة وأصابع موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "205", img: `${IMAGES_PATH}special-alameen.jpg` },
+
+            // برجر بيف - سينجل
+            { category: "برجر بيف", name: "كلاسيك (سينجل)", desc: "قطعة برجر وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "125", img: `${IMAGES_PATH}classic-burger.jpg` },
+            { category: "برجر بيف", name: "جامبو (سينجل)", desc: "قطعة برجر محشي جبنة موتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "135", img: `${IMAGES_PATH}jumbo-burger.jpg` },
+            { category: "برجر بيف", name: "هالابينووو (سينجل)", desc: "قطعة برجر بفلفل هالابينو وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "135", img: `${IMAGES_PATH}halabinu-burger.jpg` },
+            { category: "برجر بيف", name: "كرامليز (سينجل)", desc: "قطعة برجر محشي جبنة وبصل مكرمل وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "140", img: `${IMAGES_PATH}caramelize-burger.jpg` },
+            { category: "برجر بيف", name: "جوسي لوسي (سينجل)", desc: "قطعة برجر محشي جبنة موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "145", img: `${IMAGES_PATH}juicy-lucy.jpg` },
+            { category: "برجر بيف", name: "مشروم (سينجل)", desc: "قطعة برجر محشي جبنة مع مشروم وموتزاريلا وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "150", img: `${IMAGES_PATH}mushroom-burger.jpg` },
+            { category: "برجر بيف", name: "سبيشال الأمين (سينجل)", desc: "قطعة برجر محشي جبنة وأصابع موتزاريلا وشرائح البيف بيكون وخس وشرائح الطماطم والبصل وصوص شيدر وصوص البيج تيستي وصوص باربيكيو وكاتشب وبطاطس", price: "160", img: `${IMAGES_PATH}special-alameen.jpg` },
+
+            // الإضافات (Extra)
+            { category: "الإضافات", name: "قطعة دجاج بروست (ورك/صدر)", desc: "Broasted chicken piece", price: "60 / 70", img: `${IMAGES_PATH}broasted-piece.jpg` },
+            { category: "الإضافات", name: "قطعة استريبس مقرمش", desc: "Crispy strips", price: "55", img: `${IMAGES_PATH}crispy-strips.jpg` },
+            { category: "الإضافات", name: "باكيت بطاطس صغير", desc: "Small Fries", price: "30", img: `${IMAGES_PATH}small-fries.jpg` },
+            { category: "الإضافات", name: "باكيت بطاطس كبير", desc: "Large Fries", price: "50", img: `${IMAGES_PATH}large-fries.jpg` },
+            { category: "الإضافات", name: "علبة بطاطس عائلية", desc: "Family Fries Box", price: "75", img: `${IMAGES_PATH}family-fries.jpg` },
+            { category: "الإضافات", name: "بطاطس شيدر", desc: "Cheddar Fries", price: "85", img: `${IMAGES_PATH}cheddar-fries.jpg` },
+            { category: "الإضافات", name: "كول سلو", desc: "Cabbage salad - Cloe slow", price: "35", img: `${IMAGES_PATH}coleslaw.jpg` },
+            { category: "الإضافات", name: "أرز مبهر", desc: "Spiced rice", price: "40", img: `${IMAGES_PATH}spiced-rice.jpg` },
+            { category: "الإضافات", name: "ريزو تيستي", desc: "Rizzo Testy", price: "90", img: `${IMAGES_PATH}rizzo.jpg` },
+            { category: "الإضافات", name: "صوص شيدر", desc: "Cheddar sauce", price: "35", img: `${IMAGES_PATH}cheddar-sauce.jpg` },
+            { category: "الإضافات", name: "صوص باربيكيو", desc: "BBQ sauce", price: "35", img: `${IMAGES_PATH}bbq-sauce.jpg` },
+            { category: "الإضافات", name: "صوص تايجر", desc: "Tiger sauce", price: "35", img: `${IMAGES_PATH}tiger-sauce.jpg` },
+            { category: "الإضافات", name: "صوص حار", desc: "Hot sauce", price: "35", img: `${IMAGES_PATH}hot-sauce.jpg` },
+            { category: "الإضافات", name: "تومية", desc: "Tomia", price: "30", img: `${IMAGES_PATH}tomia.jpg` },
+            { category: "الإضافات", name: "1 قطعة خبز كايزر", desc: "1 Bun bread", price: "7", img: `${IMAGES_PATH}bun-bread.jpg` },
+            { category: "الإضافات", name: "4 كيس كاتشب", desc: "4 Bags of Ketchup", price: "6", img: `${IMAGES_PATH}ketchup.jpg` },
+
+            // الركن السوري
+            { category: "الركن السوري", name: "شاورما كيزر دجاج", desc: "ساندوتش شاورما دجاج سوري كيزر", price: "45", img: `${IMAGES_PATH}shawarma-kaiser.jpg` },
+            { category: "الركن السوري", name: "شاورما دجاج مدخن", desc: "ساندوتش شاورما دجاج مدخن", price: "75", img: `${IMAGES_PATH}shawarma-smoked.jpg` },
+            { category: "الركن السوري", name: "بطاطس سوري", desc: "ساندوتش بطاطس بالطريقة السورية", price: "35", img: `${IMAGES_PATH}syrian-fries.jpg` },
+            { category: "الركن السوري", name: "بطاطس مودزريلا", desc: "ساندوتش بطاطس مع جبنة موزاريلا غنية", price: "45", img: `${IMAGES_PATH}syrian-mozzarella.jpg` },
+            { category: "الركن السوري", name: "ميكس سوري", desc: "ساندوتش ميكس سوري مشكل", price: "80", img: `${IMAGES_PATH}syrian-mix.jpg` }
+        ];
+
+        // دالة تبديل الثيم: النهاري هو الافتراضي والضغط يحوله لليلي
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        }
+
+        function preloadImages(data) {
+            const promises = [];
+            data.forEach(item => {
+                promises.push(new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                    img.src = item.img;
+                }));
+            });
+            return Promise.all(promises);
+        }
+
+        function startCreativeCounter() {
+            const counterEl = document.getElementById('loadPercentage');
+            const barFill = document.getElementById('progressBarFill');
+            let count = 0;
+            const duration = 1800;
+            const intervalTime = duration / 100;
+
+            const timer = setInterval(() => {
+                count++;
+                if (count <= 100) {
+                    counterEl.innerText = count;
+                    barFill.style.width = count + '%';
+                } else {
+                    clearInterval(timer);
+                }
+            }, intervalTime);
+        }
+
+        window.addEventListener('firebase-ready', async () => {
+            const { doc, onSnapshot, collection } = window.firebaseModules;
+            const db = window.db;
+
+            onSnapshot(doc(db, "menu_status", "items"), (docSnap) => {
+                if (docSnap.exists()) {
+                    itemStatusMap = docSnap.data();
+                } else {
+                    itemStatusMap = {};
+                }
+                if(menuData.length > 0) {
+                    const activeCat = document.querySelector('.cat-item.active span');
+                    if(activeCat) filterCat(activeCat.innerText);
+                }
+            });
+
+            onSnapshot(doc(db, "settings", "password"), (docSnap) => {
+                if (docSnap.exists()) {
+                    const serverPassVersion = docSnap.data().version || docSnap.data().value;
+                    const localPassVersion = localStorage.getItem('owner_pass_version');
+                    if (localPassVersion && localPassVersion !== serverPassVersion) {
+                        localStorage.removeItem('is_restaurant_owner');
+                        localStorage.setItem('owner_pass_version', serverPassVersion);
+                    } else if (!localPassVersion && docSnap.data().value) {
+                        localStorage.setItem('owner_pass_version', serverPassVersion);
+                    }
+                }
+            });
+
+            let isFirstLoad = true;
+            onSnapshot(collection(db, "orders_log"), (snapshot) => {
+                orderLogsList = [];
+                snapshot.forEach((docSnap) => {
+                    orderLogsList.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                orderLogsList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                renderAdminOrdersLogs();
+
+                if (!isFirstLoad && snapshot.docChanges().some(change => change.type === 'added')) {
+                    if (localStorage.getItem('is_restaurant_owner') === 'true') {
+                        playHighPriorityOrderAlert();
+                    }
+                }
+                isFirstLoad = false;
+            });
+
+            loadMenu();
+        });
+
+        function playHighPriorityOrderAlert() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                
+                for (let round = 0; round < 3; round++) {
+                    let delayOffset = round * 0.45;
+                    [659.25, 783.99, 987.77, 1318.51].forEach((freq, index) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delayOffset + (index * 0.09));
+                        
+                        gain.gain.setValueAtTime(0.6, audioCtx.currentTime + delayOffset + (index * 0.09));
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + delayOffset + (index * 0.09) + 0.3);
+                        
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        
+                        osc.start(audioCtx.currentTime + delayOffset + (index * 0.09));
+                        osc.stop(audioCtx.currentTime + delayOffset + (index * 0.09) + 0.3);
+                    });
+                }
+            } catch (e) { console.log("Audio play error:", e); }
+        }
+
+        async function loadMenu() {
+            startCreativeCounter();
+            renderFooterBranches();
+
+            try {
+                menuData = defaultMenuData;
+                preloadImages(menuData);
+                renderNav();
+
+                setTimeout(() => {
+                    document.getElementById('splash-screen').classList.add('splash-hidden');
+                    
+                    const savedBranchId = localStorage.getItem('selected_branch_id');
+                    if (savedBranchId) {
+                        const b = branchesData.find(x => x.id === savedBranchId);
+                        if (b) selectBranch(b, false);
+                        else showBranchModal();
+                    } else {
+                        showBranchModal();
+                    }
+                    initPWA(); 
+                }, 2000);
+
+            } catch (e) { 
+                setTimeout(() => {
+                    document.getElementById('splash-screen').classList.add('splash-hidden');
+                    showBranchModal();
+                }, 2000);
+            }
+        }
+
+        function renderFooterBranches() {
+            document.getElementById('footerBranchesContainer').innerHTML = branchesData.map(b => `
+                <div class="branch-item">
+                    <strong>📍 فرع ${b.name}:</strong> ${b.address}<br>
+                    📞 ${b.phone.replace('20', '0')} - ${b.altPhone}
+                </div>
+            `).join('');
+        }
+
+        function showBranchModal() {
+            const listEl = document.getElementById('branchesList');
+            listEl.innerHTML = branchesData.map(b => `
+                <div class="branch-option-card ${currentSelectedBranch.id === b.id ? 'selected' : ''}" onclick="selectBranchById('${b.id}')">
+                    <div class="branch-option-name">📍 فرع ${b.name}</div>
+                    <div class="branch-option-address">${b.address}</div>
+                </div>
+            `).join('');
+            document.getElementById('branchModal').style.display = 'flex';
+        }
+
+        function selectBranchById(id) {
+            const b = branchesData.find(x => x.id === id);
+            if (b) selectBranch(b, true);
+        }
+
+        function selectBranch(branchObj, isUserAction) {
+            currentSelectedBranch = branchObj;
+            localStorage.setItem('selected_branch_id', branchObj.id);
+            document.getElementById('currentBranchBadge').innerText = `📍 فرع: ${branchObj.name} (تغيير)`;
+            document.getElementById('branchModal').style.display = 'none';
+        }
+
+        function openSelectedBranchWA() {
+            window.open(`https://wa.me/${currentSelectedBranch.phone}`, '_blank');
+        }
+
+        function renderNav() {
+            const uniqueCats = [...new Set(menuData.map(item => item.category))];
+            document.getElementById('catNav').innerHTML = uniqueCats.map((cat, idx) => `
+                <div class="cat-item ${idx === 0 ? 'active' : ''}" onclick="filterCat('${cat}', this)">
+                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat}.jpg" alt="${cat}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <span>${cat}</span>
+                </div>
+            `).join('');
+            if(uniqueCats.length > 0) filterCat(uniqueCats[0]);
+        }
+
+        function filterCat(cat, el) {
+            if(el) { 
+                document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active')); 
+                el.classList.add('active'); 
+                el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+            
+            document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map(item => {
+                let rawPrice = item.price;
+                let displayPrice = rawPrice + ' ج.م';
+
+                let isEnabled = itemStatusMap[item.name] !== false;
+                let disabledClass = isEnabled ? '' : 'disabled-item';
+                let btnText = isEnabled ? 'اطلب' : 'موقف حالياً';
+
+                const safeName = item.name.replace(/'/g, "\\'");
+                const safeImg = item.img.replace(/'/g, "\\'");
+                const safePrice = rawPrice.replace(/'/g, "\\'");
+
+                return `
+                <div class="food-card ${disabledClass}" data-category="${item.category}" data-price="${rawPrice}">
+                    <div class="item-img-box"><img src="${item.img}" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <div class="food-info">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                            <span class="food-name">${item.name}</span>
+                            <span class="food-price">${displayPrice}</span>
+                        </div>
+                        ${item.desc ? `<p class="food-desc">${item.desc}</p>` : ''}
+                        <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 6px;">
+                            <button class="order-btn" ${!isEnabled ? 'disabled' : ''} onclick="addToCart(event, this, '${safeName}', '${safeImg}', '${safePrice}')">${btnText}</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function addToCart(e, btn, name, img, price) {
+            const card = btn.closest('.food-card'); const category = card.dataset.category || '';
+            let numericPrice = parseFloat(price) || 0;
+            
+            cart.push({name: name, price: numericPrice, displayPrice: price, img: img, category: category});
+            btn.innerText = 'تم الطلب'; btn.classList.add('added');
+            setTimeout(() => { btn.innerText = 'اطلب'; btn.classList.remove('added'); }, 2000);
+            
+            const fly = document.createElement('div'); fly.className = 'fly-item'; fly.innerHTML = '🍗'; fly.style.left = e.clientX + 'px'; fly.style.top = e.clientY + 'px'; document.body.appendChild(fly);
+            const cartBtn = document.getElementById('cartBtn'); const cartPos = cartBtn.getBoundingClientRect();
+            setTimeout(() => { fly.style.left = (cartPos.left + 20) + 'px'; fly.style.top = (cartPos.top + 20) + 'px'; fly.style.transform = 'scale(0.2)'; fly.style.opacity = '0'; }, 10);
+            setTimeout(() => { fly.remove(); updateCart(); cartBtn.classList.add('shake'); setTimeout(() => cartBtn.classList.remove('shake'), 500); }, 700);
+        }
+
+        function updateCart() {
+            const badge = document.getElementById('cartBadge'); badge.innerText = cart.length; badge.classList.toggle('show', cart.length > 0); currentTotal = 0;
+            document.getElementById('cartItemsList').innerHTML = cart.map((item, idx) => {
+                currentTotal += item.price;
+                let priceText = `${item.price} ج.م`;
+                return `<div class="cart-item-card"><img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"><div class="cart-item-info"><span class="cart-item-name">${item.name}</span><span class="cart-item-price">${priceText}</span></div><span class="remove-btn" onclick="removeFromCart(${idx})">حذف</span></div>`;
+            }).join('');
+            document.getElementById('totalAmount').innerText = `${currentTotal} ج.م`;
+        }
+
+        function removeFromCart(idx) { cart.splice(idx, 1); updateCart(); if(cart.length === 0) toggleCart(false); }
+        function toggleCart(s) { const modal = document.getElementById('cartModal'); if (s) { modal.style.display = 'flex'; history.pushState({ cartOpen: true }, ""); } else { modal.style.display = 'none'; } }
+        window.addEventListener('popstate', function (event) { const modal = document.getElementById('cartModal'); if (modal.style.display === 'flex') { modal.style.display = 'none'; } });
+
+        function setOrderType(type) {
+            selectedOrderType = type;
+            const deliveryBtn = document.getElementById('deliveryBtn');
+            const takeawayBtn = document.getElementById('takeawayBtn');
+            const addrInput = document.getElementById('uAddr');
+
+            if (type === 'delivery') {
+                deliveryBtn.classList.add('active');
+                takeawayBtn.classList.remove('active');
+                addrInput.style.display = 'block';
+            } else {
+                takeawayBtn.classList.add('active');
+                deliveryBtn.classList.remove('active');
+                addrInput.style.display = 'none';
+            }
+        }
+
+        async function sendToWA() {
+            const n = document.getElementById('uName').value.trim();
+            const p = document.getElementById('uPhone').value.trim();
+            const a = document.getElementById('uAddr').value.trim();
+            
+            if (!n || !p || cart.length === 0) {
+                return alert("يرجى إكمال البيانات واختيار الأصناف");
+            }
+            if (selectedOrderType === 'delivery' && !a) {
+                return alert("يرجى إدخال عنوان التوصيل بالتفصيل");
+            }
+
+            const typeLabel = selectedOrderType === 'delivery' ? 'دليفري' : 'تيك اواي';
+            
+            let orderDetailsStr = cart.map((i, index) => {
+                return `${index + 1}. ${i.name} [${i.category}] - (${i.price} ج.م)`;
+            }).join('\n');
+
+            const randomOrderId = Math.floor(1000 + Math.random() * 9000);
+
+            try {
+                const { collection, addDoc } = window.firebaseModules;
+                const db = window.db;
+                await addDoc(collection(db, "orders_log"), {
+                    orderId: randomOrderId,
+                    branch: currentSelectedBranch.name,
+                    name: n,
+                    phone: p,
+                    type: typeLabel,
+                    address: selectedOrderType === 'delivery' ? a : 'استلام من التيك أواي',
+                    itemsText: orderDetailsStr,
+                    total: currentTotal,
+                    timestamp: Date.now(),
+                    dateFormatted: new Date().toLocaleString('ar-EG')
+                });
+            } catch (err) {
+                console.log("Error saving order:", err);
+            }
+
+            const waNumber = currentSelectedBranch.phone; 
+            const textMsg = encodeURIComponent(
+                `🍗 *طلب جديد - فرع ${currentSelectedBranch.name}* 🍔\n` +
+                `------------------------------------\n` +
+                `📋 *رقم الطلب:* #${randomOrderId}\n` +
+                `👤 *الاسم:* ${n}\n` +
+                `📞 *الموبايل:* ${p}\n` +
+                `🛵 *نوع الطلب:* ${typeLabel}\n` +
+                (selectedOrderType === 'delivery' ? `📍 *العنوان:* ${a}\n` : '') +
+                `------------------------------------\n` +
+                `🛒 *الأصناف المطلوبـة:*\n${orderDetailsStr}\n` +
+                `------------------------------------\n` +
+                `💰 *الإجمالي الكلي:* ${currentTotal} ج.م`
+            );
+
+            window.open(`https://wa.me/${waNumber}?text=${textMsg}`, '_blank');
+
+            toggleCart(false);
+            cart = [];
+            updateCart();
+
+            document.getElementById('successModal').style.display = 'flex';
+            setTimeout(() => {
+                closeSuccessModal();
+            }, 4000);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminModal').style.display = 'flex';
+            
+            let accessCount = parseInt(localStorage.getItem('admin_access_count') || '0');
+            const isOwner = localStorage.getItem('is_restaurant_owner') === 'true';
+
+            if (isOwner && accessCount < 5) {
+                accessCount++;
+                localStorage.setItem('admin_access_count', accessCount);
+                document.getElementById('adminAuthView').style.display = 'none';
+                document.getElementById('adminDashboardView').style.display = 'block';
+                renderAdminItemsList();
+            } else {
+                document.getElementById('adminAuthView').style.display = 'block';
+                document.getElementById('adminDashboardView').style.display = 'none';
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        async function verifyAdminPassword() {
+            const inputPass = document.getElementById('adminPassInput').value;
+            try {
+                const { doc, getDoc } = window.firebaseModules;
+                const db = window.db;
+                const passDoc = await getDoc(doc(db, "settings", "password"));
+                
+                const correctPass = passDoc.exists() ? passDoc.data().value : "1234";
+
+                if (inputPass === correctPass) {
+                    localStorage.setItem('is_restaurant_owner', 'true');
+                    localStorage.setItem('admin_access_count', '1');
+                    document.getElementById('adminPassInput').value = '';
+                    document.getElementById('adminAuthView').style.display = 'none';
+                    document.getElementById('adminDashboardView').style.display = 'block';
+                    renderAdminItemsList();
+                } else {
+                    alert("كلمة المرور غير صحيحة!");
+                }
+            } catch (e) {
+                alert("حدث خطأ في الاتصال بقاعدة البيانات");
+            }
+        }
+
+        function switchAdminTab(tabName, event) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+
+            if (tabName === 'status') {
+                document.getElementById('tabStatus').classList.add('active');
+                renderAdminItemsList();
+            } else if (tabName === 'logs') {
+                document.getElementById('tabLogs').classList.add('active');
+            } else if (tabName === 'password') {
+                document.getElementById('tabPassword').classList.add('active');
+            }
+        }
+
+        function renderAdminItemsList() {
+            const container = document.getElementById('adminItemsList');
+            if (menuData.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:20px;">جاري تحميل الأصناف...</p>';
+                return;
+            }
+
+            container.innerHTML = menuData.map(item => {
+                let isEnabled = itemStatusMap[item.name] !== false;
+                const safeName = item.name.replace(/'/g, "\\'");
+                return `
+                    <div class="switch-row">
+                        <span class="switch-label">${item.name} <small style="color:var(--desc-text)">(${item.category})</small></span>
+                        <label class="switch">
+                            <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleItemStatus('${safeName}', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function toggleItemStatus(itemName, status) {
+            itemStatusMap[itemName] = status;
+            try {
+                const { doc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                await setDoc(doc(db, "menu_status", "items"), itemStatusMap, { merge: true });
+            } catch (e) {
+                console.log("Error updating status:", e);
+            }
+        }
+
+        async function setAllItemsStatus(status) {
+            menuData.forEach(item => {
+                itemStatusMap[item.name] = status;
+            });
+            renderAdminItemsList();
+            try {
+                const { doc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                await setDoc(doc(db, "menu_status", "items"), itemStatusMap, { merge: true });
+            } catch (e) {
+                console.log("Error updating all status:", e);
+            }
+        }
+
+        function renderAdminOrdersLogs() {
+            const container = document.getElementById('adminOrdersLogsList');
+            if (!orderLogsList || orderLogsList.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:15px; color:var(--desc-text);">لا توجد طلبات مسجلة حتى الآن.</p>';
+                return;
+            }
+
+            container.innerHTML = orderLogsList.map(order => `
+                <div class="order-log-card">
+                    <div class="order-log-header-info">
+                        <span class="order-log-time">🕒 ${order.dateFormatted || 'منذ قليل'}</span>
+                        <span class="order-log-type-badge">${order.branch || 'الفرع الرئيسي'} | ${order.type}</span>
+                    </div>
+                    
+                    <div class="order-info-group">
+                        <div class="order-info-row">
+                            <span class="order-info-label">رقم الطلب:</span>
+                            <span class="order-info-value">#${order.orderId || '---'}</span>
+                        </div>
+                        <div class="order-info-row">
+                            <span class="order-info-label">الاسم:</span>
+                            <span class="order-info-value">${order.name}</span>
+                        </div>
+                        <div class="order-info-row">
+                            <span class="order-info-label">الهاتف:</span>
+                            <span class="order-info-value" style="direction: ltr; text-align: right;">${order.phone}</span>
+                        </div>
+                        <div class="order-info-row">
+                            <span class="order-info-label">العنوان:</span>
+                            <span class="order-info-value" style="font-weight: 600; font-size: 0.85rem;">${order.address}</span>
+                        </div>
+                    </div>
+
+                    <div class="order-log-details-box">
+                        <span class="order-log-details-title">تفاصيل الأصناف المطلوبة:</span>
+                        <div class="order-log-items-text">${order.itemsText}</div>
+                    </div>
+
+                    <div class="order-log-total-row">
+                        <span>الإجمالي الكلي:</span>
+                        <span>${order.total} ج.م</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function clearOrderLogs() {
+            if(!confirm("هل أنت متأكد من مسح جميع سجل الطلبات؟")) return;
+            try {
+                const { collection, getDocs, deleteDoc, doc } = window.firebaseModules;
+                const db = window.db;
+                const querySnapshot = await getDocs(collection(db, "orders_log"));
+                let deletes = [];
+                querySnapshot.forEach((d) => {
+                    deletes.push(deleteDoc(doc(db, "orders_log", d.id)));
+                });
+                await Promise.all(deletes);
+                orderLogsList = [];
+                renderAdminOrdersLogs();
+            } catch(e) {
+                alert("حدث خطأ أثناء مسح السجل");
+            }
+        }
+
+        async function updateAdminPassword() {
+            const currentPass = document.getElementById('currentAdminPass').value;
+            const newPass = document.getElementById('newAdminPass').value;
+            const confirmPass = document.getElementById('confirmAdminPass').value;
+
+            if(!currentPass || !newPass || !confirmPass) {
+                return alert("يرجى ملء جميع حقول كلمات المرور!");
+            }
+            if(newPass !== confirmPass) {
+                return alert("كلمة المرور الجديدة غير متطابقة مع تأكيد كلمة المرور!");
+            }
+
+            try {
+                const { doc, getDoc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                const passDoc = await getDoc(doc(db, "settings", "password"));
+                const currentServerPass = passDoc.exists() ? passDoc.data().value : "1234";
+
+                if (currentPass !== currentServerPass) {
+                    return alert("كلمة المرور الحالية غير صحيحة!");
+                }
+
+                const newVersion = 'v_' + Date.now();
+                await setDoc(doc(db, "settings", "password"), { value: newPass, version: newVersion });
+                
+                localStorage.setItem('is_restaurant_owner', 'true');
+                localStorage.setItem('owner_pass_version', newVersion);
+                localStorage.setItem('admin_access_count', '1');
+                
+                alert("تم تحديث كلمة المرور بنجاح!");
+                document.getElementById('currentAdminPass').value = '';
+                document.getElementById('newAdminPass').value = '';
+                document.getElementById('confirmAdminPass').value = '';
+            } catch (e) {
+                alert("حدث خطأ أثناء تحديث كلمة المرور");
+            }
+        }
+
+        function initPWA() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
+                        });
+                    });
+                }).catch(err => console.log('SW registration failed:', err));
+            }
+        }
+    </script>
+</body>
+</html>
