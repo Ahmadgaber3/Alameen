@@ -6,6 +6,7 @@
     <title>بروست الأمين | المنيو الرسمي</title>
     
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e65100">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -181,6 +182,16 @@
             color: var(--main-text); box-shadow: 0 2px 8px var(--card-shadow);
         }
         .admin-trigger-btn:active { transform: scale(0.92); }
+
+        /* زر تثبيت التطبيق في الهيدر */
+        .install-pwa-btn {
+            position: absolute; left: 70px; top: 0; height: 42px;
+            background: var(--accent); border-radius: 14px; display: none; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 0.76rem; font-weight: 800;
+            border: none; color: #ffffff; padding: 0 10px; gap: 4px;
+            box-shadow: 0 3px 10px rgba(230, 81, 0, 0.35); transition: transform 0.15s ease;
+        }
+        .install-pwa-btn:active { transform: scale(0.94); }
 
         .category-nav { 
             display: flex; 
@@ -372,7 +383,6 @@
             padding: 10px 20px; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; width: 100%;
         }
 
-        /* --- الزر العائم لشات متابعة الأوردر للعميل --- */
         .client-floating-chat-btn {
             position: fixed;
             bottom: 22px;
@@ -410,19 +420,13 @@
             color: #27ae60;
             border: 1.5px solid #27ae60;
             border-radius: 12px;
-            padding: 6px 12px;
-            font-size: 0.82rem;
+            padding: 8px 12px;
+            font-size: 0.85rem;
             font-weight: 800;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-        .current-logged-branch-badge span.switch-branch-link {
-            color: #d35400;
-            cursor: pointer;
-            text-decoration: underline;
-            font-size: 0.76rem;
+            justify-content: center;
         }
 
         .admin-cards-grid {
@@ -567,22 +571,25 @@
             border-radius: 18px;
             margin-bottom: 14px;
             border: 1px solid #cbd5e1;
+            overflow-x: auto;
         }
         .order-tab-btn {
             flex: 1;
+            min-width: max-content;
             border: none;
             background: transparent;
-            padding: 9px 4px;
+            padding: 9px 8px;
             border-radius: 14px;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #475569;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
+            white-space: nowrap;
         }
         .order-tab-btn.active {
             background: #e65100;
@@ -644,14 +651,10 @@
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
         }
 
-        .admin-branch-select-box {
-            background: var(--bg); border: 1px solid var(--border-color); border-radius: 16px;
-            padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
-        }
-        .admin-branch-select-box label { font-weight: 800; font-size: 0.85rem; color: #d35400; }
-        .admin-branch-select-box select {
-            background: var(--white); border: 1px solid var(--border-color); padding: 7px 12px;
-            border-radius: 10px; font-weight: 700; color: var(--main-text); outline: none; cursor: pointer;
+        .branch-info-banner {
+            background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px;
+            padding: 10px 14px; margin-bottom: 14px; font-weight: 800; font-size: 0.88rem; color: var(--accent);
+            text-align: center;
         }
 
         .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg); border-radius: 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
@@ -670,7 +673,7 @@
         .btn-disable-all { background: #e65100; }
         .btn-sync-sheet { background: #0284c7; width: 100%; flex-basis: 100%; }
 
-        .pass-form input, .pass-form select { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg); color: var(--main-text); margin-bottom: 12px; font-size: 0.95rem; text-align: center; }
+        .pass-form input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg); color: var(--main-text); margin-bottom: 12px; font-size: 0.95rem; text-align: center; }
         .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
 
         .order-card-custom {
@@ -681,6 +684,17 @@
             margin-bottom: 18px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
             position: relative;
+        }
+
+        .order-branch-badge-pill {
+            background: rgba(230, 81, 0, 0.12);
+            color: #e65100;
+            border: 1px solid #e65100;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin-right: 6px;
         }
 
         .order-custom-header {
@@ -694,14 +708,14 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 1.05rem;
+            font-size: 1.02rem;
             font-weight: 900;
             color: #0f172a;
         }
 
         .order-user-icon {
             color: #0284c7;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
         }
@@ -735,6 +749,7 @@
             font-weight: 700;
             margin-bottom: 12px;
             padding-right: 4px;
+            flex-wrap: wrap;
         }
         .order-contact-sub a {
             color: inherit;
@@ -902,6 +917,12 @@
             <div class="header-logo-container">
                 <img src="images/alameen-logo.png" class="header-logo" alt="لوجو مطعم الأمين" onerror="this.src='images/default.jpg'">
             </div>
+            
+            <button class="install-pwa-btn" id="installPwaBtn" onclick="installPWA()">
+                <span>📲</span>
+                <span>تثبيت</span>
+            </button>
+
             <div class="cart-trigger-container">
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
                     <span class="badge" id="cartBadge">0</span>
@@ -969,23 +990,19 @@
             
             <div id="adminAuthView">
                 <div class="pass-form">
-                    <p style="margin-bottom: 10px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--desc-text);">اختر الفرع وأدخل كلمة المرور للمتابعة:</p>
+                    <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px; padding: 10px; margin-bottom: 15px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--accent);" id="adminAuthBranchName">
+                        📍 الإدارة لفرع: ...
+                    </div>
+                    <p style="margin-bottom: 12px; font-weight: 800; font-size: 0.88rem; text-align: center; color: var(--desc-text);">أدخل كلمة المرور للدخول للوحة:</p>
                     
-                    <select id="loginBranchSelector" style="font-weight: 800;">
-                        <option value="fustat">فرع الفسطاط الجديدة 📍</option>
-                        <option value="shobra">فرع شبرا الخيمة 📍</option>
-                        <option value="maadi">فرع المعادي 📍</option>
-                    </select>
-
-                    <input type="password" id="adminPassInput" placeholder="كلمة المرور">
+                    <input type="password" id="adminPassInput" placeholder="كلمة المرور" autofocus>
                     <button onclick="verifyAdminPassword()">دخول لوحة التحكم</button>
                 </div>
             </div>
 
             <div id="adminDashboardView" style="display: none;">
                 <div class="current-logged-branch-badge">
-                    <span id="activeAdminBranchText">📍 الفرع المسجل: فرع الفسطاط الجديدة</span>
-                    <span class="switch-branch-link" onclick="logoutAdminBranch()">تغيير الفرع</span>
+                    <span id="activeAdminBranchText">📍 الفرع الحالي: فرع الفسطاط الجديدة</span>
                 </div>
 
                 <div class="admin-cards-grid">
@@ -993,14 +1010,14 @@
                         <div class="card-badge-num">1</div>
                         <div class="card-avatar-box orange-bg">📦</div>
                         <div class="card-title">إدارة الأصناف</div>
-                        <div class="card-subtitle">تشغيل وإيقاف الوجبات وتحديث الأسعار من الشيت</div>
+                        <div class="card-subtitle">تشغيل وإيقاف الوجبات للفرع الحالي ومزامنة الشيت</div>
                     </div>
 
                     <div class="admin-nav-card" onclick="openFloatingModal('logsModal')">
                         <div class="card-badge-num gray">2</div>
                         <div class="card-avatar-box blue-bg">📜</div>
                         <div class="card-title">الطلبات الواردة</div>
-                        <div class="card-subtitle">متابعة الطلبات المباشرة مقسمة حسب الفروع والشات المباشر</div>
+                        <div class="card-subtitle">عرض طلبات كل الفروع معاً أو تصفية حسب الفرع والشات</div>
                     </div>
 
                     <div class="admin-nav-card" onclick="openFloatingModal('passwordModal')">
@@ -1027,9 +1044,9 @@
                 <h4>📦 إدارة وحالة الأصناف</h4>
                 <button class="admin-close" onclick="closeFloatingModal('statusModal')">✕</button>
             </div>
-            <div class="admin-branch-select-box">
-                <label for="adminBranchSelector">الفرع المراد إدارته 📍:</label>
-                <select id="adminBranchSelector" onchange="changeAdminBranch(this.value)"></select>
+            
+            <div class="branch-info-banner" id="statusModalBranchBanner">
+                📍 جاري إدارة أصناف: فرع ...
             </div>
 
             <div class="admin-global-actions">
@@ -1050,9 +1067,9 @@
 
             <div class="order-branch-tabs" id="orderBranchTabs"></div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px;">
                 <span id="currentBranchOrdersCount" style="font-size: 0.85rem; font-weight: 800; color: #475569;"></span>
-                <button onclick="clearCurrentBranchOrderLogs()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">🗑️ حذف طلبات هذا الفرع</button>
+                <button id="clearOrdersBtn" onclick="clearCurrentBranchOrderLogs()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">🗑️ حذف طلبات هذا التبويب</button>
             </div>
             <div id="adminOrdersLogsList">لا توجد طلبات مسجلة حتى الآن.</div>
         </div>
@@ -1151,6 +1168,42 @@
     </script>
 
     <script>
+        // تسجيل السيرفس ووركر Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker Registered!', reg))
+                    .catch(err => console.log('Service Worker registration failed: ', err));
+            });
+        }
+
+        // كود تفعيل زر تثبيت التطبيق
+        let deferredPrompt;
+        const installBtn = document.getElementById('installPwaBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) installBtn.style.display = 'flex';
+        });
+
+        function installPWA() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted PWA installation');
+                }
+                deferredPrompt = null;
+                if (installBtn) installBtn.style.display = 'none';
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) installBtn.style.display = 'none';
+            console.log('App was successfully installed');
+        });
+
         const IMAGES_PATH = "./images/"; 
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTA4Xr8wQ9COOV3ZTkrJHRnt3T6Rd_W4fzL-0jSxf8KxAFYwlAQXvCy5_Q9lVRpTz3lddtozuWGL8rM/pub?output=csv";
 
@@ -1171,10 +1224,11 @@
             { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201274505042', altPhone: '01055388545' }
         ];
 
-        let currentSelectedBranch = branchesData[0]; 
-        let cashierLoggedBranchId = localStorage.getItem('cashier_branch_id') || branchesData[0].id;
-        let adminSelectedBranchId = cashierLoggedBranchId;
-        let selectedOrderLogBranchId = cashierLoggedBranchId;
+        let savedBranchId = localStorage.getItem('selected_branch_id') || branchesData[0].id;
+        let currentSelectedBranch = branchesData.find(b => b.id === savedBranchId) || branchesData[0]; 
+        let cashierLoggedBranchId = currentSelectedBranch.id;
+        let adminSelectedBranchId = currentSelectedBranch.id;
+        let selectedOrderLogBranchId = 'all'; 
         let menuUnsubscribe = null;
         let realtimeMenuUnsubscribe = null;
         let activeChatListeners = {};
@@ -1392,7 +1446,7 @@
             onSnapshot(collection(db, "orders_log"), (snapshot) => {
                 orderLogsList = [];
                 let hasNewOrderForCurrentBranch = false;
-                const activeBranchObj = branchesData.find(b => b.id === cashierLoggedBranchId) || branchesData[0];
+                const activeBranchObj = branchesData.find(b => b.id === currentSelectedBranch.id) || branchesData[0];
 
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
@@ -1452,7 +1506,6 @@
             } catch (e) { console.log("Audio play error:", e); }
         }
 
-        // نغمة تنبيه الشات المحسنة والأعلى صوتاً
         function playChatNotificationSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1489,10 +1542,8 @@
         function setupBranchChatNotifications() {
             const { collection, onSnapshot } = window.firebaseModules;
             const db = window.db;
-            const activeBranchObj = branchesData.find(b => b.id === cashierLoggedBranchId) || branchesData[0];
-            const branchOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
 
-            branchOrders.forEach(order => {
+            orderLogsList.forEach(order => {
                 const orderId = String(order.orderId);
                 if (!activeChatListeners[orderId]) {
                     let isChatFirstLoad = true;
@@ -1604,8 +1655,23 @@
 
         function selectBranch(branchObj) {
             currentSelectedBranch = branchObj;
+            cashierLoggedBranchId = branchObj.id;
+            adminSelectedBranchId = branchObj.id;
+            
+            localStorage.setItem('selected_branch_id', branchObj.id);
+
             document.getElementById('currentBranchBadge').innerText = `📍 فرع: ${branchObj.name} (تغيير)`;
             document.getElementById('branchModal').style.display = 'none';
+
+            const adminNotice = document.getElementById('adminAuthBranchName');
+            if (adminNotice) adminNotice.innerText = `📍 الإدارة لفرع: ${branchObj.name}`;
+
+            const adminText = document.getElementById('activeAdminBranchText');
+            if (adminText) adminText.innerText = `📍 الفرع الحالي: فرع ${branchObj.name}`;
+
+            const statusBanner = document.getElementById('statusModalBranchBanner');
+            if (statusBanner) statusBanner.innerText = `📍 جاري إدارة أصناف: فرع ${branchObj.name}`;
+
             listenToBranchMenuStatus(branchObj.id);
         }
 
@@ -1829,7 +1895,7 @@
             cart = [];
             updateCart();
 
-            document.getElementById('successOrderText').innerText = `تم تسجيل طلبك رقم #${randomOrderId} بنجاح. يمكنك التحدث في شات مباشر مع المطعم لمتابعة تجهيز وتوصيل أوردرك!`;
+            document.getElementById('successOrderText').innerText = `تم تسجيل طلبك رقم #${randomOrderId} بنجاح لفرع (${currentSelectedBranch.name}). يمكنك التحدث في شات مباشر مع المطعم لمتابعة تجهيز وتوصيل أوردرك!`;
             document.getElementById('successModal').style.display = 'flex';
         }
 
@@ -1844,9 +1910,9 @@
 
         function openAdminPanel() {
             document.getElementById('adminPassInput').value = '';
-            const savedBranch = localStorage.getItem('cashier_branch_id');
-            if (savedBranch) {
-                document.getElementById('loginBranchSelector').value = savedBranch;
+            const adminNotice = document.getElementById('adminAuthBranchName');
+            if (adminNotice) {
+                adminNotice.innerText = `📍 الإدارة لفرع: ${currentSelectedBranch.name}`;
             }
             document.getElementById('adminAuthView').style.display = 'block';
             document.getElementById('adminDashboardView').style.display = 'none';
@@ -1857,18 +1923,14 @@
             document.getElementById('adminModal').style.display = 'none';
         }
 
-        function logoutAdminBranch() {
-            document.getElementById('adminDashboardView').style.display = 'none';
-            document.getElementById('adminAuthView').style.display = 'block';
-            document.getElementById('adminPassInput').value = '';
-        }
-
         function openFloatingModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'flex';
                 if (modalId === 'statusModal') {
-                    fetchAdminBranchItems(adminSelectedBranchId);
+                    const statusBanner = document.getElementById('statusModalBranchBanner');
+                    if (statusBanner) statusBanner.innerText = `📍 جاري إدارة أصناف: فرع ${currentSelectedBranch.name}`;
+                    fetchAdminBranchItems(currentSelectedBranch.id);
                 }
                 if (modalId === 'logsModal') {
                     renderOrderBranchTabs();
@@ -1882,18 +1944,6 @@
             if (modal) {
                 modal.style.display = 'none';
             }
-        }
-
-        function initAdminBranchSelector() {
-            const selector = document.getElementById('adminBranchSelector');
-            selector.innerHTML = branchesData.map(b => 
-                `<option value="${b.id}" ${b.id === adminSelectedBranchId ? 'selected' : ''}>فرع ${b.name}</option>`
-            ).join('');
-        }
-
-        async function changeAdminBranch(branchId) {
-            adminSelectedBranchId = branchId;
-            fetchAdminBranchItems(branchId);
         }
 
         let adminBranchStatusMap = {};
@@ -1916,7 +1966,6 @@
 
         async function verifyAdminPassword() {
             const inputPass = document.getElementById('adminPassInput').value.trim();
-            const chosenBranchId = document.getElementById('loginBranchSelector').value;
 
             if (!inputPass) return alert("يرجى إدخال كلمة المرور");
 
@@ -1928,21 +1977,16 @@
                 const correctPass = passDoc.exists() ? String(passDoc.data().value).trim() : "1234";
 
                 if (inputPass === correctPass) {
-                    cashierLoggedBranchId = chosenBranchId;
-                    localStorage.setItem('cashier_branch_id', chosenBranchId);
-                    adminSelectedBranchId = chosenBranchId;
-                    selectedOrderLogBranchId = chosenBranchId;
-
-                    const branchObj = branchesData.find(b => b.id === chosenBranchId);
-                    document.getElementById('activeAdminBranchText').innerText = `📍 الفرع المسجل: فرع ${branchObj.name}`;
+                    cashierLoggedBranchId = currentSelectedBranch.id;
+                    adminSelectedBranchId = currentSelectedBranch.id;
+                    
+                    document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
 
                     document.getElementById('adminPassInput').value = '';
                     document.getElementById('adminAuthView').style.display = 'none';
                     document.getElementById('adminDashboardView').style.display = 'block';
 
-                    setupBranchChatNotifications();
-                    initAdminBranchSelector();
-                    fetchAdminBranchItems(adminSelectedBranchId);
+                    fetchAdminBranchItems(currentSelectedBranch.id);
                 } else {
                     alert("كلمة المرور غير صحيحة!");
                 }
@@ -1982,7 +2026,7 @@
             try {
                 const { doc, setDoc } = window.firebaseModules;
                 const db = window.db;
-                await setDoc(doc(db, "menu_status", adminSelectedBranchId), adminBranchStatusMap, { merge: true });
+                await setDoc(doc(db, "menu_status", currentSelectedBranch.id), adminBranchStatusMap, { merge: true });
             } catch (e) {
                 console.error("خطأ في تحديث حالة الصنف للفرع:", e);
             }
@@ -1995,7 +2039,7 @@
             try {
                 const { doc, setDoc } = window.firebaseModules;
                 const db = window.db;
-                await setDoc(doc(db, "menu_status", adminSelectedBranchId), adminBranchStatusMap);
+                await setDoc(doc(db, "menu_status", currentSelectedBranch.id), adminBranchStatusMap);
                 renderAdminItemsList();
             } catch (e) {
                 console.error("خطأ في تحديث كافة الأصناف:", e);
@@ -2006,7 +2050,16 @@
             const container = document.getElementById('orderBranchTabs');
             if (!container) return;
 
-            container.innerHTML = branchesData.map(b => {
+            const totalAllCount = orderLogsList.length;
+            const isAllActive = selectedOrderLogBranchId === 'all';
+
+            let tabsHtml = `
+            <button type="button" class="order-tab-btn ${isAllActive ? 'active' : ''}" onclick="switchOrderLogBranch('all')">
+                <span>🌐 جميع الفروع</span>
+                <span class="order-tab-badge">${totalAllCount}</span>
+            </button>`;
+
+            tabsHtml += branchesData.map(b => {
                 const count = orderLogsList.filter(o => o.branch === b.name || (o.branch && o.branch.includes(b.name))).length;
                 const isActive = b.id === selectedOrderLogBranchId;
 
@@ -2016,6 +2069,8 @@
                     <span class="order-tab-badge">${count}</span>
                 </button>`;
             }).join('');
+
+            container.innerHTML = tabsHtml;
         }
 
         function switchOrderLogBranch(branchId) {
@@ -2029,23 +2084,32 @@
             const countLabel = document.getElementById('currentBranchOrdersCount');
             if (!container) return;
 
-            const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
-            const filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+            let filteredOrders = [];
+            let currentViewTitle = '';
+
+            if (selectedOrderLogBranchId === 'all') {
+                filteredOrders = orderLogsList;
+                currentViewTitle = `جميع الفروع: (${filteredOrders.length})`;
+            } else {
+                const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+                filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+                currentViewTitle = `طلبات فرع ${activeBranchObj.name}: (${filteredOrders.length})`;
+            }
 
             if (countLabel) {
-                countLabel.innerText = `طلبات فرع ${activeBranchObj.name}: (${filteredOrders.length})`;
+                countLabel.innerText = currentViewTitle;
             }
 
             if (filteredOrders.length === 0) {
-                container.innerHTML = `<p style="text-align:center; padding:30px; color:var(--desc-text); font-weight:800;">لا توجد طلبات مسجلة لفرع ${activeBranchObj.name} حتى الآن.</p>`;
+                container.innerHTML = `<p style="text-align:center; padding:30px; color:var(--desc-text); font-weight:800;">لا توجد طلبات مسجلة في هذا القسم حتى الآن.</p>`;
                 return;
             }
 
             container.innerHTML = filteredOrders.map(order => {
                 const safeCustomerName = (order.name || 'عميل').replace(/'/g, "\\'");
-                
                 const itemsLines = (order.itemsText || '').split('\n').filter(l => l.trim().length > 0);
                 const itemsHtml = itemsLines.map(line => `<li>${line}</li>`).join('');
+                const branchDisplay = order.branch ? `فرع ${order.branch}` : 'فرع غير محدد';
 
                 return `
                 <div class="order-card-custom">
@@ -2053,6 +2117,7 @@
                         <div class="order-user-name-box">
                             <span class="order-user-icon">👤</span>
                             <span>${order.name || 'عميل بدون اسم'}</span>
+                            <span class="order-branch-badge-pill">📍 ${branchDisplay}</span>
                         </div>
                         <button class="order-delete-btn-circ" title="حذف الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
                     </div>
@@ -2060,7 +2125,11 @@
                     <div class="order-contact-sub">
                         <span>📞 <a href="tel:${order.phone}">${order.phone || ''}</a></span>
                         <span>|</span>
+                        <span>🛵 ${order.type || 'طلب'}</span>
+                        <span>|</span>
                         <span>📍 ${order.address || 'استلام فرع'}</span>
+                        <span>|</span>
+                        <span style="font-size:0.75rem;">⏱️ ${order.dateFormatted || ''}</span>
                     </div>
 
                     <div class="order-items-box-custom">
@@ -2076,7 +2145,7 @@
                         </div>
                         <button class="order-chat-btn-custom" onclick="openInAppChat('${order.orderId}', '${safeCustomerName}', 'admin')">
                             <span>💬</span>
-                            <span>الشات (0)</span>
+                            <span>الشات المباشر</span>
                         </button>
                     </div>
                 </div>`;
@@ -2174,23 +2243,32 @@
         }
 
         async function clearCurrentBranchOrderLogs() {
-            const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
-            const filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+            let filteredOrders = [];
+            let label = '';
 
-            if (filteredOrders.length === 0) {
-                return alert(`لا توجد طلبات لحذفها في فرع ${activeBranchObj.name}`);
+            if (selectedOrderLogBranchId === 'all') {
+                filteredOrders = orderLogsList;
+                label = 'جميع الفروع';
+            } else {
+                const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+                filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+                label = `فرع ${activeBranchObj.name}`;
             }
 
-            if (!confirm(`هل أنت متأكد من رغبتك في مسح كافة طلبات فرع (${activeBranchObj.name}) فقط؟`)) return;
+            if (filteredOrders.length === 0) {
+                return alert(`لا توجد طلبات لحذفها في (${label})`);
+            }
+
+            if (!confirm(`هل أنت متأكد من رغبتك في مسح كافة طلبات (${label})؟`)) return;
             try {
                 const { deleteDoc, doc } = window.firebaseModules;
                 const db = window.db;
                 for (let o of filteredOrders) {
                     await deleteDoc(doc(db, "orders_log", o.id));
                 }
-                alert(`تم مسح طلبات فرع ${activeBranchObj.name} بنجاح!`);
+                alert(`تم مسح طلبات (${label}) بنجاح!`);
             } catch (e) {
-                alert("حدث خطأ أثناء حذف طلبات الفرع");
+                alert("حدث خطأ أثناء حذف الطلبات");
             }
         }
 
