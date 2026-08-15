@@ -388,14 +388,66 @@
         
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
+        /* --- نافذة اختيار النكهة البسيطة والمصغرة --- */
+        .flavor-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.68); z-index: 7000; display: none;
+            justify-content: center; align-items: center; padding: 16px;
+        }
+        .flavor-modal-content {
+            background: var(--white); 
+            width: 100%; 
+            max-width: 300px; /* حجم مدمج وصغير */
+            border-radius: 20px; 
+            padding: 16px 14px; 
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            animation: smoothFadeIn 0.18s ease-out;
+        }
+        .flavor-modal-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+            padding-bottom: 8px; border-bottom: 1px solid var(--border-color);
+        }
+        .flavor-modal-header h3 {
+            font-size: 0.95rem; font-weight: 800; color: var(--accent);
+        }
+        .flavor-close-btn {
+            background: var(--bg); border: 1px solid var(--border-color); width: 26px; height: 26px;
+            border-radius: 50%; font-weight: 800; cursor: pointer; color: var(--main-text); font-size: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .flavor-options-grid {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .flavor-opt-btn {
+            background: var(--bg); 
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px; 
+            padding: 10px 14px; 
+            font-size: 0.9rem; 
+            font-weight: 800;
+            color: var(--main-text); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .flavor-opt-btn:active {
+            border-color: var(--accent); 
+            background: var(--accent); 
+            color: #ffffff;
+            transform: scale(0.96);
+        }
+
         .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
-        
         .branches-container { margin: 15px 0; font-size: 0.82rem; color: var(--desc-text); text-align: right; background: var(--bg); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); }
         .branch-item { margin-bottom: 8px; }
         .branch-item strong { color: var(--accent); display: block; }
         
         .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
-        
         .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
         .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
 
@@ -982,6 +1034,17 @@
         </div>
     </div>
 
+    <!-- نافذة اختيار النكهة البسيطة والمدمجة -->
+    <div class="flavor-modal" id="flavorModal" onclick="if(event.target==this) closeFlavorModal()">
+        <div class="flavor-modal-content">
+            <div class="flavor-modal-header">
+                <h3 id="flavorModalTitle">اختر النكهة</h3>
+                <button class="flavor-close-btn" onclick="closeFlavorModal()">✕</button>
+            </div>
+            <div class="flavor-options-grid" id="flavorOptionsGrid"></div>
+        </div>
+    </div>
+
     <header>
         <div class="header-top">
             <div class="header-right-actions">
@@ -1295,6 +1358,8 @@
         let menuUnsubscribe = null;
         let realtimeMenuUnsubscribe = null;
         let activeChatListeners = {};
+
+        let pendingOrderItem = null;
 
         function parseCSVLine(line) {
             let result = [];
@@ -1820,6 +1885,18 @@
             card.dataset.currentPrice = price;
         }
 
+        function isMealCategory(cat) {
+            if (!cat) return false;
+            const c = cat.trim().toLowerCase();
+            return c.includes('وجب') || c.includes('وجبات') || c.includes('meal');
+        }
+
+        function isExemptCategory(cat) {
+            if (!cat) return false;
+            const c = cat.trim().toLowerCase();
+            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية');
+        }
+
         function orderCardItem(e, btn, cardId, baseName, img) {
             const card = document.getElementById(cardId);
             if (!card) return;
@@ -1828,12 +1905,79 @@
             const currentPrice = card.dataset.currentPrice || '0';
             const currentSize = card.dataset.currentSize || '';
 
-            let finalName = baseName;
-            if (currentSize) {
-                finalName = `${baseName} (${currentSize})`;
+            pendingOrderItem = {
+                clickEvent: e,
+                buttonEl: btn,
+                baseName: baseName,
+                img: img,
+                price: currentPrice,
+                category: category,
+                size: currentSize
+            };
+
+            if (isExemptCategory(category)) {
+                let finalName = baseName;
+                if (currentSize) finalName = `${baseName} (${currentSize})`;
+                addToCart(e, btn, finalName, img, currentPrice, category);
+                pendingOrderItem = null;
+                return;
             }
 
-            addToCart(e, btn, finalName, img, currentPrice, category);
+            openFlavorModal(category, baseName);
+        }
+
+        function openFlavorModal(category, baseName) {
+            const modal = document.getElementById('flavorModal');
+            const titleEl = document.getElementById('flavorModalTitle');
+            const optionsContainer = document.getElementById('flavorOptionsGrid');
+
+            let optionsList = [];
+
+            if (isMealCategory(category)) {
+                titleEl.innerText = 'اختر نكهة الوجبة';
+                optionsList = [
+                    { label: '🍗 عادي', value: 'عادي' },
+                    { label: '🔥 سبايسي', value: 'سبايسي' },
+                    { label: '✨ ميكس', value: 'ميكس' }
+                ];
+            } else {
+                titleEl.innerText = 'اختر النكهة';
+                optionsList = [
+                    { label: '🍗 عادي', value: 'عادي' },
+                    { label: '🔥 سبايسي', value: 'سبايسي' },
+                    { label: '🌶️ نص سبايسي', value: 'نص سبايسي' }
+                ];
+            }
+
+            optionsContainer.innerHTML = optionsList.map(opt => `
+                <button type="button" class="flavor-opt-btn" onclick="selectFlavorAndConfirm('${opt.value}')">
+                    <span>${opt.label}</span>
+                </button>
+            `).join('');
+
+            modal.style.display = 'flex';
+        }
+
+        function closeFlavorModal() {
+            document.getElementById('flavorModal').style.display = 'none';
+            pendingOrderItem = null;
+        }
+
+        function selectFlavorAndConfirm(chosenFlavor) {
+            if (!pendingOrderItem) return;
+
+            const { clickEvent, buttonEl, baseName, img, price, category, size } = pendingOrderItem;
+
+            let finalName = baseName;
+            if (size) {
+                finalName = `${baseName} (${size}) [${chosenFlavor}]`;
+            } else {
+                finalName = `${baseName} [${chosenFlavor}]`;
+            }
+
+            document.getElementById('flavorModal').style.display = 'none';
+            addToCart(clickEvent, buttonEl, finalName, img, price, category);
+            pendingOrderItem = null;
         }
 
         function addToCart(e, btn, name, img, price, category) {
@@ -1848,10 +1992,28 @@
                 btn.classList.remove('added'); 
             }, 2000);
             
-            const fly = document.createElement('div'); fly.className = 'fly-item'; fly.innerHTML = '🍗'; fly.style.left = e.clientX + 'px'; fly.style.top = e.clientY + 'px'; document.body.appendChild(fly);
-            const cartBtn = document.getElementById('cartBtn'); const cartPos = cartBtn.getBoundingClientRect();
-            setTimeout(() => { fly.style.left = (cartPos.left + 20) + 'px'; fly.style.top = (cartPos.top + 20) + 'px'; fly.style.transform = 'scale(0.2)'; fly.style.opacity = '0'; }, 10);
-            setTimeout(() => { fly.remove(); updateCart(); cartBtn.classList.add('shake'); setTimeout(() => cartBtn.classList.remove('shake'), 500); }, 700);
+            const fly = document.createElement('div'); fly.className = 'fly-item'; fly.innerHTML = '🍗'; 
+            const clickX = e && e.clientX ? e.clientX : window.innerWidth / 2;
+            const clickY = e && e.clientY ? e.clientY : window.innerHeight / 2;
+            fly.style.left = clickX + 'px'; 
+            fly.style.top = clickY + 'px'; 
+            document.body.appendChild(fly);
+
+            const cartBtn = document.getElementById('cartBtn'); 
+            const cartPos = cartBtn.getBoundingClientRect();
+            setTimeout(() => { 
+                fly.style.left = (cartPos.left + 20) + 'px'; 
+                fly.style.top = (cartPos.top + 20) + 'px'; 
+                fly.style.transform = 'scale(0.2)'; 
+                fly.style.opacity = '0'; 
+            }, 10);
+
+            setTimeout(() => { 
+                fly.remove(); 
+                updateCart(); 
+                cartBtn.classList.add('shake'); 
+                setTimeout(() => cartBtn.classList.remove('shake'), 500); 
+            }, 700);
         }
 
         function updateCart() {
