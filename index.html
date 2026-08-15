@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>بروست الأمين | المنيو الرسمي</title>
     
     <link rel="manifest" href="manifest.json">
@@ -10,7 +10,7 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="الأمين">
+    <meta name="apple-mobile-web-app-title" content="بروست الأمين">
     <link rel="apple-touch-icon" href="images/logooo.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -225,7 +225,7 @@
             height: 32px;
             background: var(--accent);
             border-radius: 10px;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -439,6 +439,18 @@
             background: var(--accent); 
             color: #ffffff;
             transform: scale(0.96);
+        }
+
+        /* نافذة المساعدة في التثبيت للأجهزة غير المدعومة تلقائياً */
+        .install-guide-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); z-index: 8500; display: none;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .install-guide-box {
+            background: var(--white); width: 100%; max-width: 380px;
+            border-radius: 24px; padding: 22px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid var(--border-color);
         }
 
         .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
@@ -1044,6 +1056,22 @@
         </div>
     </div>
 
+    <!-- نافذة المساعدة في التثبيت لهواتف هواوي وآيفون -->
+    <div class="install-guide-modal" id="installGuideModal" onclick="if(event.target==this) closeInstallGuide()">
+        <div class="install-guide-box">
+            <h3 style="color: var(--accent); margin-bottom: 8px; font-weight: 900;">📲 تثبيت التطبيق على جهازك</h3>
+            <p style="font-size: 0.88rem; color: var(--desc-text); margin-bottom: 14px; font-weight: 700;" id="installGuideText">
+                لتثبيت التطبيق على الشاشة الرئيسية مباشرة:
+            </p>
+            <div style="background: var(--bg); border-radius: 14px; padding: 12px; text-align: right; font-size: 0.84rem; font-weight: 800; margin-bottom: 16px; line-height: 1.8;">
+                1️⃣ اضغط على خيارات المتصفح (⋮) أو زر المشاركة (⎋).<br>
+                2️⃣ اختر <b>"إضافة إلى الشاشة الرئيسية" (Add to Home screen)</b> أو <b>"تثبيت التطبيق"</b>.<br>
+                3️⃣ ستجد التطبيق نزل على شاشتك كأيقونة مستقلة فوراً!
+            </div>
+            <button onclick="closeInstallGuide()" style="background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%;">فهمت ذلك ✓</button>
+        </div>
+    </div>
+
     <header>
         <div class="header-top">
             <div class="header-right-actions">
@@ -1060,7 +1088,7 @@
                     <span class="badge" id="cartBadge">0</span>
                     <span style="font-size: 1.25rem;">🛒</span>
                 </div>
-                <button class="install-pwa-btn" id="installPwaBtn" onclick="installPWA()">
+                <button class="install-pwa-btn" id="installPwaBtn" onclick="triggerUniversalInstall()">
                     <span>📲</span>
                     <span>تثبيت</span>
                 </button>
@@ -1295,38 +1323,45 @@
     </script>
 
     <script>
+        // تسجيل السيرفس ووركر بأمان لمنع أي توقف
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker Registered!', reg))
-                    .catch(err => console.log('Service Worker registration failed: ', err));
+                    .then(reg => console.log('SW Registered successfully:', reg.scope))
+                    .catch(err => console.log('SW registration error:', err));
             });
         }
 
-        let deferredPrompt;
+        // نظام التثبيت الشامل لجميع الموبايلات (هواوي، أندرويد، آيفون)
+        let deferredPrompt = null;
         const installBtn = document.getElementById('installPwaBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (installBtn) installBtn.style.display = 'flex';
         });
 
-        function installPWA() {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted PWA installation');
-                }
-                deferredPrompt = null;
-                if (installBtn) installBtn.style.display = 'none';
-            });
+        function triggerUniversalInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        if (installBtn) installBtn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // إذا كان الجهاز هواوي أو آيفون ولا يدعم التثبيت المباشر
+                document.getElementById('installGuideModal').style.display = 'flex';
+            }
+        }
+
+        function closeInstallGuide() {
+            document.getElementById('installGuideModal').style.display = 'none';
         }
 
         window.addEventListener('appinstalled', () => {
             if (installBtn) installBtn.style.display = 'none';
-            console.log('App was successfully installed');
         });
 
         const IMAGES_PATH = "./images/"; 
@@ -1524,12 +1559,12 @@
             return Promise.all(promises);
         }
 
-        // إبطاء العداد ليكون بالظبط 4 ثواني (4000ms)
+        // مدة العداد 4 ثوانٍ بدقة
         function startCreativeCounter() {
             const counterEl = document.getElementById('loadPercentage');
             const barFill = document.getElementById('progressBarFill');
             let count = 0;
-            const duration = 4000; // 4 ثوانٍ
+            const duration = 4000;
             const intervalTime = duration / 100;
 
             const timer = setInterval(() => {
@@ -1562,24 +1597,25 @@
             });
         }
 
-        // إرسال إشعار للنظام مع الاهتزاز عند وصول أوردر أو رسالة بالخلفية
         function triggerSystemNotification(title, body) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                    navigator.serviceWorker.ready.then(reg => {
-                        reg.showNotification(title, {
-                            body: body,
-                            icon: './images/logooo.png',
-                            badge: './images/logooo.png',
-                            vibrate: [400, 150, 400, 150, 400],
-                            tag: 'alameen-alert-' + Date.now(),
-                            renotify: true
-                        });
-                    });
-                } else {
-                    new Notification(title, { body: body, icon: './images/logooo.png' });
+            try {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                        navigator.serviceWorker.ready.then(reg => {
+                            reg.showNotification(title, {
+                                body: body,
+                                icon: './images/logooo.png',
+                                badge: './images/logooo.png',
+                                vibrate: [400, 150, 400, 150, 400],
+                                tag: 'alameen-alert-' + Date.now(),
+                                renotify: true
+                            });
+                        }).catch(() => {});
+                    } else {
+                        new Notification(title, { body: body, icon: './images/logooo.png' });
+                    }
                 }
-            }
+            } catch (e) {}
         }
 
         window.addEventListener('firebase-ready', async () => {
@@ -1616,7 +1652,6 @@
                         }
                     });
 
-                    // التحقق من أن هذا الجهاز هو كاشير معتمد (أدخل كلمة السر 3 مرات أو أكثر)
                     const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
 
                     if (hasNewOrderForCurrentBranch && isVerifiedCashierDevice) {
@@ -1640,7 +1675,9 @@
 
         function playHighPriorityOrderAlert() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
                 if (audioCtx.state === 'suspended') { audioCtx.resume(); }
                 
                 for (let round = 0; round < 3; round++) {
@@ -1661,12 +1698,14 @@
                         osc.stop(audioCtx.currentTime + delayOffset + (index * 0.09) + 0.3);
                     });
                 }
-            } catch (e) { console.log("Audio play error:", e); }
+            } catch (e) {}
         }
 
         function playChatNotificationSound() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
                 if (audioCtx.state === 'suspended') { audioCtx.resume(); }
 
                 const osc1 = audioCtx.createOscillator();
@@ -1694,15 +1733,15 @@
 
                 osc1.stop(audioCtx.currentTime + 0.28);
                 osc2.stop(audioCtx.currentTime + 0.28);
-            } catch (e) { console.log("Chat sound error:", e); }
+            } catch (e) {}
         }
 
         function setupBranchChatNotifications() {
+            const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
+            if (!isVerifiedCashierDevice) return;
+
             const { collection, onSnapshot } = window.firebaseModules;
             const db = window.db;
-            const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
-
-            if (!isVerifiedCashierDevice) return;
 
             orderLogsList.forEach(order => {
                 const orderId = String(order.orderId);
@@ -1794,7 +1833,7 @@
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('splash-hidden');
                 showBranchModal();
-            }, 4200); // إظهار النافذة بعد انتهاء العداد 4 ثوانٍ
+            }, 4200);
         }
 
         function renderFooterBranches() {
@@ -2226,7 +2265,6 @@
             }
         }
 
-        // التحقق من كلمة المرور مع شرط الاعتماد (3 مرات) لجهاز الكاشير
         async function verifyAdminPassword() {
             const inputPass = document.getElementById('adminPassInput').value.trim();
 
@@ -2245,13 +2283,11 @@
                     
                     document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
 
-                    // زيادة وتخزين عدد مرات تسجيل الدخول في هذا الجهاز
                     let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
                     authCount += 1;
                     localStorage.setItem('cashier_auth_count', authCount);
                     localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
 
-                    // تفعيل إذن الإشعارات تلقائياً
                     if ('Notification' in window && Notification.permission !== 'granted') {
                         Notification.requestPermission();
                     }

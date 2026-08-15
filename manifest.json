@@ -1,26 +1,35 @@
 {
+  "id": "./",
   "name": "بروست الأمين | المنيو الرسمي",
-  "short_name": "الأمين",
+  "short_name": "بروست الأمين",
   "description": "اطلب أشهى وجبات البروستد والبرجر أونلاين من فروع بروست الأمين",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e65100",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "lang": "ar",
   "dir": "rtl",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "images/logooo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "images/logooo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
+    },
+    {
+      "src": "images/logooo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
