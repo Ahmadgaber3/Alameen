@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="الأمين">
-    <link rel="apple-touch-icon" href="images/alameen-logo.png">
+    <link rel="apple-touch-icon" href="images/logooo.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -161,7 +161,6 @@
             padding: 0 15px;
         }
         
-        /* الحاوية الجانبية اليمنى: زر الوضع الليلي وتحته زر لوحة التحكم */
         .header-right-actions {
             position: absolute;
             right: 15px;
@@ -192,7 +191,6 @@
             transform: scale(0.92);
         }
 
-        /* الحاوية الجانبية اليسرى: السلة وتثبيت التطبيق */
         .header-left-actions {
             position: absolute;
             left: 15px;
@@ -242,7 +240,6 @@
         }
         .install-pwa-btn:active { transform: scale(0.92); }
 
-        /* اللوجو المستطيل الأكبر حجماً */
         .header-logo-container { 
             width: 145px; 
             height: 72px; 
@@ -987,20 +984,17 @@
 
     <header>
         <div class="header-top">
-            <!-- يمين: الوضع الليلي وتحته لوحة التحكم -->
             <div class="header-right-actions">
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي / النهاري">🌙</button>
                 <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
             </div>
             
-            <!-- وسط: لوجو المحل المستطيل الأكبر -->
             <div class="header-logo-container">
-                <img src="images/alameen-logo.png" class="header-logo" alt="لوجو مطعم الأمين" onerror="this.src='images/default.jpg'">
+                <img src="images/logooo.png" class="header-logo" alt="لوجو مطعم الأمين" onerror="this.src='images/default.jpg'">
             </div>
             
-            <!-- يسار: السلة والتثبيت -->
             <div class="header-left-actions">
-                <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
+                <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn" title="عربة الطلبات">
                     <span class="badge" id="cartBadge">0</span>
                     <span style="font-size: 1.25rem;">🛒</span>
                 </div>
