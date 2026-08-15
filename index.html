@@ -221,12 +221,11 @@
         .badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--white); transform: scale(0); transition: 0.2s ease; }
         .badge.show { transform: scale(1); }
 
-        /* زر التثبيت مخفي افتراضياً ولا يظهر إلا في المتصفح قبل التثبيت */
         .install-pwa-btn {
             height: 32px;
             background: var(--accent);
             border-radius: 10px;
-            display: none; /* مخفي افتراضياً */
+            display: none;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -1034,7 +1033,6 @@
         </div>
     </div>
 
-    <!-- نافذة اختيار النكهة البسيطة والمدمجة -->
     <div class="flavor-modal" id="flavorModal" onclick="if(event.target==this) closeFlavorModal()">
         <div class="flavor-modal-content">
             <div class="flavor-modal-header">
@@ -1061,7 +1059,6 @@
                     <span class="badge" id="cartBadge">0</span>
                     <span style="font-size: 1.25rem;">🛒</span>
                 </div>
-                <!-- زر التثبيت -->
                 <button class="install-pwa-btn" id="installPwaBtn" onclick="triggerUniversalInstall()">
                     <span>📲</span>
                     <span>تثبيت</span>
@@ -1305,7 +1302,6 @@
             });
         }
 
-        // فحص حالة التطبيق: هل هو مفتوح كـ أبلكيشن مثبت؟
         function isRunningInsidePWA() {
             return (window.matchMedia('(display-mode: standalone)').matches) ||
                    (window.navigator.standalone === true) ||
@@ -1315,7 +1311,6 @@
         let deferredPrompt = null;
         const installBtn = document.getElementById('installPwaBtn');
 
-        // إخفاء الزر نهائياً إذا كنا داخل الأبلكيشن
         function checkAndHandleInstallBtn() {
             if (isRunningInsidePWA() || localStorage.getItem('app_installed_locally') === 'true') {
                 if (installBtn) installBtn.style.setProperty('display', 'none', 'important');
@@ -1327,7 +1322,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // إظهار الزر فقط إن لم نكن داخل التطبيق المثبت
             if (!checkAndHandleInstallBtn() && installBtn) {
                 installBtn.style.display = 'flex';
             }
@@ -1354,7 +1348,6 @@
             deferredPrompt = null;
         });
 
-        // التحقق عند أول تحميل للصفحة
         document.addEventListener('DOMContentLoaded', () => {
             checkAndHandleInstallBtn();
         });
@@ -1442,9 +1435,19 @@
                     const desc = cols[7] ? cols[7].trim() : "";
                     let img = cols[8] ? cols[8].trim() : "";
 
-                    if (img && !img.startsWith('http://') && !img.startsWith('https://') && !img.startsWith('./')) {
-                        img = `${IMAGES_PATH}${img}`;
-                    } else if (!img) {
+                    // التأكد من تحويل واستخدام صيغة JPG دائماً للصور
+                    if (img) {
+                        if (img.startsWith('http://') || img.startsWith('https://')) {
+                            // رابط كامل خارجي
+                        } else {
+                            let cleanImg = img.replace(/^\.\/images\//, '').replace(/^images\//, '');
+                            cleanImg = cleanImg.replace(/\.(png|jpeg|webp)$/i, '.jpg');
+                            if (!cleanImg.toLowerCase().endsWith('.jpg')) {
+                                cleanImg += '.jpg';
+                            }
+                            img = `${IMAGES_PATH}${cleanImg}`;
+                        }
+                    } else {
                         img = `${IMAGES_PATH}default.jpg`;
                     }
 
