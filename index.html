@@ -388,7 +388,6 @@
         
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
-        /* --- نافذة اختيار النكهة البسيطة والمصغرة --- */
         .flavor-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.68); z-index: 7000; display: none;
@@ -397,7 +396,7 @@
         .flavor-modal-content {
             background: var(--white); 
             width: 100%; 
-            max-width: 300px; /* حجم مدمج وصغير */
+            max-width: 300px; 
             border-radius: 20px; 
             padding: 16px 14px; 
             text-align: center;
@@ -1525,11 +1524,12 @@
             return Promise.all(promises);
         }
 
+        // إبطاء العداد ليكون بالظبط 4 ثواني (4000ms)
         function startCreativeCounter() {
             const counterEl = document.getElementById('loadPercentage');
             const barFill = document.getElementById('progressBarFill');
             let count = 0;
-            const duration = 1800;
+            const duration = 4000; // 4 ثوانٍ
             const intervalTime = duration / 100;
 
             const timer = setInterval(() => {
@@ -1562,6 +1562,26 @@
             });
         }
 
+        // إرسال إشعار للنظام مع الاهتزاز عند وصول أوردر أو رسالة بالخلفية
+        function triggerSystemNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                    navigator.serviceWorker.ready.then(reg => {
+                        reg.showNotification(title, {
+                            body: body,
+                            icon: './images/logooo.png',
+                            badge: './images/logooo.png',
+                            vibrate: [400, 150, 400, 150, 400],
+                            tag: 'alameen-alert-' + Date.now(),
+                            renotify: true
+                        });
+                    });
+                } else {
+                    new Notification(title, { body: body, icon: './images/logooo.png' });
+                }
+            }
+        }
+
         window.addEventListener('firebase-ready', async () => {
             const { doc, onSnapshot, collection } = window.firebaseModules;
             const db = window.db;
@@ -1574,7 +1594,9 @@
             onSnapshot(collection(db, "orders_log"), (snapshot) => {
                 orderLogsList = [];
                 let hasNewOrderForCurrentBranch = false;
-                const activeBranchObj = branchesData.find(b => b.id === currentSelectedBranch.id) || branchesData[0];
+                let latestOrderData = null;
+
+                const cashierBranch = localStorage.getItem('cashier_registered_branch') || currentSelectedBranch.name;
 
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
@@ -1587,14 +1609,22 @@
                     snapshot.docChanges().forEach(change => {
                         if (change.type === 'added') {
                             const newOrder = change.doc.data();
-                            if (newOrder.branch === activeBranchObj.name || (newOrder.branch && newOrder.branch.includes(activeBranchObj.name))) {
+                            if (newOrder.branch === cashierBranch || (newOrder.branch && newOrder.branch.includes(cashierBranch))) {
                                 hasNewOrderForCurrentBranch = true;
+                                latestOrderData = newOrder;
                             }
                         }
                     });
 
-                    if (hasNewOrderForCurrentBranch) {
+                    // التحقق من أن هذا الجهاز هو كاشير معتمد (أدخل كلمة السر 3 مرات أو أكثر)
+                    const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
+
+                    if (hasNewOrderForCurrentBranch && isVerifiedCashierDevice) {
                         playHighPriorityOrderAlert();
+                        triggerSystemNotification(
+                            `🔔 أوردر جديد - فرع ${cashierBranch}`,
+                            `طلب رقم #${latestOrderData.orderId || ''} للعميل ${latestOrderData.name || ''} بقيمة ${latestOrderData.total || 0} ج.م`
+                        );
                     }
                 }
 
@@ -1670,6 +1700,9 @@
         function setupBranchChatNotifications() {
             const { collection, onSnapshot } = window.firebaseModules;
             const db = window.db;
+            const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
+
+            if (!isVerifiedCashierDevice) return;
 
             orderLogsList.forEach(order => {
                 const orderId = String(order.orderId);
@@ -1682,6 +1715,10 @@
                                     const msgData = change.doc.data();
                                     if (msgData.sender === 'client') {
                                         playChatNotificationSound();
+                                        triggerSystemNotification(
+                                            `💬 رسالة جديدة في أوردر #${orderId}`,
+                                            `${msgData.text || 'رسالة جديدة من العميل'}`
+                                        );
                                     }
                                 }
                             });
@@ -1721,6 +1758,10 @@
                             const data = change.doc.data();
                             if (data.sender === 'admin') {
                                 playChatNotificationSound();
+                                triggerSystemNotification(
+                                    `💬 رد من المطعم على أوردر #${orderId}`,
+                                    `${data.text || 'رسالة جديدة'}`
+                                );
                             }
                         }
                     });
@@ -1753,7 +1794,7 @@
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('splash-hidden');
                 showBranchModal();
-            }, 2000);
+            }, 4200); // إظهار النافذة بعد انتهاء العداد 4 ثوانٍ
         }
 
         function renderFooterBranches() {
@@ -2185,6 +2226,7 @@
             }
         }
 
+        // التحقق من كلمة المرور مع شرط الاعتماد (3 مرات) لجهاز الكاشير
         async function verifyAdminPassword() {
             const inputPass = document.getElementById('adminPassInput').value.trim();
 
@@ -2203,10 +2245,29 @@
                     
                     document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
 
+                    // زيادة وتخزين عدد مرات تسجيل الدخول في هذا الجهاز
+                    let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
+                    authCount += 1;
+                    localStorage.setItem('cashier_auth_count', authCount);
+                    localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
+
+                    // تفعيل إذن الإشعارات تلقائياً
+                    if ('Notification' in window && Notification.permission !== 'granted') {
+                        Notification.requestPermission();
+                    }
+
+                    if (authCount >= 3) {
+                        localStorage.setItem('is_cashier_device', 'true');
+                        alert(`✅ تم الدخول بنجاح! تم اعتماد هذا الجهاز كـ (كاشير رسمي) لفرع [${currentSelectedBranch.name}] وسيتم إرسال الرنات والتنبيهات إليه فوراً.`);
+                    } else {
+                        alert(`✅ تم تسجيل الدخول بنجاح! (المرة رقم ${authCount} من 3 لاعتماد هذا الجهاز لاستقبال التنبيهات الصوتية).`);
+                    }
+
                     document.getElementById('adminPassInput').value = '';
                     document.getElementById('adminAuthView').style.display = 'none';
                     document.getElementById('adminDashboardView').style.display = 'block';
 
+                    setupBranchChatNotifications();
                     fetchAdminBranchItems(currentSelectedBranch.id);
                 } else {
                     alert("كلمة المرور غير صحيحة!");
