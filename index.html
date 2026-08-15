@@ -341,7 +341,7 @@
         #uAddr { transition: all 0.2s ease; }
         .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
 
-        /* --- تصميم شاشة نجاح الطلب مع زر فتح الشات المباشر --- */
+        /* --- تصميم شاشة نجاح الطلب --- */
         .success-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75); z-index: 5000; display: none;
@@ -524,6 +524,50 @@
             gap: 6px;
         }
 
+        /* --- تابات الفروع الثلاثة في سجل الطلبات --- */
+        .order-branch-tabs {
+            display: flex;
+            gap: 6px;
+            background: #e2e8f0;
+            padding: 6px;
+            border-radius: 18px;
+            margin-bottom: 14px;
+            border: 1px solid #cbd5e1;
+        }
+        .order-tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 4px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .order-tab-btn.active {
+            background: #e65100;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.35);
+        }
+        .order-tab-badge {
+            background: rgba(0, 0, 0, 0.12);
+            color: inherit;
+            font-size: 0.72rem;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-weight: 900;
+        }
+        .order-tab-btn.active .order-tab-badge {
+            background: #ffffff;
+            color: #e65100;
+        }
+
         .admin-custom-input-group {
             margin-bottom: 12px;
             text-align: right;
@@ -596,161 +640,139 @@
         .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
 
         /* ========================================================
-           كارت الأوردر فائق التباين والوضوح
+           تصميم كارت الطلب المتطابق تماماً مع الصورة المطلوبة
            ======================================================== */
-        .order-pro-card {
-            background: var(--white);
-            border: 2px solid var(--border-color);
-            border-radius: 18px;
-            padding: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 6px 18px var(--card-shadow);
+        .order-card-custom {
+            background: #ffffff;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
             position: relative;
-            overflow: hidden;
         }
 
-        .order-pro-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 6px;
-            height: 100%;
-            background: var(--accent);
-        }
-
-        .order-card-header {
+        .order-custom-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
-            border-bottom: 1.5px dashed var(--border-color);
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
-        .order-id-badge {
-            background: rgba(230, 81, 0, 0.12);
-            color: var(--accent);
-            padding: 3px 10px;
-            border-radius: 8px;
+        .order-user-name-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .order-user-icon {
+            color: #0284c7;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-delete-btn-circ {
+            width: 28px;
+            height: 28px;
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.82rem;
             font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .order-delete-btn-circ:hover {
+            background: #ef4444;
+            color: #ffffff;
         }
 
-        .order-actions-top {
+        .order-contact-sub {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-right: 4px;
+        }
+        .order-contact-sub a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .order-items-box-custom {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+        }
+
+        .order-items-list-custom {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-items-list-custom li {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #334155;
+            line-height: 1.7;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .chat-app-btn {
-            background: #25D366;
-            color: #ffffff;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 10px;
-            font-size: 0.76rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
-            transition: transform 0.15s ease;
-        }
-        .chat-app-btn:active { transform: scale(0.95); }
-
-        .delete-single-order-btn {
-            background: rgba(255, 59, 48, 0.12);
-            color: #ff3b30;
-            border: 1px solid rgba(255, 59, 48, 0.25);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: 900;
-            font-size: 0.85rem;
-            transition: all 0.15s ease;
-        }
-        .delete-single-order-btn:hover {
-            background: #ff3b30;
-            color: #ffffff;
+        .order-items-list-custom li::before {
+            content: "▪";
+            color: #475569;
+            font-size: 0.9rem;
         }
 
-        .order-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .info-pill {
-            background: var(--bg);
-            border: 1px solid var(--border-color);
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-size: 0.78rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .info-pill.full-width {
-            grid-column: span 2;
-        }
-        .info-pill-title {
-            color: var(--desc-text);
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-        .info-pill-value {
-            color: var(--main-text);
-            font-weight: 800;
-        }
-
-        .order-items-box {
-            background: var(--bg);
-            border-radius: 12px;
-            padding: 10px 12px;
-            margin-bottom: 10px;
-            border: 1.5px solid var(--border-color);
-        }
-        .order-items-box-title {
-            font-size: 0.78rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 4px;
-            display: block;
-        }
-        .order-items-content {
-            font-size: 0.8rem;
-            color: var(--main-text);
-            line-height: 1.5;
-            white-space: pre-line;
-            font-weight: 700;
-        }
-
-        .order-card-footer {
+        .order-custom-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 8px;
-            border-top: 1.5px solid var(--border-color);
+            padding-top: 4px;
         }
-        .order-type-tag {
-            background: rgba(46, 125, 50, 0.12);
-            color: #2e7d32;
-            padding: 3px 10px;
-            border-radius: 8px;
-            font-size: 0.76rem;
-            font-weight: 800;
-        }
-        .order-total-price {
+
+        .order-total-price-custom {
             font-size: 1rem;
             font-weight: 900;
-            color: var(--yellow-gold);
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .order-chat-btn-custom {
+            background: #ef4444;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 8px 18px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transition: transform 0.15s ease;
+        }
+        .order-chat-btn-custom:active {
+            transform: scale(0.95);
         }
 
         /* ========================================================
@@ -852,7 +874,7 @@
 
     <div id="menuList" class="menu-list"></div>
 
-    <!-- نافذة نجاح الطلب مع زر شات الأوردر للزبون -->
+    <!-- نافذة نجاح الطلب -->
     <div class="success-modal" id="successModal">
         <div class="success-card">
             <div class="success-icon-wrapper">
@@ -920,7 +942,7 @@
                         <div class="card-badge-num gray">2</div>
                         <div class="card-avatar-box blue-bg">📜</div>
                         <div class="card-title">الطلبات الواردة</div>
-                        <div class="card-subtitle">متابعة الطلبات المباشرة والشات الداخلي مع العملاء</div>
+                        <div class="card-subtitle">متابعة الطلبات المباشرة مقسمة حسب الفروع والشات المباشر</div>
                     </div>
 
                     <!-- كارت 3: تغيير كلمة المرور -->
@@ -968,15 +990,20 @@
         </div>
     </div>
 
-    <!-- نافذة 2: الطلبات الواردة الطائرة مع الشات المباشر الداخلي -->
+    <!-- نافذة 2: الطلبات الواردة الطائرة مع تقسيم الخانات حسب الفروع -->
     <div class="floating-sub-modal" id="logsModal" onclick="if(event.target==this) closeFloatingModal('logsModal')">
         <div class="floating-card-box">
             <div class="floating-header">
                 <h4>📜 الطلبات الواردة (Live)</h4>
                 <button class="admin-close" onclick="closeFloatingModal('logsModal')">✕</button>
             </div>
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                <button onclick="clearOrderLogs()" style="background: #ff3b30; color: white; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 6px rgba(255, 59, 48, 0.25);">🗑️ حذف جميع الطلبات</button>
+
+            <!-- خانات (تابات) الفروع الثلاثة -->
+            <div class="order-branch-tabs" id="orderBranchTabs"></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <span id="currentBranchOrdersCount" style="font-size: 0.85rem; font-weight: 800; color: #475569;"></span>
+                <button onclick="clearCurrentBranchOrderLogs()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">🗑️ حذف طلبات هذا الفرع</button>
             </div>
             <div id="adminOrdersLogsList">لا توجد طلبات مسجلة حتى الآن.</div>
         </div>
@@ -1098,6 +1125,7 @@
 
         let currentSelectedBranch = branchesData[0]; 
         let adminSelectedBranchId = branchesData[0].id;
+        let selectedOrderLogBranchId = branchesData[0].id;
         let menuUnsubscribe = null;
         let realtimeMenuUnsubscribe = null;
 
@@ -1317,6 +1345,7 @@
                 });
                 orderLogsList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
+                renderOrderBranchTabs();
                 renderAdminOrdersLogs();
 
                 if (!isFirstLoad && snapshot.docChanges().some(change => change.type === 'added')) {
@@ -1645,6 +1674,10 @@
                 if (modalId === 'statusModal') {
                     fetchAdminBranchItems(adminSelectedBranchId);
                 }
+                if (modalId === 'logsModal') {
+                    renderOrderBranchTabs();
+                    renderAdminOrdersLogs();
+                }
             }
         }
 
@@ -1761,64 +1794,93 @@
             }
         }
 
-        // كروت الطلبات فائقة التباين والوضوح مع الشات المباشر الداخلي
-        function renderAdminOrdersLogs() {
-            const container = document.getElementById('adminOrdersLogsList');
+        // ========================================================
+        // رندر خانات الفروع الثلاثة وتوزيع الطلبات
+        // ========================================================
+        function renderOrderBranchTabs() {
+            const container = document.getElementById('orderBranchTabs');
             if (!container) return;
 
-            if (orderLogsList.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:30px; color:var(--desc-text); font-weight:800;">لا توجد طلبات مسجلة حتى الآن.</p>';
+            container.innerHTML = branchesData.map(b => {
+                const count = orderLogsList.filter(o => o.branch === b.name || (o.branch && o.branch.includes(b.name))).length;
+                const isActive = b.id === selectedOrderLogBranchId;
+
+                return `
+                <button type="button" class="order-tab-btn ${isActive ? 'active' : ''}" onclick="switchOrderLogBranch('${b.id}')">
+                    <span>${b.name}</span>
+                    <span class="order-tab-badge">${count}</span>
+                </button>`;
+            }).join('');
+        }
+
+        function switchOrderLogBranch(branchId) {
+            selectedOrderLogBranchId = branchId;
+            renderOrderBranchTabs();
+            renderAdminOrdersLogs();
+        }
+
+        // ========================================================
+        // رندر كروت الطلبات المتوافقة مع الصورة المرفقة
+        // ========================================================
+        function renderAdminOrdersLogs() {
+            const container = document.getElementById('adminOrdersLogsList');
+            const countLabel = document.getElementById('currentBranchOrdersCount');
+            if (!container) return;
+
+            const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+            const filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+
+            if (countLabel) {
+                countLabel.innerText = `طلبات فرع ${activeBranchObj.name}: (${filteredOrders.length})`;
+            }
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding:30px; color:var(--desc-text); font-weight:800;">لا توجد طلبات مسجلة لفرع ${activeBranchObj.name} حتى الآن.</p>`;
                 return;
             }
 
-            container.innerHTML = orderLogsList.map(order => {
+            container.innerHTML = filteredOrders.map(order => {
                 const safeCustomerName = (order.name || 'عميل').replace(/'/g, "\\'");
+                
+                // تنظيف وتنسيق قائمة الأصناف مثل الصورة
+                const itemsLines = (order.itemsText || '').split('\n').filter(l => l.trim().length > 0);
+                const itemsHtml = itemsLines.map(line => `<li>${line}</li>`).join('');
 
                 return `
-                <div class="order-pro-card">
-                    <div class="order-card-header">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <span class="order-id-badge">طلب #${order.orderId || ''}</span>
-                            <span style="font-size:0.72rem; color:var(--desc-text); font-weight:800;">${order.dateFormatted || ''}</span>
+                <div class="order-card-custom">
+                    <!-- هيدر الكارت: الاسم، زر الحذف -->
+                    <div class="order-custom-header">
+                        <div class="order-user-name-box">
+                            <span class="order-user-icon">👤</span>
+                            <span>${order.name || 'عميل بدون اسم'}</span>
                         </div>
-                        <div class="order-actions-top">
-                            <button class="chat-app-btn" onclick="openInAppChat('${order.orderId}', '${safeCustomerName}', 'admin')">💬 شات الأوردر</button>
-                            <button class="delete-single-order-btn" title="حذف هذا الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
-                        </div>
+                        <button class="order-delete-btn-circ" title="حذف الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
                     </div>
 
-                    <div class="order-info-grid">
-                        <div class="info-pill">
-                            <span class="info-pill-title">العميل:</span>
-                            <span class="info-pill-value">${order.name || 'غير محدد'}</span>
-                        </div>
-                        <div class="info-pill">
-                            <span class="info-pill-title">الهاتف:</span>
-                            <span class="info-pill-value"><a href="tel:${order.phone}" style="color:var(--accent); text-decoration:none;">${order.phone || ''}</a></span>
-                        </div>
-                        <div class="info-pill">
-                            <span class="info-pill-title">الفرع:</span>
-                            <span class="info-pill-value">فرع ${order.branch || 'الرئيسي'}</span>
-                        </div>
-                        <div class="info-pill">
-                            <span class="info-pill-title">النوع:</span>
-                            <span class="info-pill-value">${order.type || ''}</span>
-                        </div>
-                        ${order.address ? `
-                        <div class="info-pill full-width">
-                            <span class="info-pill-title">العنوان:</span>
-                            <span class="info-pill-value">${order.address}</span>
-                        </div>` : ''}
+                    <!-- الهاتف والعنوان -->
+                    <div class="order-contact-sub">
+                        <span>📞 <a href="tel:${order.phone}">${order.phone || ''}</a></span>
+                        <span>|</span>
+                        <span>📍 ${order.address || 'استلام فرع'}</span>
                     </div>
 
-                    <div class="order-items-box">
-                        <span class="order-items-box-title">الأصناف المطلوبة:</span>
-                        <div class="order-items-content">${order.itemsText || ''}</div>
+                    <!-- بوكس الأصناف المطلوبة -->
+                    <div class="order-items-box-custom">
+                        <ul class="order-items-list-custom">
+                            ${itemsHtml}
+                        </ul>
                     </div>
 
-                    <div class="order-card-footer">
-                        <span class="order-type-tag">${order.type || 'طلب جديد'}</span>
-                        <span class="order-total-price">الإجمالي: ${order.total || 0} ج.م</span>
+                    <!-- فوتر الكارت: الإجمالي والشات المباشر فقط -->
+                    <div class="order-custom-footer">
+                        <div class="order-total-price-custom">
+                            <span>💰</span>
+                            <span>الإجمالي: ${order.total || 0} ج.م</span>
+                        </div>
+                        <button class="order-chat-btn-custom" onclick="openInAppChat('${order.orderId}', '${safeCustomerName}', 'admin')">
+                            <span>💬</span>
+                            <span>الشات (0)</span>
+                        </button>
                     </div>
                 </div>`;
             }).join('');
@@ -1860,7 +1922,7 @@
             chatUnsubscribe = onSnapshot(collection(db, "order_chats", orderId, "messages"), (snapshot) => {
                 const msgs = [];
                 snapshot.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
-                msgs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+                msgs.sort((a, b) => (a.timestamp || 0) - (a.timestamp || 0));
 
                 if (msgs.length === 0) {
                     messagesContainer.innerHTML = '<p style="text-align:center; padding:20px; color:var(--desc-text); font-weight:700;">لا توجد رسائل سابقة. ابدأ المحادثة الآن!</p>';
@@ -1912,17 +1974,24 @@
             }
         }
 
-        async function clearOrderLogs() {
-            if (!confirm("هل أنت متأكد من رغبتك في مسح كافة الطلبات من السجل نهائياً؟")) return;
+        async function clearCurrentBranchOrderLogs() {
+            const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+            const filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+
+            if (filteredOrders.length === 0) {
+                return alert(`لا توجد طلبات لحذفها في فرع ${activeBranchObj.name}`);
+            }
+
+            if (!confirm(`هل أنت متأكد من رغبتك في مسح كافة طلبات فرع (${activeBranchObj.name}) فقط؟`)) return;
             try {
-                const { collection, getDocs, deleteDoc, doc } = window.firebaseModules;
+                const { deleteDoc, doc } = window.firebaseModules;
                 const db = window.db;
-                const querySnapshot = await getDocs(collection(db, "orders_log"));
-                querySnapshot.forEach(async (d) => {
-                    await deleteDoc(doc(db, "orders_log", d.id));
-                });
+                for (let o of filteredOrders) {
+                    await deleteDoc(doc(db, "orders_log", o.id));
+                }
+                alert(`تم مسح طلبات فرع ${activeBranchObj.name} بنجاح!`);
             } catch (e) {
-                alert("حدث خطأ أثناء حذف السجل");
+                alert("حدث خطأ أثناء حذف طلبات الفرع");
             }
         }
 
