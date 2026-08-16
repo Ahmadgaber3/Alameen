@@ -442,10 +442,46 @@
         }
 
         .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
-        .branches-container { margin: 15px 0; font-size: 0.82rem; color: var(--desc-text); text-align: right; background: var(--bg); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .branches-container { margin: 15px 0 10px 0; font-size: 0.82rem; color: var(--desc-text); text-align: right; background: var(--bg); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); }
         .branch-item { margin-bottom: 8px; }
+        .branch-item:last-child { margin-bottom: 0; }
         .branch-item strong { color: var(--accent); display: block; }
         
+        .complaints-box {
+            background: rgba(230, 81, 0, 0.08);
+            border: 1.5px dashed var(--accent);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .complaints-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .complaints-number {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--main-text);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            margin-top: 3px;
+        }
+
         .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
         .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
         .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
@@ -1235,6 +1271,18 @@
     <footer class="restaurant-footer">
         <div class="branches-container" id="footerBranchesContainer"></div>
 
+        <!-- بند الشكاوى والمقترحات -->
+        <div class="complaints-box">
+            <div class="complaints-title">
+                <span>⚠️</span>
+                <span>قسم الشكاوى والمقترحات</span>
+            </div>
+            <a href="tel:01006767442" class="complaints-number">
+                <span>📞</span>
+                <span>01006767442</span>
+            </a>
+        </div>
+
         <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
         <div class="dev-credit">
             Designed by eng / Ahmed Jaber
@@ -1434,7 +1482,6 @@
                     const priceS = cleanVal(cols[6]);
                     const desc = cols[7] ? cols[7].trim() : "";
 
-                    // ربط صورة الصنف تلقائياً باسم الصنف المكتوب في العمود الثاني B
                     let cleanImageName = name.replace(/^\.\/images\//, '').replace(/^images\//, '');
                     cleanImageName = cleanImageName.replace(/\.(png|jpeg|webp|jpg)$/i, '');
                     let img = cleanImageName ? `${IMAGES_PATH}${cleanImageName}.jpg` : `${IMAGES_PATH}default.jpg`;
