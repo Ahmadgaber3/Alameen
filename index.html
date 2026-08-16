@@ -1433,23 +1433,11 @@
                     const priceD = cleanVal(cols[5]);
                     const priceS = cleanVal(cols[6]);
                     const desc = cols[7] ? cols[7].trim() : "";
-                    let img = cols[8] ? cols[8].trim() : "";
 
-                    // التأكد من تحويل واستخدام صيغة JPG دائماً للصور
-                    if (img) {
-                        if (img.startsWith('http://') || img.startsWith('https://')) {
-                            // رابط كامل خارجي
-                        } else {
-                            let cleanImg = img.replace(/^\.\/images\//, '').replace(/^images\//, '');
-                            cleanImg = cleanImg.replace(/\.(png|jpeg|webp)$/i, '.jpg');
-                            if (!cleanImg.toLowerCase().endsWith('.jpg')) {
-                                cleanImg += '.jpg';
-                            }
-                            img = `${IMAGES_PATH}${cleanImg}`;
-                        }
-                    } else {
-                        img = `${IMAGES_PATH}default.jpg`;
-                    }
+                    // ربط صورة الصنف تلقائياً باسم الصنف المكتوب في العمود الثاني B
+                    let cleanImageName = name.replace(/^\.\/images\//, '').replace(/^images\//, '');
+                    cleanImageName = cleanImageName.replace(/\.(png|jpeg|webp|jpg)$/i, '');
+                    let img = cleanImageName ? `${IMAGES_PATH}${cleanImageName}.jpg` : `${IMAGES_PATH}default.jpg`;
 
                     let variants = [];
                     if (priceS !== '' && priceD !== '') {
