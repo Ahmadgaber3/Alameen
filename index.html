@@ -1334,9 +1334,9 @@
                     <span>⚠️</span>
                     <span>قسم الشكاوى والمقترحات - المعادي والفسطاط</span>
                 </div>
-                <a href="tel:01274505042" class="complaints-number">
+                <a href="tel:01023388168" class="complaints-number">
                     <span>📞</span>
-                    <span>01274505042</span>
+                    <span>01023388168</span>
                 </a>
             </div>
         </div>
@@ -1400,7 +1400,7 @@
     </script>
 
     <script>
-        // دالة العداد المحسنة لضمان البدء
+        // دالة العداد المحسنة
         function startCreativeCounter() {
             const counterEl = document.getElementById('loadPercentage');
             const barFill = document.getElementById('progressBarFill');
@@ -1477,8 +1477,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAndHandleInstallBtn();
-            // تشغيل العداد عند تحميل الصفحة مباشرة
-            startCreativeCounter();
+            startCreativeCounter(); // استدعاء العداد مباشرة
         });
 
         const IMAGES_PATH = "./images/"; 
@@ -1969,7 +1968,7 @@
             document.getElementById('branchModal').style.display = 'none';
 
             const adminNotice = document.getElementById('adminAuthBranchName');
-            if (adminNotice) adminNotice.innerText = `📍 الإدارة لفرع: ${branchObj.name}`;
+            if (adminNotice) adminNotice.innerText = `?? الإدارة لفرع: ${branchObj.name}`;
 
             const adminText = document.getElementById('activeAdminBranchText');
             if (adminText) adminText.innerText = `📍 الفرع الحالي: فرع ${branchObj.name}`;
