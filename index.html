@@ -31,7 +31,7 @@
             --border-color: #d1d5db;
         }
 
-        /* تنسيق كارت العروض - تم التعديل لأبعاد مربعة 1:1 */
+        /* تنسيق كارت العروض */
         .food-card[data-category*="عروض"],
         .food-card[data-category*="العروض"] {
             flex-direction: column !important;
@@ -45,7 +45,7 @@
         .food-card[data-category*="العروض"] .item-img-box {
             width: 100% !important;
             height: auto !important;
-            aspect-ratio: 1 / 1 !important; /* أبعاد مربعة */
+            aspect-ratio: 1 / 1 !important;
             max-height: 480px !important;
             border-radius: 20px !important;
             overflow: hidden !important;
@@ -114,14 +114,14 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 320px;
-            padding: 0 20px;
+            max-width: 360px;
+            padding: 0 15px;
         }
 
         .loading-bar { 
             width: 100%; 
-            max-width: 240px; 
-            height: 7px; 
+            max-width: 260px; 
+            height: 8px; 
             background: rgba(0, 0, 0, 0.15); 
             margin: 0 auto 15px auto; 
             border-radius: 10px; 
@@ -139,21 +139,24 @@
         }
         
         .creative-counter {
-            font-size: 0.95rem;
-            font-weight: 800;
+            font-size: 1.2rem;
+            font-weight: 900;
             color: #ffffff;
-            background: rgba(0, 0, 0, 0.65);
-            padding: 8px 22px;
-            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 10px 24px;
+            border-radius: 35px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.5px;
         }
         .creative-counter span {
             color: var(--accent);
             font-variant-numeric: tabular-nums;
+            font-size: 1.25rem;
         }
         
         .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
@@ -268,7 +271,6 @@
         .badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--white); transform: scale(0); transition: 0.2s ease; }
         .badge.show { transform: scale(1); }
 
-        /* زر الشات في الهيدر بجانب السلة */
         .client-header-chat-btn {
             width: 38px;
             height: 38px;
@@ -575,8 +577,183 @@
         .order-type-btn { flex: 1; border: none; background: transparent; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--desc-text); transition: all 0.2s ease; }
         .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2); }
 
-        .user-fields input, .user-fields select { background: var(--bg); border: 1.5px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; outline: none; }
+        .user-fields input { background: var(--bg); border: 1.5px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; outline: none; }
         #uAddr { transition: all 0.2s ease; }
+
+        /* زر اختيار المنطقة المطور والراقي بالخلفية البيضاء */
+        .chic-area-picker-btn {
+            width: 100%;
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            text-align: right;
+        }
+        .chic-area-picker-btn:hover, .chic-area-picker-btn:active {
+            border-color: var(--accent);
+            transform: scale(0.99);
+        }
+        .chic-area-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chic-area-icon {
+            font-size: 1.25rem;
+            color: var(--accent);
+            background: rgba(230, 81, 0, 0.1);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chic-area-details {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+        .chic-area-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--main-text);
+        }
+        .chic-area-sub {
+            font-size: 0.75rem;
+            color: var(--desc-text);
+            font-weight: 600;
+        }
+        .chic-area-arrow {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 900;
+        }
+
+        /* نافذة المودال لاختيار المناطق (Bottom Sheet) */
+        .areas-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.72);
+            z-index: 3500;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        .areas-sheet {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 28px 28px 0 0;
+            padding: 20px 18px 25px 18px;
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.25);
+            animation: smoothSlideUp 0.22s ease-out;
+        }
+        .areas-sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .areas-sheet-header h3 {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .areas-close-btn {
+            background: var(--bg);
+            border: 1px solid var(--border-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--main-text);
+        }
+        .areas-search-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--main-text);
+            margin-bottom: 12px;
+            outline: none;
+        }
+        .areas-search-input:focus {
+            border-color: var(--accent);
+            background: #ffffff;
+        }
+        .areas-list-scroll {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 2px;
+            max-height: 55vh;
+        }
+        .area-item-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .area-item-card:hover, .area-item-card:active {
+            border-color: var(--accent);
+            background: rgba(230, 81, 0, 0.04);
+            transform: scale(0.99);
+        }
+        .area-item-card.selected {
+            border-color: var(--accent);
+            background: rgba(230, 81, 0, 0.08);
+        }
+        .area-item-name {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .area-item-fee {
+            background: rgba(230, 81, 0, 0.12);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(230, 81, 0, 0.25);
+        }
+
         .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
 
         .success-modal {
@@ -981,7 +1158,7 @@
             font-size: 0.84rem;
             font-weight: 800;
             color: #334155;
-            line-host: 1.7;
+            line-height: 1.7;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1105,7 +1282,7 @@
     <div id="splash-screen">
         <div class="loader-content">
             <div class="loading-bar"><span id="progressBarFill"></span></div>
-            <div class="creative-counter">جاري التحضير... <span id="loadPercentage">0</span>%</div>
+            <div class="creative-counter">ألذ دجاج مقرمش # <span id="loadPercentage">0</span>%</div>
         </div>
     </div>
 
@@ -1348,6 +1525,7 @@
         </div>
     </footer>
 
+    <!-- مودال السلة -->
     <div class="modal" id="cartModal" onclick="if(event.target==this) toggleCart(false)">
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
@@ -1379,16 +1557,38 @@
             <div class="user-fields">
                 <input type="text" id="uName" placeholder="الاسم بالكامل">
                 <input type="tel" id="uPhone" placeholder="رقم الموبايل">
-                <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
                 
-                <div id="branchDeliveryAreaBox" style="display: none; margin-bottom: 10px; text-align: right;">
-                    <label id="deliveryAreaLabel" style="display: block; font-size: 0.85rem; font-weight: 800; color: var(--main-text); margin-bottom: 6px;">اختر منطقة التوصيل *</label>
-                    <select id="uDeliveryAreaSelect" onchange="updateCart()">
-                        <option value="" disabled selected>-- اختر منطقة التوصيل --</option>
-                    </select>
+                <!-- زر اختيار المنطقة المطور -->
+                <div id="branchDeliveryAreaBox" style="display: none;">
+                    <div class="chic-area-picker-btn" onclick="openAreasSheet()">
+                        <div class="chic-area-content">
+                            <div class="chic-area-icon">📍</div>
+                            <div class="chic-area-details">
+                                <span class="chic-area-title" id="selectedAreaDisplayTitle">اضغط لاختيار منطقة التوصيل</span>
+                                <span class="chic-area-sub" id="selectedAreaDisplaySub">حدد منطقتك لحساب التوصيل تلقائياً</span>
+                            </div>
+                        </div>
+                        <span class="chic-area-arrow">تغيير ❯</span>
+                    </div>
                 </div>
+
+                <input type="text" id="uAddr" placeholder="العنوان بالتفصيل (اسم الشارع - العمارة - رقم الشقة)">
             </div>
             <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب</button>
+        </div>
+    </div>
+
+    <!-- نافذة عصرية لاختيار المناطق (Bottom Sheet) بخلفية بيضاء راقية -->
+    <div class="areas-modal" id="areasModal" onclick="if(event.target==this) closeAreasSheet()">
+        <div class="areas-sheet">
+            <div class="areas-sheet-header">
+                <h3 id="areasModalTitle">📍 اختر منطقة التوصيل</h3>
+                <button class="areas-close-btn" onclick="closeAreasSheet()">✕</button>
+            </div>
+            <input type="text" class="areas-search-input" id="areaSearchField" placeholder="🔍 ابحث عن منطقتك..." oninput="filterDeliveryAreasList()">
+            <div class="areas-list-scroll" id="areasListContainer">
+                <!-- يتم ملؤها ديناميكياً -->
+            </div>
         </div>
     </div>
 
@@ -1514,11 +1714,12 @@
                 { name: "حلوان", fee: 110 },
                 { name: "المعصرة", fee: 70 },
                 { name: "المعادي", fee: 45 },
-                { name: "المدن - معادي", fee: 40 },
+                { name: "المدق - المعادي", fee: 40 },
                 { name: "طرة", fee: 60 },
                 { name: "البحر الأعظم", fee: 60 },
                 { name: "المنيل", fee: 50 },
-                { name: "المنيب", fee: 60 }
+                { name: "المنيب", fee: 60 },
+                { name: "منطقة أخرى", fee: 0, isCustom: true }
             ],
             fustat: [
                 { name: "المنيل", fee: 50 },
@@ -1537,7 +1738,7 @@
                 { name: "منتجع عين الحياة", fee: 20 },
                 { name: "الإمام الشافعي", fee: 30 },
                 { name: "الإمام الليثي", fee: 30 },
-                { name: "الباتية", fee: 45 },
+                { name: "البساتين", fee: 45 },
                 { name: "بير أم سلطان", fee: 45 },
                 { name: "دار السلام", fee: 45 },
                 { name: "مجرى العيون", fee: 30 },
@@ -1548,26 +1749,105 @@
                 { name: "القلعة", fee: 40 },
                 { name: "مدينة نصر", fee: 100 },
                 { name: "الملك الصالح", fee: 40 },
-                { name: "ميدان الجيزة", fee: 80 }
+                { name: "ميدان الجيزة", fee: 80 },
+                { name: "منطقة أخرى", fee: 0, isCustom: true }
+            ],
+            shobra: [
+                { name: "شبرا الخيمة والمناطق المجاورة", fee: 30 },
+                { name: "منطقة أخرى", fee: 0, isCustom: true }
             ]
         };
 
+        let selectedDeliveryAreaObj = null;
+
         function updateDeliveryAreaOptions() {
-            const selectEl = document.getElementById('uDeliveryAreaSelect');
-            const labelEl = document.getElementById('deliveryAreaLabel');
+            const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
+            const areas = branchDeliveryAreasMap[currentBranchId] || [];
             const boxEl = document.getElementById('branchDeliveryAreaBox');
-            if (!selectEl || !boxEl) return;
+            
+            selectedDeliveryAreaObj = null;
+            const titleEl = document.getElementById('selectedAreaDisplayTitle');
+            const subEl = document.getElementById('selectedAreaDisplaySub');
+            if (titleEl) titleEl.innerText = "اضغط لاختيار منطقة التوصيل";
+            if (subEl) subEl.innerText = "حدد منطقتك لحساب التوصيل تلقائياً";
+
+            if (boxEl) {
+                if (areas.length > 0 && selectedOrderType === 'delivery') {
+                    boxEl.style.display = 'block';
+                } else {
+                    boxEl.style.display = 'none';
+                }
+            }
+        }
+
+        function openAreasSheet() {
+            const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
+            const modalTitle = document.getElementById('areasModalTitle');
+            if (modalTitle) modalTitle.innerText = `📍 مناطق توصيل (فرع ${currentSelectedBranch.name})`;
+
+            const searchField = document.getElementById('areaSearchField');
+            if (searchField) searchField.value = '';
+
+            renderAreasSheetList('');
+            document.getElementById('areasModal').style.display = 'flex';
+        }
+
+        function closeAreasSheet() {
+            document.getElementById('areasModal').style.display = 'none';
+        }
+
+        function renderAreasSheetList(searchQuery) {
+            const container = document.getElementById('areasListContainer');
+            if (!container) return;
 
             const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
-            const areas = branchDeliveryAreasMap[currentBranchId];
+            const areas = branchDeliveryAreasMap[currentBranchId] || [];
 
-            if (areas && areas.length > 0) {
-                if (labelEl) labelEl.innerText = `اختر منطقة التوصيل (فرع ${currentSelectedBranch.name}) *`;
-                selectEl.innerHTML = '<option value="" disabled selected>-- اختر منطقة التوصيل --</option>' +
-                    areas.map(a => `<option value="${a.name}" data-fee="${a.fee}">${a.name} (${a.fee} ج.م)</option>`).join('');
-            } else {
-                selectEl.innerHTML = '<option value="" disabled selected>-- اختر منطقة التوصيل --</option>';
+            let filtered = areas;
+            if (searchQuery) {
+                const q = searchQuery.trim().toLowerCase();
+                filtered = areas.filter(a => a.name.toLowerCase().includes(q));
             }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding:30px 10px; color:var(--desc-text); font-weight:800;">لا توجد منطقة مطابقة لبحثك</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(a => {
+                const isSelected = selectedDeliveryAreaObj && selectedDeliveryAreaObj.name === a.name;
+                const safeName = a.name.replace(/'/g, "\\'");
+                const feeText = a.isCustom ? 'يحدد مع المطعم' : `${a.fee} ج.م`;
+                const customBadgeStyle = a.isCustom ? 'background: rgba(33, 150, 243, 0.12); color: #0284c7; border-color: rgba(2, 132, 199, 0.3);' : '';
+
+                return `
+                <div class="area-item-card ${isSelected ? 'selected' : ''}" onclick="selectDeliveryArea('${safeName}', ${a.fee}, ${a.isCustom ? 'true' : 'false'})">
+                    <span class="area-item-name">
+                        <span>${a.isCustom ? '📍' : '🛵'}</span>
+                        <span>${a.name}</span>
+                    </span>
+                    <span class="area-item-fee" style="${customBadgeStyle}">${feeText}</span>
+                </div>`;
+            }).join('');
+        }
+
+        function filterDeliveryAreasList() {
+            const q = document.getElementById('areaSearchField').value;
+            renderAreasSheetList(q);
+        }
+
+        function selectDeliveryArea(name, fee, isCustom) {
+            selectedDeliveryAreaObj = { name: name, fee: fee, isCustom: !!isCustom };
+            
+            const titleEl = document.getElementById('selectedAreaDisplayTitle');
+            const subEl = document.getElementById('selectedAreaDisplaySub');
+            if (titleEl) titleEl.innerText = `${name}`;
+            if (subEl) {
+                subEl.innerText = isCustom ? "رسوم التوصيل: يحدد السعر مع المطعم" : `رسوم التوصيل: ${fee} ج.م`;
+            }
+
+            closeAreasSheet();
+            updateCart();
         }
 
         let menuData = [], cart = [];
@@ -2196,7 +2476,7 @@
         function isExemptCategory(cat) {
             if (!cat) return false;
             const c = cat.trim().toLowerCase();
-            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية');
+            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية') || c.includes('عروض') || c.includes('العروض') || c.includes('offer');
         }
 
         function orderCardItem(e, btn, cardId, baseName, img) {
@@ -2332,7 +2612,8 @@
 
             let deliveryFee = 0;
             const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
-            const hasBranchAreas = branchDeliveryAreasMap[currentBranchId] && branchDeliveryAreasMap[currentBranchId].length > 0;
+            const areas = branchDeliveryAreasMap[currentBranchId] || [];
+            const hasBranchAreas = areas.length > 0;
             const deliveryBox = document.getElementById('branchDeliveryAreaBox');
             const feeRow = document.getElementById('deliveryFeeRow');
             const feeAmountEl = document.getElementById('deliveryFeeAmount');
@@ -2340,13 +2621,15 @@
 
             if (hasBranchAreas && selectedOrderType === 'delivery') {
                 if (deliveryBox) deliveryBox.style.display = 'block';
-                const selectEl = document.getElementById('uDeliveryAreaSelect');
-                if (selectEl && selectEl.selectedIndex > 0) {
-                    const selectedOpt = selectEl.options[selectEl.selectedIndex];
-                    deliveryFee = parseFloat(selectedOpt.dataset.fee) || 0;
+                if (selectedDeliveryAreaObj) {
+                    deliveryFee = parseFloat(selectedDeliveryAreaObj.fee) || 0;
+                    if (feeRow) feeRow.style.display = 'flex';
+                    if (feeAmountEl) {
+                        feeAmountEl.innerText = selectedDeliveryAreaObj.isCustom ? "يحدد مع المطعم" : `${deliveryFee} ج.م`;
+                    }
+                } else {
+                    if (feeRow) feeRow.style.display = 'none';
                 }
-                if (feeRow) feeRow.style.display = 'flex';
-                if (feeAmountEl) feeAmountEl.innerText = `${deliveryFee} ج.م`;
             } else {
                 if (deliveryBox) deliveryBox.style.display = 'none';
                 if (feeRow) feeRow.style.display = 'none';
@@ -2366,15 +2649,18 @@
             const deliveryBtn = document.getElementById('deliveryBtn');
             const takeawayBtn = document.getElementById('takeawayBtn');
             const addrInput = document.getElementById('uAddr');
+            const areaBox = document.getElementById('branchDeliveryAreaBox');
 
             if (type === 'delivery') {
                 deliveryBtn.classList.add('active');
                 takeawayBtn.classList.remove('active');
                 addrInput.style.display = 'block';
+                if (areaBox) areaBox.style.display = 'block';
             } else {
                 takeawayBtn.classList.add('active');
                 deliveryBtn.classList.remove('active');
                 addrInput.style.display = 'none';
+                if (areaBox) areaBox.style.display = 'none';
             }
             updateCart();
         }
@@ -2394,17 +2680,16 @@
             let selectedAreaName = '';
             let deliveryFeeVal = 0;
             const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
-            const hasBranchAreas = branchDeliveryAreasMap[currentBranchId] && branchDeliveryAreasMap[currentBranchId].length > 0;
+            const areas = branchDeliveryAreasMap[currentBranchId] || [];
+            const hasBranchAreas = areas.length > 0;
 
             if (selectedOrderType === 'delivery') {
                 if (hasBranchAreas) {
-                    const selectEl = document.getElementById('uDeliveryAreaSelect');
-                    if (!selectEl || selectEl.selectedIndex <= 0) {
+                    if (!selectedDeliveryAreaObj) {
                         return alert(`يرجى اختيار منطقة التوصيل الخاصة بفرع ${currentSelectedBranch.name}`);
                     }
-                    const selectedOpt = selectEl.options[selectEl.selectedIndex];
-                    selectedAreaName = selectedOpt.value;
-                    deliveryFeeVal = parseFloat(selectedOpt.dataset.fee) || 0;
+                    selectedAreaName = selectedDeliveryAreaObj.name;
+                    deliveryFeeVal = selectedDeliveryAreaObj.fee || 0;
                 } else {
                     if (!a) {
                         return alert("يرجى إدخال عنوان التوصيل بالتفصيل");
@@ -2418,8 +2703,12 @@
                 return `${index + 1}. ${i.name} [${i.category}] - (${i.price} ج.م)`;
             }).join('\n');
 
-            if (deliveryFeeVal > 0) {
-                orderDetailsStr += `\n📦 توصيل لمنطقة (${selectedAreaName}): ${deliveryFeeVal} ج.م`;
+            if (selectedDeliveryAreaObj) {
+                if (selectedDeliveryAreaObj.isCustom) {
+                    orderDetailsStr += `\n📦 توصيل لمنطقة (${selectedAreaName}): يتم تحديد سعر التوصيل مع المطعم`;
+                } else if (deliveryFeeVal > 0) {
+                    orderDetailsStr += `\n📦 توصيل لمنطقة (${selectedAreaName}): ${deliveryFeeVal} ج.م`;
+                }
             }
 
             const randomOrderId = Math.floor(1000 + Math.random() * 9000);
@@ -2465,7 +2754,7 @@
                 `------------------------------------\n` +
                 `🛒 *الأصناف المطلوبـة:*\n${orderDetailsStr}\n` +
                 `------------------------------------\n` +
-                `💰 *الإجمالي الكلي:* ${currentTotal} ج.م`
+                `💰 *الإجمالي الكلي:* ${currentTotal} ج.م` + (selectedDeliveryAreaObj && selectedDeliveryAreaObj.isCustom ? ' (يضاف سعر التوصيل بالاتفاق مع المطعم)' : '')
             );
 
             window.open(`https://wa.me/${waNumber}?text=${textMsg}`, '_blank');
