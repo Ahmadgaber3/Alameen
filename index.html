@@ -31,6 +31,47 @@
             --border-color: #d1d5db;
         }
 
+        /* تنسيق خاص لقسم العروض لجعل الصور كبيرة */
+        .food-card[data-category*="عروض"],
+        .food-card[data-category*="العروض"] {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            padding: 12px !important;
+            gap: 12px !important;
+            border-radius: 26px !important;
+        }
+
+        .food-card[data-category*="عروض"] .item-img-box,
+        .food-card[data-category*="العروض"] .item-img-box {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 4 / 5 !important; /* النسبة الطولية لبوسترات العروض */
+            max-height: 480px !important;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            background: #111;
+        }
+
+        .food-card[data-category*="عروض"] .item-img-box img,
+        .food-card[data-category*="العروض"] .item-img-box img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+
+        .food-card[data-category*="عروض"] .food-info,
+        .food-card[data-category*="العروض"] .food-info {
+            min-height: auto !important;
+            width: 100% !important;
+            padding: 4px 2px 2px 2px !important;
+        }
+
+        .food-card[data-category*="عروض"] .food-name,
+        .food-card[data-category*="العروض"] .food-name {
+            font-size: 1.15rem !important;
+            font-weight: 900 !important;
+        }
+
         body.dark-mode {
             --bg: #0f1115; 
             --main-text: #f8fafc;
@@ -1171,7 +1212,7 @@
                     <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px; padding: 10px; margin-bottom: 15px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--accent);" id="adminAuthBranchName">
                         📍 الإدارة لفرع: ...
                     </div>
-                    <p style="margin-bottom: 12px; font-weight: 800; font-size: 0.88rem; text-align: center; color: var(--desc-text);">أدخل كلمة المرور للدخول للوحة:</p>
+                    <p style="margin-bottom: 12px; font-weight: 800; font-size: 0.88rem; text-align: center; color: var(--desc-text);">أدخل كلمة المرور للدخول لللوحة:</p>
                     
                     <input type="password" id="adminPassInput" placeholder="كلمة المرور" autofocus>
                     <button onclick="verifyAdminPassword()">دخول لوحة التحكم</button>
@@ -1277,15 +1318,27 @@
     <footer class="restaurant-footer">
         <div class="branches-container" id="footerBranchesContainer"></div>
 
-        <div class="complaints-box">
-            <div class="complaints-title">
-                <span>⚠️</span>
-                <span>قسم الشكاوى والمقترحات</span>
+        <div class="complaints-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <div class="complaints-box">
+                <div class="complaints-title">
+                    <span>⚠️</span>
+                    <span>قسم الشكاوى والمقترحات - شبرا</span>
+                </div>
+                <a href="tel:01155766404" class="complaints-number">
+                    <span>📞</span>
+                    <span>01155766404</span>
+                </a>
             </div>
-            <a href="tel:01006767442" class="complaints-number">
-                <span>📞</span>
-                <span>01006767442</span>
-            </a>
+            <div class="complaints-box">
+                <div class="complaints-title">
+                    <span>⚠️</span>
+                    <span>قسم الشكاوى والمقترحات - المعادي والفسطاط</span>
+                </div>
+                <a href="tel:01023388168" class="complaints-number">
+                    <span>📞</span>
+                    <span>01023388168</span>
+                </a>
+            </div>
         </div>
 
         <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
@@ -1422,8 +1475,8 @@
 
         const branchesData = [
             { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
-            { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201010430950', altPhone: '01155766404' },
-            { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201274505042', altPhone: '01055388545' }
+            { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201155766404', altPhone: '01155766404' },
+            { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201023388168', altPhone: '01055388545' }
         ];
 
         let savedBranchId = localStorage.getItem('selected_branch_id') || branchesData[0].id;
