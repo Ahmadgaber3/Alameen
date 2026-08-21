@@ -45,7 +45,7 @@
         .food-card[data-category*="العروض"] .item-img-box {
             width: 100% !important;
             height: auto !important;
-            aspect-ratio: 1 / 1 !important; 
+            aspect-ratio: 1 / 1 !important; /* أبعاد مربعة */
             max-height: 480px !important;
             border-radius: 20px !important;
             overflow: hidden !important;
@@ -135,7 +135,7 @@
             height: 100%; 
             background: var(--accent); 
             border-radius: 10px;
-            transition: width 0.1s linear;
+            transition: width 0.03s linear;
         }
         
         .creative-counter {
@@ -1400,27 +1400,6 @@
     </script>
 
     <script>
-        // دالة العداد المحسنة
-        function startCreativeCounter() {
-            const counterEl = document.getElementById('loadPercentage');
-            const barFill = document.getElementById('progressBarFill');
-            if (!counterEl || !barFill) return; 
-            
-            let count = 0;
-            const duration = 3000;
-            const intervalTime = duration / 100;
-
-            const timer = setInterval(() => {
-                count++;
-                if (count <= 100) {
-                    counterEl.innerText = count;
-                    barFill.style.width = count + '%';
-                } else {
-                    clearInterval(timer);
-                }
-            }, intervalTime);
-        }
-
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -1477,7 +1456,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAndHandleInstallBtn();
-            startCreativeCounter(); // استدعاء العداد مباشرة
         });
 
         const IMAGES_PATH = "./images/"; 
@@ -1673,6 +1651,28 @@
             return Promise.all(promises);
         }
 
+        let isCounterRunning = false;
+        function startCreativeCounter() {
+            if (isCounterRunning) return;
+            isCounterRunning = true;
+
+            const counterEl = document.getElementById('loadPercentage');
+            const barFill = document.getElementById('progressBarFill');
+            let count = 0;
+            const duration = 3000;
+            const intervalTime = duration / 100;
+
+            const timer = setInterval(() => {
+                count++;
+                if (count <= 100) {
+                    if (counterEl) counterEl.innerText = count;
+                    if (barFill) barFill.style.width = count + '%';
+                } else {
+                    clearInterval(timer);
+                }
+            }, intervalTime);
+        }
+
         function listenToBranchMenuStatus(branchId) {
             if (menuUnsubscribe) menuUnsubscribe();
             
@@ -1764,8 +1764,6 @@
 
                 isFirstLoad = false;
             });
-
-            loadMenu();
         });
 
         function playHighPriorityOrderAlert() {
@@ -1924,12 +1922,13 @@
         }
 
         async function loadMenu() {
+            startCreativeCounter();
             renderFooterBranches();
 
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('splash-hidden');
                 showBranchModal();
-            }, 4200);
+            }, 3000);
         }
 
         function renderFooterBranches() {
@@ -1968,7 +1967,7 @@
             document.getElementById('branchModal').style.display = 'none';
 
             const adminNotice = document.getElementById('adminAuthBranchName');
-            if (adminNotice) adminNotice.innerText = `?? الإدارة لفرع: ${branchObj.name}`;
+            if (adminNotice) adminNotice.innerText = `📍 الإدارة لفرع: ${branchObj.name}`;
 
             const adminText = document.getElementById('activeAdminBranchText');
             if (adminText) adminText.innerText = `📍 الفرع الحالي: فرع ${branchObj.name}`;
@@ -2052,7 +2051,7 @@
                             <span class="food-name">${item.name}</span>
                             <span class="food-price" id="${cardId}_price">${displayPrice}</span>
                         </div>
-                        ${item.desc ? `<p class="food-desc">${item.desc}</p>' : ''}
+                        ${item.desc ? `<p class="food-desc">${item.desc}</p>` : ''}
                         ${variantsHtml}
                         <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 6px;">
                             <button class="order-btn" ${!isEnabled ? 'disabled' : ''} onclick="orderCardItem(event, this, '${cardId}', '${safeName}', '${safeImg}')">${btnText}</button>
@@ -2740,6 +2739,8 @@
                 alert("حدث خطأ أثناء حفظ كلمة المرور الجديدة");
             }
         }
+
+        loadMenu();
     </script>
 </body>
 </html>
