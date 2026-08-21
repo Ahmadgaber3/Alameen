@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بروست الأمين | المنيو الرسمي</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e65100">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="بروست الأمين">
+    <link rel="apple-touch-icon" href="images/logooo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f1f3f5; 
+            --main-text: #1a1a1a; 
+            --desc-text: #555e68;
+            --accent: #e65100; 
+            --accent-hover: #d84315;
+            --yellow-gold: #e65100;
+            --address-tag: #e65100;
+            --white: #ffffff; 
+            --glass: rgba(255, 255, 255, 0.95);
+            --success-dark: #2e7d32; 
+            --header-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.12);
+            --border-color: #d1d5db;
+        }
+
+        body.dark-mode {
+            --bg: #0f1115; 
+            --main-text: #f8fafc;
+            --desc-text: #94a3b8;
+            --yellow-gold: #ff8f00;
+            --white: #1a1e24;
+            --glass: rgba(26, 30, 36, 0.95);
+            --header-bg: #1a1e24;
+            --card-shadow: rgba(0, 0, 0, 0.55);
+            --border-color: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--main-text); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            padding-bottom: 90px; 
+        }
+
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle, rgba(230, 81, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%), url('images/splash-bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            display: flex; justify-content: center; align-items: flex-end;
+            padding: 0 20px 190px 20px;
+            transition: 0.6s ease-out;
+            filter: brightness(105%) contrast(100%);
+        }
+        
+        .loader-content { 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 320px;
+            padding: 0 20px;
+        }
+
+        .loading-bar { 
+            width: 100%; 
+            max-width: 240px; 
+            height: 7px; 
+            background: rgba(0, 0, 0, 0.15); 
+            margin: 0 auto 15px auto; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            position: relative; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .loading-bar span { 
+            display: block; 
+            width: 0%; 
+            height: 100%; 
+            background: var(--accent); 
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+        
+        .creative-counter {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 8px 22px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .creative-counter span {
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .splash-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+        .branch-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); z-index: 8888; display: none;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .branch-modal-content {
+            background: var(--white); width: 100%; max-width: 420px;
+            border-radius: 28px; padding: 25px 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            animation: smoothFadeIn 0.25s ease-out;
+        }
+        .branch-modal-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .branch-modal-sub { font-size: 0.85rem; color: var(--desc-text); margin-bottom: 20px; font-weight: 600; }
+        
+        .branch-option-card {
+            background: var(--bg); border: 2px solid var(--border-color);
+            border-radius: 18px; padding: 15px; margin-bottom: 12px;
+            text-align: right; cursor: pointer; transition: all 0.2s ease;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .branch-option-card:hover, .branch-option-card:active {
+            border-color: var(--accent); background: rgba(230, 81, 0, 0.08);
+        }
+        .branch-option-name { font-size: 1rem; font-weight: 800; color: var(--main-text); display: flex; align-items: center; gap: 8px; }
+        .branch-option-address { font-size: 0.8rem; color: var(--desc-text); font-weight: 600; }
+
+        header { 
+            background: var(--header-bg); 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px var(--card-shadow);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 8px 0 0 0;
+        }
+        .header-top { 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            margin-bottom: 4px; 
+            min-height: 88px; 
+            padding: 0 15px;
+        }
+        
+        .header-right-actions {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .theme-toggle, .admin-trigger-btn {
+            width: 38px;
+            height: 38px;
+            background: var(--bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.15rem;
+            border: 1px solid var(--border-color);
+            color: var(--main-text);
+            box-shadow: 0 2px 6px var(--card-shadow);
+            transition: transform 0.15s ease;
+        }
+        .theme-toggle:active, .admin-trigger-btn:active {
+            transform: scale(0.92);
+        }
+
+        .header-left-actions {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .cart-trigger { 
+            width: 38px; 
+            height: 38px; 
+            background: var(--bg); 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 2px 6px var(--card-shadow); 
+            cursor: pointer; 
+        }
+        .cart-trigger.shake { animation: cartShake 0.5s ease-in-out; }
+        @keyframes cartShake { 0%, 100% { transform: scale(1) rotate(0deg); } 20%, 60% { transform: scale(1.15) rotate(-10deg); } 40%, 80% { transform: scale(1.15) rotate(10deg); } }
+        .badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--white); transform: scale(0); transition: 0.2s ease; }
+        .badge.show { transform: scale(1); }
+
+        .install-pwa-btn {
+            height: 32px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 800;
+            border: none;
+            color: #ffffff;
+            padding: 0 8px;
+            gap: 3px;
+            box-shadow: 0 3px 8px rgba(230, 81, 0, 0.35);
+            transition: transform 0.15s ease;
+        }
+        .install-pwa-btn:active { transform: scale(0.92); }
+
+        .header-logo-container { 
+            width: 145px; 
+            height: 72px; 
+            border-radius: 18px; 
+            background: var(--white); 
+            padding: 4px 8px; 
+            box-shadow: 0 6px 20px var(--card-shadow); 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid var(--accent); 
+        }
+        .header-logo { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 12px; 
+            object-fit: contain; 
+        }
+
+        .header-brand-info { text-align: center; width: 100%; padding: 2px 15px 6px 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+        .app-inner-title { font-size: 1.25rem; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; line-height: 1.2; }
+        .app-inner-sub { font-size: 0.95rem; font-weight: 700; color: var(--main-text); margin-bottom: 2px; }
+
+        .selected-branch-badge {
+            background: rgba(230, 81, 0, 0.12); color: var(--accent);
+            border: 1px solid var(--accent); border-radius: 20px;
+            padding: 2px 10px; font-size: 0.78rem; font-weight: 800;
+            margin-top: 2px; cursor: pointer; display: inline-flex;
+            align-items: center; gap: 4px;
+        }
+
+        .category-nav { 
+            display: flex; 
+            overflow-x: auto; 
+            white-space: nowrap; 
+            padding: 10px 14px; 
+            gap: 16px; 
+            scrollbar-width: none; 
+            background: var(--header-bg); 
+            width: 100%; 
+            border-top: 1px solid var(--border-color); 
+            border-bottom: 1px solid var(--border-color); 
+            scroll-behavior: smooth; 
+            margin-top: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .category-nav::-webkit-scrollbar { display: none; }
+
+        .cat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-width: max-content; 
+            flex-shrink: 0; 
+            padding: 0 4px;
+            cursor: pointer; 
+        }
+
+        .cat-img-box { 
+            width: 54px; 
+            height: 54px; 
+            border-radius: 16px; 
+            background: #e0e0e0; 
+            overflow: hidden; 
+            border: 2.5px solid transparent; 
+            transition: 0.2s; 
+        }
+        .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.04); }
+
+        .cat-item span { 
+            font-size: 0.78rem; 
+            font-weight: 700; 
+            color: var(--desc-text); 
+            margin-top: 5px; 
+            white-space: nowrap;
+            text-align: center;
+        }
+        .cat-item.active span { color: var(--accent); }
+        
+        .menu-list { padding: 12px 15px; max-width: 600px; margin: auto; }
+        
+        .food-card { background: var(--white); border-radius: 20px; margin-bottom: 12px; display: flex; padding: 12px 14px; gap: 12px; align-items: center; box-shadow: 0 3px 12px var(--card-shadow); border: 1px solid var(--border-color); }
+        .food-card.disabled-item { opacity: 0.5; filter: grayscale(0.3); }
+        
+        .item-img-box { width: 125px; height: 125px; border-radius: 16px; overflow: hidden; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 120px; }
+        .food-name { font-weight: 800; font-size: 0.95rem; color: var(--main-text); padding-left: 8px; }
+        
+        .food-desc { font-size: 0.72rem; color: var(--desc-text); line-height: 1.25; margin-top: 2px; margin-bottom: 4px; }
+        .food-price { font-weight: 800; color: var(--yellow-gold); font-size: 0.95rem; white-space: nowrap; display: inline-block; }
+
+        .variants-container {
+            display: flex;
+            gap: 6px;
+            margin: 4px 0 6px 0;
+            flex-wrap: wrap;
+        }
+        .variant-btn {
+            background: var(--bg);
+            border: 1.5px solid var(--border-color);
+            color: var(--main-text);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .variant-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .order-btn { 
+            background: var(--accent); 
+            color: #ffffff; 
+            border: 1px solid var(--accent); 
+            padding: 8px 18px; 
+            border-radius: 12px; 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.28);
+            transition: transform 0.15s ease; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 90px;
+        }
+        .order-btn:active { transform: scale(0.94); }
+        .order-btn:disabled { background: #888 !important; border-color: #888 !important; cursor: not-allowed; box-shadow: none !important; }
+        
+        .order-btn.added { 
+            background: rgba(46, 125, 50, 0.15) !important; 
+            color: #2e7d32 !important; 
+            border: 1.5px solid #2e7d32 !important;
+            box-shadow: 0 2px 10px rgba(46, 125, 50, 0.2) !important; 
+            pointer-events: none;
+        }
+        
+        .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
+
+        .flavor-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.68); z-index: 7000; display: none;
+            justify-content: center; align-items: center; padding: 16px;
+        }
+        .flavor-modal-content {
+            background: var(--white); 
+            width: 100%; 
+            max-width: 300px; 
+            border-radius: 20px; 
+            padding: 16px 14px; 
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            animation: smoothFadeIn 0.18s ease-out;
+        }
+        .flavor-modal-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+            padding-bottom: 8px; border-bottom: 1px solid var(--border-color);
+        }
+        .flavor-modal-header h3 {
+            font-size: 0.95rem; font-weight: 800; color: var(--accent);
+        }
+        .flavor-close-btn {
+            background: var(--bg); border: 1px solid var(--border-color); width: 26px; height: 26px;
+            border-radius: 50%; font-weight: 800; cursor: pointer; color: var(--main-text); font-size: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .flavor-options-grid {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .flavor-opt-btn {
+            background: var(--bg); 
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px; 
+            padding: 10px 14px; 
+            font-size: 0.9rem; 
+            font-weight: 800;
+            color: var(--main-text); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .flavor-opt-btn:active {
+            border-color: var(--accent); 
+            background: var(--accent); 
+            color: #ffffff;
+            transform: scale(0.96);
+        }
+
+        .restaurant-footer { padding: 30px 20px; text-align: center; background: var(--white); border-top: 1px solid var(--border-color); margin-top: 20px; }
+        .branches-container { margin: 15px 0 10px 0; font-size: 0.82rem; color: var(--desc-text); text-align: right; background: var(--bg); padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); }
+        .branch-item { margin-bottom: 8px; }
+        .branch-item:last-child { margin-bottom: 0; }
+        .branch-item strong { color: var(--accent); display: block; }
+        
+        .complaints-box {
+            background: rgba(230, 81, 0, 0.08);
+            border: 1.5px dashed var(--accent);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .complaints-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .complaints-number {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--main-text);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            margin-top: 3px;
+        }
+
+        .footer-rights { font-size: 0.8rem; color: var(--main-text); font-weight: 600; margin-bottom: 5px; }
+        .dev-credit { font-size: 0.85rem; color: var(--desc-text); font-weight: 700; }
+        .dev-credit a { color: var(--accent); text-decoration: none; display: block; margin-top: 3px; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 2000; display: none; justify-content: center; align-items: flex-end; }
+        .modal-content { background: var(--white); width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; max-height: 90vh; overflow-y: auto; color: var(--main-text); animation: smoothSlideUp 0.2s ease-out; }
+        @keyframes smoothSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .cart-item-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: 18px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .cart-item-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 700; font-size: 0.9rem; color: var(--main-text); }
+        .cart-item-price { color: var(--yellow-gold); font-weight: 800; font-size: 0.85rem; display: block; }
+        .remove-btn { color: #ff3b30; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
+
+        .order-type-container { display: flex; background: var(--bg); padding: 6px; border-radius: 16px; margin: 15px 0; gap: 6px; border: 1px solid var(--border-color); }
+        .order-type-btn { flex: 1; border: none; background: transparent; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--desc-text); transition: all 0.2s ease; }
+        .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2); }
+
+        .user-fields input { background: var(--bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; }
+        #uAddr { transition: all 0.2s ease; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+
+        .success-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); z-index: 5000; display: none;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .success-card {
+            background: var(--white); width: 100%; max-width: 380px;
+            border-radius: 28px; padding: 30px 22px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: smoothFadeIn 0.25s ease-out;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .success-icon-wrapper {
+            width: 80px; height: 80px; background: rgba(46, 125, 50, 0.12);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 15px; border: 2px solid var(--success-dark);
+        }
+        .success-icon-wrapper svg {
+            width: 45px; height: 45px; fill: var(--success-dark);
+        }
+
+        .success-title { font-size: 1.3rem; font-weight: 800; color: var(--main-text); margin-bottom: 8px; }
+        .success-sub { font-size: 0.88rem; color: var(--desc-text); font-weight: 600; line-height: 1.4; margin-bottom: 16px; }
+
+        .success-chat-btn {
+            background: #25D366; color: white; border: none; padding: 12px 20px;
+            border-radius: 14px; font-weight: 800; font-size: 0.9rem; cursor: pointer;
+            width: 100%; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .success-close-btn {
+            background: var(--bg); color: var(--main-text); border: 1px solid var(--border-color);
+            padding: 10px 20px; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; width: 100%;
+        }
+
+        .client-floating-chat-btn {
+            position: fixed;
+            bottom: 22px;
+            right: 20px;
+            background: #25D366;
+            color: #ffffff;
+            border-radius: 30px;
+            padding: 10px 18px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 900;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+            z-index: 3000;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            animation: pulseFloating 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseFloating {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.72); z-index: 4000; display: none; justify-content: center; align-items: center; padding: 14px; }
+        .admin-box { background: var(--white); width: 100%; max-width: 480px; border-radius: 28px; padding: 22px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: smoothFadeIn 0.2s ease-out; }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .admin-header h3 { font-size: 1.25rem; font-weight: 900; color: #d35400; display: flex; align-items: center; gap: 6px; }
+        .admin-close { background: var(--bg); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 50%; font-weight: 800; cursor: pointer; color: var(--main-text); display: flex; align-items: center; justify-content: center; }
+
+        .current-logged-branch-badge {
+            background: rgba(39, 174, 96, 0.12);
+            color: #27ae60;
+            border: 1.5px solid #27ae60;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .admin-nav-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 16px 12px 14px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 175px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .admin-nav-card:active {
+            transform: scale(0.96);
+            border-color: #27ae60;
+        }
+
+        .card-badge-num {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+            background: #27ae60;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 900;
+        }
+
+        .card-badge-num.gray {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+
+        .card-avatar-box {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-avatar-box.orange-bg { background: #ffedd5; }
+        .card-avatar-box.blue-bg { background: #dbeafe; }
+        .card-avatar-box.green-bg { background: #dcfce7; }
+        .card-avatar-box.purple-bg { background: #f3e8ff; }
+
+        .card-title {
+            font-size: 0.98rem;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .card-subtitle {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        .floating-sub-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 5500;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .floating-card-box {
+            background: var(--white);
+            width: 100%;
+            max-width: 460px;
+            border-radius: 28px;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+            animation: smoothFadeIn 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid var(--border-color);
+            will-change: transform, opacity;
+        }
+
+        @keyframes smoothFadeIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .floating-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .floating-header h4 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .order-branch-tabs {
+            display: flex;
+            gap: 6px;
+            background: #e2e8f0;
+            padding: 6px;
+            border-radius: 18px;
+            margin-bottom: 14px;
+            border: 1px solid #cbd5e1;
+            overflow-x: auto;
+        }
+        .order-tab-btn {
+            flex: 1;
+            min-width: max-content;
+            border: none;
+            background: transparent;
+            padding: 9px 8px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.78rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        .order-tab-btn.active {
+            background: #e65100;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.35);
+        }
+        .order-tab-badge {
+            background: rgba(0, 0, 0, 0.12);
+            color: inherit;
+            font-size: 0.72rem;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-weight: 900;
+        }
+        .order-tab-btn.active .order-tab-badge {
+            background: #ffffff;
+            color: #e65100;
+        }
+
+        .admin-custom-input-group {
+            margin-bottom: 12px;
+            text-align: right;
+        }
+
+        .admin-custom-input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--main-text);
+            margin-bottom: 6px;
+        }
+
+        .admin-custom-input-group input, .admin-custom-input-group select {
+            width: 100%;
+            padding: 13px 14px;
+            background: var(--bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            font-size: 0.9rem;
+            color: var(--main-text);
+            outline: none;
+        }
+
+        .admin-custom-input-group input:focus, .admin-custom-input-group select:focus {
+            border-color: #27ae60;
+        }
+
+        .admin-save-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+        }
+
+        .branch-info-banner {
+            background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px;
+            padding: 10px 14px; margin-bottom: 14px; font-weight: 800; font-size: 0.88rem; color: var(--accent);
+            text-align: center;
+        }
+
+        .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg); border-radius: 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
+        .switch-label { font-weight: 800; font-size: 0.86rem; color: var(--main-text); }
+        
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .2s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .2s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: #27ae60; }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .admin-global-actions { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .admin-action-btn { flex: 1; min-width: 120px; padding: 9px; border: none; border-radius: 12px; font-weight: 800; font-size: 0.82rem; cursor: pointer; color: white; }
+        .btn-enable-all { background: #27ae60; }
+        .btn-disable-all { background: #e65100; }
+        .btn-sync-sheet { background: #0284c7; width: 100%; flex-basis: 100%; }
+
+        .pass-form input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg); color: var(--main-text); margin-bottom: 12px; font-size: 0.95rem; text-align: center; }
+        .pass-form button { width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
+
+        .order-card-custom {
+            background: #ffffff;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+            position: relative;
+        }
+
+        .order-branch-badge-pill {
+            background: rgba(230, 81, 0, 0.12);
+            color: #e65100;
+            border: 1px solid #e65100;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin-right: 6px;
+        }
+
+        .order-custom-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .order-user-name-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .order-user-icon {
+            color: #0284c7;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-delete-btn-circ {
+            width: 28px;
+            height: 28px;
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .order-delete-btn-circ:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .order-contact-sub {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-right: 4px;
+            flex-wrap: wrap;
+        }
+        .order-contact-sub a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .order-items-box-custom {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+        }
+
+        .order-items-list-custom {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-items-list-custom li {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #334155;
+            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .order-items-list-custom li::before {
+            content: "▪";
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        .order-custom-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 4px;
+        }
+
+        .order-total-price-custom {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .order-chat-btn-custom {
+            background: #ef4444;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 8px 18px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transition: transform 0.15s ease;
+        }
+        .order-chat-btn-custom:active {
+            transform: scale(0.95);
+        }
+
+        .chat-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); z-index: 6000; display: none;
+            justify-content: center; align-items: center; padding: 14px;
+        }
+        .chat-box-card {
+            background: var(--white); width: 100%; max-width: 440px; height: 80vh;
+            border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: smoothFadeIn 0.25s ease-out;
+            border: 1px solid var(--border-color);
+        }
+        .chat-header {
+            background: var(--accent); color: white; padding: 12px 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header-info { display: flex; flex-direction: column; }
+        .chat-header-title { font-size: 0.95rem; font-weight: 900; }
+        .chat-header-sub { font-size: 0.75rem; opacity: 0.9; }
+
+        .chat-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .client-finish-order-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            padding: 4px 8px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .client-finish-order-btn:hover {
+            background: #ff3b30;
+            border-color: #ff3b30;
+        }
+
+        .chat-close-btn { background: rgba(255,255,255,0.25); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-weight: 900; cursor: pointer; }
+        
+        .chat-messages-area {
+            flex: 1; padding: 14px; overflow-y: auto; display: flex;
+            flex-direction: column; gap: 10px; background: var(--bg);
+        }
+        .chat-bubble {
+            max-width: 80%; padding: 8px 14px; border-radius: 16px; font-size: 0.85rem; font-weight: 700;
+            line-height: 1.4; position: relative; word-wrap: break-word;
+        }
+        .chat-bubble.admin {
+            align-self: flex-start; background: var(--accent); color: white; border-bottom-right-radius: 4px;
+        }
+        .chat-bubble.client {
+            align-self: flex-end; background: var(--white); color: var(--main-text); border: 1px solid var(--border-color); border-bottom-left-radius: 4px;
+        }
+        .chat-bubble-time { font-size: 0.65rem; opacity: 0.75; display: block; margin-top: 3px; text-align: left; }
+
+        .chat-input-bar {
+            padding: 10px 14px; background: var(--white); border-top: 1px solid var(--border-color);
+            display: flex; gap: 8px; align-items: center;
+        }
+        .chat-input-bar input {
+            flex: 1; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color);
+            background: var(--bg); color: var(--main-text); font-size: 0.88rem; outline: none;
+        }
+        .chat-send-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 16px;
+            border-radius: 12px; font-weight: 800; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <div class="loader-content">
+            <div class="loading-bar"><span id="progressBarFill"></span></div>
+            <div class="creative-counter">جاري التحضير... <span id="loadPercentage">0</span>%</div>
+        </div>
+    </div>
+
+    <div class="branch-modal" id="branchModal">
+        <div class="branch-modal-content">
+            <h2 class="branch-modal-title">اختر الفرع الأقرب إليك 📍</h2>
+            <p class="branch-modal-sub">سيتم توجيه طلبك مباشرة إلى الفرع المختار</p>
+            <div id="branchesList"></div>
+        </div>
+    </div>
+
+    <div class="flavor-modal" id="flavorModal" onclick="if(event.target==this) closeFlavorModal()">
+        <div class="flavor-modal-content">
+            <div class="flavor-modal-header">
+                <h3 id="flavorModalTitle">اختر النكهة</h3>
+                <button class="flavor-close-btn" onclick="closeFlavorModal()">✕</button>
+            </div>
+            <div class="flavor-options-grid" id="flavorOptionsGrid"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-top">
+            <div class="header-right-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي / النهاري">🌙</button>
+                <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
+            </div>
+            
+            <div class="header-logo-container">
+                <img src="images/logooo.png" class="header-logo" alt="لوجو مطعم الأمين" onerror="this.src='images/default.jpg'">
+            </div>
+            
+            <div class="header-left-actions">
+                <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn" title="عربة الطلبات">
+                    <span class="badge" id="cartBadge">0</span>
+                    <span style="font-size: 1.25rem;">🛒</span>
+                </div>
+                <button class="install-pwa-btn" id="installPwaBtn" onclick="triggerUniversalInstall()">
+                    <span>📲</span>
+                    <span>تثبيت</span>
+                </button>
+            </div>
+        </div>
+        <div class="header-brand-info">
+            <div class="app-inner-title">بروست الأمين</div>
+            <div class="app-inner-sub">Fried Chicken & Burger</div>
+            <div class="selected-branch-badge" onclick="showBranchModal()" id="currentBranchBadge">
+                📍 جاري تحديد الفرع... (تغيير)
+            </div>
+        </div>
+        <div class="category-nav" id="catNav"></div>
+    </header>
+
+    <div id="menuList" class="menu-list"></div>
+
+    <div class="client-floating-chat-btn" id="clientFloatingChatBtn" onclick="openClientFloatingChat()">
+        <span>💬</span>
+        <span id="clientFloatingChatText">متابعة شات الأوردر</span>
+    </div>
+
+    <div class="success-modal" id="successModal">
+        <div class="success-card">
+            <div class="success-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+            </div>
+            <h2 class="success-title">تم استلام طلبك بنجاح!</h2>
+            <p class="success-sub" id="successOrderText">جاري تجهيز طلبك، يمكنك التحدث مباشرة مع إدارة المطعم من داخل التطبيق.</p>
+            <button class="success-chat-btn" id="clientOpenChatBtn" onclick="openClientChatFromSuccess()">💬 شات وتواصل مع المطعم</button>
+            <button class="success-close-btn" onclick="closeSuccessModal()">إغلاق ومتابعة</button>
+        </div>
+    </div>
+
+    <div class="chat-modal" id="chatModal" onclick="if(event.target==this) closeChatModal()">
+        <div class="chat-box-card">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-header-title" id="chatTitle">محادثة الأوردر</span>
+                    <span class="chat-header-sub" id="chatSub">محادثة مباشرة مع المطعم</span>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="client-finish-order-btn" id="finishOrderBtn" style="display: none;" onclick="dismissClientActiveOrder()" title="إلغاء المتابعة بعد الاستلام">إنهاء المتابعة ✕</button>
+                    <button class="chat-close-btn" onclick="closeChatModal()">✕</button>
+                </div>
+            </div>
+            <div class="chat-messages-area" id="chatMessagesArea"></div>
+            <div class="chat-input-bar">
+                <input type="text" id="chatInputField" placeholder="اكتب رسالتك هنا..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button class="chat-send-btn" onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-modal" id="adminModal" onclick="if(event.target==this) closeAdminPanel()">
+        <div class="admin-box">
+            <div class="admin-header">
+                <h3>⚙️ واجهة الإدارة والتحكم</h3>
+                <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+            </div>
+            
+            <div id="adminAuthView">
+                <div class="pass-form">
+                    <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px; padding: 10px; margin-bottom: 15px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--accent);" id="adminAuthBranchName">
+                        📍 الإدارة لفرع: ...
+                    </div>
+                    <p style="margin-bottom: 12px; font-weight: 800; font-size: 0.88rem; text-align: center; color: var(--desc-text);">أدخل كلمة المرور للدخول للوحة:</p>
+                    
+                    <input type="password" id="adminPassInput" placeholder="كلمة المرور" autofocus>
+                    <button onclick="verifyAdminPassword()">دخول لوحة التحكم</button>
+                </div>
+            </div>
+
+            <div id="adminDashboardView" style="display: none;">
+                <div class="current-logged-branch-badge">
+                    <span id="activeAdminBranchText">📍 الفرع الحالي: فرع الفسطاط الجديدة</span>
+                </div>
+
+                <div class="admin-cards-grid">
+                    <div class="admin-nav-card" onclick="openFloatingModal('statusModal')">
+                        <div class="card-badge-num">1</div>
+                        <div class="card-avatar-box orange-bg">📦</div>
+                        <div class="card-title">إدارة الأصناف</div>
+                        <div class="card-subtitle">تشغيل وإيقاف الوجبات للفرع الحالي ومزامنة الشيت</div>
+                    </div>
+
+                    <div class="admin-nav-card" onclick="openFloatingModal('logsModal')">
+                        <div class="card-badge-num gray">2</div>
+                        <div class="card-avatar-box blue-bg">📜</div>
+                        <div class="card-title">الطلبات الواردة</div>
+                        <div class="card-subtitle">عرض طلبات كل الفروع معاً أو تصفية حسب الفرع والشات</div>
+                    </div>
+
+                    <div class="admin-nav-card" onclick="openFloatingModal('passwordModal')">
+                        <div class="card-badge-num gray">3</div>
+                        <div class="card-avatar-box green-bg">👨‍💼</div>
+                        <div class="card-title">تغيير كلمة المرور</div>
+                        <div class="card-subtitle">حماية اللوحة وتغيير كلمة السر الخاصة بالإدارة</div>
+                    </div>
+
+                    <div class="admin-nav-card" onclick="openSupportWhatsApp()">
+                        <div class="card-badge-num gray">4</div>
+                        <div class="card-avatar-box purple-bg">🧑‍💻</div>
+                        <div class="card-title">الدعم والمساعدة</div>
+                        <div class="card-subtitle">تواصل مباشر مع الدعم الفني للمساعدة عبر الواتساب</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-sub-modal" id="statusModal" onclick="if(event.target==this) closeFloatingModal('statusModal')">
+        <div class="floating-card-box">
+            <div class="floating-header">
+                <h4>📦 إدارة وحالة الأصناف</h4>
+                <button class="admin-close" onclick="closeFloatingModal('statusModal')">✕</button>
+            </div>
+            
+            <div class="branch-info-banner" id="statusModalBranchBanner">
+                📍 جاري إدارة أصناف: فرع ...
+            </div>
+
+            <div class="admin-global-actions">
+                <button class="admin-action-btn btn-enable-all" onclick="setAllItemsStatus(true)">✅ تشغيل جميع الأصناف</button>
+                <button class="admin-action-btn btn-disable-all" onclick="setAllItemsStatus(false)">🛑 إيقاف جميع الأصناف</button>
+                <button class="admin-action-btn btn-sync-sheet" onclick="manualSyncMenuFromSheet()">🔄 تحديث ومزامنة المنيو من جوجل شيت فوراً</button>
+            </div>
+            <div id="adminItemsList">جاري تحميل الأصناف...</div>
+        </div>
+    </div>
+
+    <div class="floating-sub-modal" id="logsModal" onclick="if(event.target==this) closeFloatingModal('logsModal')">
+        <div class="floating-card-box">
+            <div class="floating-header">
+                <h4>📜 الطلبات الواردة (Live)</h4>
+                <button class="admin-close" onclick="closeFloatingModal('logsModal')">✕</button>
+            </div>
+
+            <div class="order-branch-tabs" id="orderBranchTabs"></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px;">
+                <span id="currentBranchOrdersCount" style="font-size: 0.85rem; font-weight: 800; color: #475569;"></span>
+                <button id="clearOrdersBtn" onclick="clearCurrentBranchOrderLogs()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">🗑️ حذف طلبات هذا التبويب</button>
+            </div>
+            <div id="adminOrdersLogsList">لا توجد طلبات مسجلة حتى الآن.</div>
+        </div>
+    </div>
+
+    <div class="floating-sub-modal" id="passwordModal" onclick="if(event.target==this) closeFloatingModal('passwordModal')">
+        <div class="floating-card-box">
+            <div class="floating-header">
+                <h4>👨‍💼 تغيير كلمة مرور اللوحة</h4>
+                <button class="admin-close" onclick="closeFloatingModal('passwordModal')">✕</button>
+            </div>
+            <div class="admin-custom-input-group">
+                <label>كلمة المرور الحالية</label>
+                <input type="password" id="currentAdminPass" placeholder="***">
+            </div>
+            <div class="admin-custom-input-group">
+                <label>كلمة المرور الجديدة</label>
+                <input type="password" id="newAdminPass" placeholder="أدخل كلمة المرور الجديدة">
+            </div>
+            <div class="admin-custom-input-group">
+                <label>تأكيد كلمة المرور الجديدة</label>
+                <input type="password" id="confirmAdminPass" placeholder="تأكيد كلمة المرور الجديدة">
+            </div>
+            <button class="admin-save-btn" onclick="updateAdminPassword()">حفظ كلمة المرور الجديدة</button>
+        </div>
+    </div>
+
+    <footer class="restaurant-footer">
+        <div class="branches-container" id="footerBranchesContainer"></div>
+
+        <!-- بند الشكاوى والمقترحات -->
+        <div class="complaints-box">
+            <div class="complaints-title">
+                <span>⚠️</span>
+                <span>قسم الشكاوى والمقترحات</span>
+            </div>
+            <a href="tel:01006767442" class="complaints-number">
+                <span>📞</span>
+                <span>01006767442</span>
+            </a>
+        </div>
+
+        <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
+        <div class="dev-credit">
+            Designed by eng / Ahmed Jaber
+            <a href="tel:01030252806">📞 01030252806</a>
+        </div>
+    </footer>
+
+    <div class="modal" id="cartModal" onclick="if(event.target==this) toggleCart(false)">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">طلباتك</h2>
+            <div id="cartItemsList"></div>
+            <div style="margin: 20px 0; padding: 15px; background: rgba(230, 81, 0, 0.08); border-radius: 18px; display: flex; justify-content: space-between;">
+                <b>المجموع</b>
+                <b id="totalAmount">0 ج.م</b>
+            </div>
+
+            <div class="order-type-container">
+                <button type="button" class="order-type-btn active" id="deliveryBtn" onclick="setOrderType('delivery')">
+                    🛵 دليفري
+                </button>
+                <button type="button" class="order-type-btn" id="takeawayBtn" onclick="setOrderType('takeaway')">
+                    🛍️ تيك اواي
+                </button>
+            </div>
+
+            <div class="user-fields">
+                <input type="text" id="uName" placeholder="الاسم بالكامل">
+                <input type="tel" id="uPhone" placeholder="رقم الموبايل">
+                <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
+            </div>
+            <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAUwDoxvhwCWb3FUtpA2NwmP7qBm5eYOuE",
+          authDomain: "makkah-restaurant.firebaseapp.com",
+          databaseURL: "https://makkah-restaurant-default-rtdb.firebaseio.com",
+          projectId: "makkah-restaurant",
+          storageBucket: "makkah-restaurant.firebasestorage.app",
+          messagingSenderId: "974492409250",
+          appId: "1:974492409250:web:9bfa2523b8f598489526fb",
+          measurementId: "G-3TMKVN9R5H"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.firebaseModules = { doc, getDoc, setDoc, updateDoc, collection, onSnapshot, addDoc, deleteDoc, getDocs };
+        
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered:', reg.scope))
+                    .catch(err => console.log('SW error:', err));
+            });
+        }
+
+        function isRunningInsidePWA() {
+            return (window.matchMedia('(display-mode: standalone)').matches) ||
+                   (window.navigator.standalone === true) ||
+                   (document.referrer.includes('android-app://'));
+        }
+
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('installPwaBtn');
+
+        function checkAndHandleInstallBtn() {
+            if (isRunningInsidePWA() || localStorage.getItem('app_installed_locally') === 'true') {
+                if (installBtn) installBtn.style.setProperty('display', 'none', 'important');
+                return true;
+            }
+            return false;
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!checkAndHandleInstallBtn() && installBtn) {
+                installBtn.style.display = 'flex';
+            }
+        });
+
+        function triggerUniversalInstall() {
+            if (checkAndHandleInstallBtn()) return;
+
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        localStorage.setItem('app_installed_locally', 'true');
+                        if (installBtn) installBtn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        window.addEventListener('appinstalled', () => {
+            localStorage.setItem('app_installed_locally', 'true');
+            if (installBtn) installBtn.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAndHandleInstallBtn();
+        });
+
+        const IMAGES_PATH = "./images/"; 
+        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTA4Xr8wQ9COOV3ZTkrJHRnt3T6Rd_W4fzL-0jSxf8KxAFYwlAQXvCy5_Q9lVRpTz3lddtozuWGL8rM/pub?output=csv";
+
+        let menuData = [], cart = [];
+        let currentTotal = 0; 
+        let selectedOrderType = 'delivery';
+        let itemStatusMap = {}; 
+        let orderLogsList = [];
+
+        let currentActiveChatOrderId = null;
+        let currentChatUserType = 'admin'; 
+        let chatUnsubscribe = null;
+        let clientChatListenerUnsub = null;
+
+        const branchesData = [
+            { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
+            { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201010430950', altPhone: '01155766404' },
+            { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201274505042', altPhone: '01055388545' }
+        ];
+
+        let savedBranchId = localStorage.getItem('selected_branch_id') || branchesData[0].id;
+        let currentSelectedBranch = branchesData.find(b => b.id === savedBranchId) || branchesData[0]; 
+        let cashierLoggedBranchId = currentSelectedBranch.id;
+        let adminSelectedBranchId = currentSelectedBranch.id;
+        let selectedOrderLogBranchId = 'all'; 
+        let menuUnsubscribe = null;
+        let realtimeMenuUnsubscribe = null;
+        let activeChatListeners = {};
+
+        let pendingOrderItem = null;
+
+        function parseCSVLine(line) {
+            let result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function cleanVal(val) {
+            if (!val) return '';
+            let v = val.replace(/[-"']/g, '').trim();
+            return v === '' ? '' : v;
+        }
+
+        async function fetchMenuFromGoogleSheet() {
+            try {
+                const freshUrl = GOOGLE_SHEET_CSV_URL + '&t=' + Date.now();
+                const response = await fetch(freshUrl);
+                if (!response.ok) throw new Error("تعذر جلب ملف الشيت");
+                
+                const csvText = await response.text();
+                const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0);
+                
+                if (lines.length <= 1) return [];
+
+                const items = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = parseCSVLine(lines[i]);
+                    if (cols.length < 2 || !cols[1]) continue;
+
+                    const category = cols[0] ? cols[0].trim() : "عام";
+                    const name = cols[1] ? cols[1].trim() : "";
+                    
+                    const priceNormal = cleanVal(cols[2]);
+                    const priceL = cleanVal(cols[3]);
+                    const priceM = cleanVal(cols[4]);
+                    const priceD = cleanVal(cols[5]);
+                    const priceS = cleanVal(cols[6]);
+                    const desc = cols[7] ? cols[7].trim() : "";
+
+                    let cleanImageName = name.replace(/^\.\/images\//, '').replace(/^images\//, '');
+                    cleanImageName = cleanImageName.replace(/\.(png|jpeg|webp|jpg)$/i, '');
+                    let img = cleanImageName ? `${IMAGES_PATH}${cleanImageName}.jpg` : `${IMAGES_PATH}default.jpg`;
+
+                    let variants = [];
+                    if (priceS !== '' && priceD !== '') {
+                        variants = [
+                            { size: 'سينجل', price: priceS },
+                            { size: 'دبل', price: priceD }
+                        ];
+                    } else if (priceM !== '' && priceL !== '') {
+                        variants = [
+                            { size: 'ميديام', price: priceM },
+                            { size: 'لارج', price: priceL }
+                        ];
+                    }
+
+                    let defaultPrice = "0";
+                    if (variants.length > 0) {
+                        defaultPrice = variants[0].price;
+                    } else {
+                        defaultPrice = priceNormal || priceL || priceM || priceD || priceS || "0";
+                    }
+
+                    items.push({
+                        id: `item_${i}`,
+                        category: category,
+                        name: name,
+                        desc: desc,
+                        img: img,
+                        price: defaultPrice,
+                        variants: variants.length > 0 ? variants : null
+                    });
+                }
+                return items;
+            } catch (err) {
+                console.error("خطأ أثناء جلب وتوزيع بيانات الشيت:", err);
+                return [];
+            }
+        }
+
+        function listenToRealtimeMenu() {
+            const { doc, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            if (realtimeMenuUnsubscribe) realtimeMenuUnsubscribe();
+
+            realtimeMenuUnsubscribe = onSnapshot(doc(db, "menu_data", "main_menu"), async (docSnap) => {
+                if (docSnap.exists() && docSnap.data().items && docSnap.data().items.length > 0) {
+                    menuData = docSnap.data().items;
+                    preloadImages(menuData);
+                    renderNav();
+                    if (document.getElementById('statusModal').style.display === 'flex') {
+                        renderAdminItemsList();
+                    }
+                } else {
+                    await syncSheetToFirebase();
+                }
+            }, (error) => {
+                console.error("خطأ في الاتصال بالفايربيز:", error);
+            });
+        }
+
+        async function syncSheetToFirebase() {
+            try {
+                const fetchedData = await fetchMenuFromGoogleSheet();
+                if (fetchedData && fetchedData.length > 0) {
+                    menuData = fetchedData;
+                    const { doc, setDoc } = window.firebaseModules;
+                    const db = window.db;
+                    await setDoc(doc(db, "menu_data", "main_menu"), {
+                        items: fetchedData,
+                        lastUpdated: Date.now()
+                    });
+                    preloadImages(menuData);
+                    renderNav();
+                }
+            } catch (e) {
+                console.error("فشل مزامنة الشيت مع فايربيز:", e);
+            }
+        }
+
+        async function manualSyncMenuFromSheet() {
+            if (!confirm("هل تريد سحب أحدث البيانات من شيت جوجل ونشرها فوراً لكل العملاء؟")) return;
+            const btn = document.querySelector('.btn-sync-sheet');
+            if (btn) btn.innerText = "⏳ جاري التحديث والنشر...";
+            await syncSheetToFirebase();
+            if (btn) btn.innerText = "🔄 تحديث ومزامنة المنيو من جوجل شيت فوراً";
+            alert("تم تحديث المنيو في فايربيز وظهر فوراً لكل المستخدمين!");
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        }
+
+        function preloadImages(data) {
+            const promises = [];
+            data.forEach(item => {
+                promises.push(new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                    img.src = item.img;
+                }));
+            });
+            return Promise.all(promises);
+        }
+
+        function startCreativeCounter() {
+            const counterEl = document.getElementById('loadPercentage');
+            const barFill = document.getElementById('progressBarFill');
+            let count = 0;
+            const duration = 4000;
+            const intervalTime = duration / 100;
+
+            const timer = setInterval(() => {
+                count++;
+                if (count <= 100) {
+                    counterEl.innerText = count;
+                    barFill.style.width = count + '%';
+                } else {
+                    clearInterval(timer);
+                }
+            }, intervalTime);
+        }
+
+        function listenToBranchMenuStatus(branchId) {
+            if (menuUnsubscribe) menuUnsubscribe();
+            
+            const { doc, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            menuUnsubscribe = onSnapshot(doc(db, "menu_status", branchId), (docSnap) => {
+                if (docSnap.exists()) {
+                    itemStatusMap = docSnap.data();
+                } else {
+                    itemStatusMap = {};
+                }
+                if(menuData.length > 0) {
+                    const activeCat = document.querySelector('.cat-item.active span');
+                    if(activeCat) filterCat(activeCat.innerText);
+                }
+            });
+        }
+
+        function triggerSystemNotification(title, body) {
+            try {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                        navigator.serviceWorker.ready.then(reg => {
+                            reg.showNotification(title, {
+                                body: body,
+                                icon: './images/logooo.png',
+                                badge: './images/logooo.png',
+                                vibrate: [400, 150, 400, 150, 400],
+                                tag: 'alameen-alert-' + Date.now(),
+                                renotify: true
+                            });
+                        }).catch(() => {});
+                    } else {
+                        new Notification(title, { body: body, icon: './images/logooo.png' });
+                    }
+                }
+            } catch (e) {}
+        }
+
+        window.addEventListener('firebase-ready', async () => {
+            const { doc, onSnapshot, collection } = window.firebaseModules;
+            const db = window.db;
+
+            listenToBranchMenuStatus(currentSelectedBranch.id);
+            listenToRealtimeMenu();
+            checkClientSavedOrder();
+
+            let isFirstLoad = true;
+            onSnapshot(collection(db, "orders_log"), (snapshot) => {
+                orderLogsList = [];
+                let hasNewOrderForCurrentBranch = false;
+                let latestOrderData = null;
+
+                const cashierBranch = localStorage.getItem('cashier_registered_branch') || currentSelectedBranch.name;
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    orderLogsList.push({ id: docSnap.id, ...data });
+                });
+
+                orderLogsList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                if (!isFirstLoad) {
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            const newOrder = change.doc.data();
+                            if (newOrder.branch === cashierBranch || (newOrder.branch && newOrder.branch.includes(cashierBranch))) {
+                                hasNewOrderForCurrentBranch = true;
+                                latestOrderData = newOrder;
+                            }
+                        }
+                    });
+
+                    const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
+
+                    if (hasNewOrderForCurrentBranch && isVerifiedCashierDevice) {
+                        playHighPriorityOrderAlert();
+                        triggerSystemNotification(
+                            `🔔 أوردر جديد - فرع ${cashierBranch}`,
+                            `طلب رقم #${latestOrderData.orderId || ''} للعميل ${latestOrderData.name || ''} بقيمة ${latestOrderData.total || 0} ج.م`
+                        );
+                    }
+                }
+
+                setupBranchChatNotifications();
+                renderOrderBranchTabs();
+                renderAdminOrdersLogs();
+
+                isFirstLoad = false;
+            });
+
+            loadMenu();
+        });
+
+        function playHighPriorityOrderAlert() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                
+                for (let round = 0; round < 3; round++) {
+                    let delayOffset = round * 0.45;
+                    [659.25, 783.99, 987.77, 1318.51].forEach((freq, index) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delayOffset + (index * 0.09));
+                        
+                        gain.gain.setValueAtTime(0.7, audioCtx.currentTime + delayOffset + (index * 0.09));
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + delayOffset + (index * 0.09) + 0.3);
+                        
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        
+                        osc.start(audioCtx.currentTime + delayOffset + (index * 0.09));
+                        osc.stop(audioCtx.currentTime + delayOffset + (index * 0.09) + 0.3);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        function playChatNotificationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+
+                osc1.frequency.setValueAtTime(950, audioCtx.currentTime);
+                osc1.frequency.exponentialRampToValueAtTime(1450, audioCtx.currentTime + 0.15);
+
+                osc2.frequency.setValueAtTime(1900, audioCtx.currentTime);
+                osc2.frequency.exponentialRampToValueAtTime(2900, audioCtx.currentTime + 0.15);
+
+                gain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.28);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc1.start(audioCtx.currentTime);
+                osc2.start(audioCtx.currentTime);
+
+                osc1.stop(audioCtx.currentTime + 0.28);
+                osc2.stop(audioCtx.currentTime + 0.28);
+            } catch (e) {}
+        }
+
+        function setupBranchChatNotifications() {
+            const isVerifiedCashierDevice = localStorage.getItem('is_cashier_device') === 'true';
+            if (!isVerifiedCashierDevice) return;
+
+            const { collection, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            orderLogsList.forEach(order => {
+                const orderId = String(order.orderId);
+                if (!activeChatListeners[orderId]) {
+                    let isChatFirstLoad = true;
+                    activeChatListeners[orderId] = onSnapshot(collection(db, "order_chats", orderId, "messages"), (snapshot) => {
+                        if (!isChatFirstLoad) {
+                            snapshot.docChanges().forEach(change => {
+                                if (change.type === 'added') {
+                                    const msgData = change.doc.data();
+                                    if (msgData.sender === 'client') {
+                                        playChatNotificationSound();
+                                        triggerSystemNotification(
+                                            `💬 رسالة جديدة في أوردر #${orderId}`,
+                                            `${msgData.text || 'رسالة جديدة من العميل'}`
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                        isChatFirstLoad = false;
+                    });
+                }
+            });
+        }
+
+        function checkClientSavedOrder() {
+            const savedOrderId = localStorage.getItem('my_last_order_id');
+            const floatingBtn = document.getElementById('clientFloatingChatBtn');
+            if (savedOrderId) {
+                floatingBtn.style.display = 'flex';
+                document.getElementById('clientFloatingChatText').innerText = `شات الأوردر #${savedOrderId}`;
+                listenToClientChatMessages(savedOrderId);
+            } else {
+                floatingBtn.style.display = 'none';
+                if (clientChatListenerUnsub) {
+                    clientChatListenerUnsub();
+                    clientChatListenerUnsub = null;
+                }
+            }
+        }
+
+        function listenToClientChatMessages(orderId) {
+            const { collection, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+            if (clientChatListenerUnsub) clientChatListenerUnsub();
+
+            let isFirst = true;
+            clientChatListenerUnsub = onSnapshot(collection(db, "order_chats", String(orderId), "messages"), (snapshot) => {
+                if (!isFirst) {
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            const data = change.doc.data();
+                            if (data.sender === 'admin') {
+                                playChatNotificationSound();
+                                triggerSystemNotification(
+                                    `💬 رد من المطعم على أوردر #${orderId}`,
+                                    `${data.text || 'رسالة جديدة'}`
+                                );
+                            }
+                        }
+                    });
+                }
+                isFirst = false;
+            });
+        }
+
+        function openClientFloatingChat() {
+            const orderId = localStorage.getItem('my_last_order_id');
+            const orderName = localStorage.getItem('my_last_order_name') || 'عميل';
+            if (orderId) {
+                openInAppChat(orderId, orderName, 'client');
+            }
+        }
+
+        function dismissClientActiveOrder() {
+            if (!confirm("هل تم استلام الأوردر وتريد إنهاء المتابعة وإخفاء زر الشات؟")) return;
+            localStorage.removeItem('my_last_order_id');
+            localStorage.removeItem('my_last_order_name');
+            checkClientSavedOrder();
+            closeChatModal();
+            alert("تم إنهاء متابعة الأوردر بنجاح. شكراً لطلبك من بروست الأمين!");
+        }
+
+        async function loadMenu() {
+            startCreativeCounter();
+            renderFooterBranches();
+
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('splash-hidden');
+                showBranchModal();
+            }, 4200);
+        }
+
+        function renderFooterBranches() {
+            document.getElementById('footerBranchesContainer').innerHTML = branchesData.map(b => `
+                <div class="branch-item">
+                    <strong>📍 فرع ${b.name}:</strong> ${b.address}<br>
+                    📞 ${b.phone.replace('20', '0')} - ${b.altPhone}
+                </div>
+            `).join('');
+        }
+
+        function showBranchModal() {
+            const listEl = document.getElementById('branchesList');
+            listEl.innerHTML = branchesData.map(b => `
+                <div class="branch-option-card" onclick="selectBranchById('${b.id}')">
+                    <div class="branch-option-name">📍 فرع ${b.name}</div>
+                    <div class="branch-option-address">${b.address}</div>
+                </div>
+            `).join('');
+            document.getElementById('branchModal').style.display = 'flex';
+        }
+
+        function selectBranchById(id) {
+            const b = branchesData.find(x => x.id === id);
+            if (b) selectBranch(b);
+        }
+
+        function selectBranch(branchObj) {
+            currentSelectedBranch = branchObj;
+            cashierLoggedBranchId = branchObj.id;
+            adminSelectedBranchId = branchObj.id;
+            
+            localStorage.setItem('selected_branch_id', branchObj.id);
+
+            document.getElementById('currentBranchBadge').innerText = `📍 فرع: ${branchObj.name} (تغيير)`;
+            document.getElementById('branchModal').style.display = 'none';
+
+            const adminNotice = document.getElementById('adminAuthBranchName');
+            if (adminNotice) adminNotice.innerText = `📍 الإدارة لفرع: ${branchObj.name}`;
+
+            const adminText = document.getElementById('activeAdminBranchText');
+            if (adminText) adminText.innerText = `📍 الفرع الحالي: فرع ${branchObj.name}`;
+
+            const statusBanner = document.getElementById('statusModalBranchBanner');
+            if (statusBanner) statusBanner.innerText = `📍 جاري إدارة أصناف: فرع ${branchObj.name}`;
+
+            listenToBranchMenuStatus(branchObj.id);
+        }
+
+        function renderNav() {
+            const uniqueCats = [...new Set(menuData.map(item => item.category))];
+            document.getElementById('catNav').innerHTML = uniqueCats.map((cat, idx) => `
+                <div class="cat-item ${idx === 0 ? 'active' : ''}" onclick="filterCat('${cat}', this)">
+                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat}.jpg" alt="${cat}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <span>${cat}</span>
+                </div>
+            `).join('');
+            if(uniqueCats.length > 0) filterCat(uniqueCats[0]);
+        }
+
+        function filterCat(cat, el) {
+            if(el) { 
+                document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active')); 
+                el.classList.add('active'); 
+                el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+            
+            document.getElementById('menuList').innerHTML = menuData.filter(i => i.category === cat).map((item, idx) => {
+                const hasVariants = item.variants && item.variants.length > 0;
+                const initialPrice = hasVariants ? item.variants[0].price : item.price;
+                const initialSize = hasVariants ? item.variants[0].size : '';
+                const displayPrice = initialPrice + ' ج.م';
+
+                let isEnabled = itemStatusMap[item.name] !== false;
+                let disabledClass = isEnabled ? '' : 'disabled-item';
+                let btnText = isEnabled ? 'اطلب الان' : 'موقف حالياً';
+
+                const safeName = item.name.replace(/'/g, "\\'");
+                const safeImg = item.img.replace(/'/g, "\\'");
+                const cardId = `card_${idx}`;
+
+                let variantsHtml = '';
+                if (hasVariants) {
+                    variantsHtml = `
+                    <div class="variants-container">
+                        ${item.variants.map((v, vIdx) => `
+                            <button type="button" class="variant-btn ${vIdx === 0 ? 'active' : ''}" 
+                                onclick="selectVariant(this, '${cardId}', '${v.price}', '${v.size}')">
+                                ${v.size}
+                            </button>
+                        `).join('')}
+                    </div>`;
+                }
+
+                return `
+                <div class="food-card ${disabledClass}" id="${cardId}" 
+                     data-category="${item.category}" 
+                     data-base-name="${safeName}" 
+                     data-current-size="${initialSize}" 
+                     data-current-price="${initialPrice}">
+                    <div class="item-img-box"><img src="${item.img}" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <div class="food-info">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                            <span class="food-name">${item.name}</span>
+                            <span class="food-price" id="${cardId}_price">${displayPrice}</span>
+                        </div>
+                        ${item.desc ? `<p class="food-desc">${item.desc}</p>` : ''}
+                        ${variantsHtml}
+                        <div style="display: flex; justify-content: flex-end; width: 100%; margin-top: 6px;">
+                            <button class="order-btn" ${!isEnabled ? 'disabled' : ''} onclick="orderCardItem(event, this, '${cardId}', '${safeName}', '${safeImg}')">${btnText}</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function selectVariant(btn, cardId, price, size) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const buttons = card.querySelectorAll('.variant-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const priceEl = document.getElementById(`${cardId}_price`);
+            if (priceEl) priceEl.innerText = `${price} ج.م`;
+
+            card.dataset.currentSize = size;
+            card.dataset.currentPrice = price;
+        }
+
+        function isMealCategory(cat) {
+            if (!cat) return false;
+            const c = cat.trim().toLowerCase();
+            return c.includes('وجب') || c.includes('وجبات') || c.includes('meal');
+        }
+
+        function isExemptCategory(cat) {
+            if (!cat) return false;
+            const c = cat.trim().toLowerCase();
+            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية');
+        }
+
+        function orderCardItem(e, btn, cardId, baseName, img) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            const category = card.dataset.category || '';
+            const currentPrice = card.dataset.currentPrice || '0';
+            const currentSize = card.dataset.currentSize || '';
+
+            pendingOrderItem = {
+                clickEvent: e,
+                buttonEl: btn,
+                baseName: baseName,
+                img: img,
+                price: currentPrice,
+                category: category,
+                size: currentSize
+            };
+
+            if (isExemptCategory(category)) {
+                let finalName = baseName;
+                if (currentSize) finalName = `${baseName} (${currentSize})`;
+                addToCart(e, btn, finalName, img, currentPrice, category);
+                pendingOrderItem = null;
+                return;
+            }
+
+            openFlavorModal(category, baseName);
+        }
+
+        function openFlavorModal(category, baseName) {
+            const modal = document.getElementById('flavorModal');
+            const titleEl = document.getElementById('flavorModalTitle');
+            const optionsContainer = document.getElementById('flavorOptionsGrid');
+
+            let optionsList = [];
+
+            if (isMealCategory(category)) {
+                titleEl.innerText = 'اختر نكهة الوجبة';
+                optionsList = [
+                    { label: '🍗 عادي', value: 'عادي' },
+                    { label: '🔥 سبايسي', value: 'سبايسي' },
+                    { label: '✨ ميكس', value: 'ميكس' }
+                ];
+            } else {
+                titleEl.innerText = 'اختر النكهة';
+                optionsList = [
+                    { label: '🍗 عادي', value: 'عادي' },
+                    { label: '🔥 سبايسي', value: 'سبايسي' },
+                    { label: '🌶️ نص سبايسي', value: 'نص سبايسي' }
+                ];
+            }
+
+            optionsContainer.innerHTML = optionsList.map(opt => `
+                <button type="button" class="flavor-opt-btn" onclick="selectFlavorAndConfirm('${opt.value}')">
+                    <span>${opt.label}</span>
+                </button>
+            `).join('');
+
+            modal.style.display = 'flex';
+        }
+
+        function closeFlavorModal() {
+            document.getElementById('flavorModal').style.display = 'none';
+            pendingOrderItem = null;
+        }
+
+        function selectFlavorAndConfirm(chosenFlavor) {
+            if (!pendingOrderItem) return;
+
+            const { clickEvent, buttonEl, baseName, img, price, category, size } = pendingOrderItem;
+
+            let finalName = baseName;
+            if (size) {
+                finalName = `${baseName} (${size}) [${chosenFlavor}]`;
+            } else {
+                finalName = `${baseName} [${chosenFlavor}]`;
+            }
+
+            document.getElementById('flavorModal').style.display = 'none';
+            addToCart(clickEvent, buttonEl, finalName, img, price, category);
+            pendingOrderItem = null;
+        }
+
+        function addToCart(e, btn, name, img, price, category) {
+            let numericPrice = parseFloat(price) || 0;
+            
+            cart.push({name: name, price: numericPrice, displayPrice: price, img: img, category: category || ''});
+            
+            btn.innerHTML = '✓ تم الطلب'; 
+            btn.classList.add('added');
+            setTimeout(() => { 
+                btn.innerHTML = 'اطلب الان'; 
+                btn.classList.remove('added'); 
+            }, 2000);
+            
+            const fly = document.createElement('div'); fly.className = 'fly-item'; fly.innerHTML = '🍗'; 
+            const clickX = e && e.clientX ? e.clientX : window.innerWidth / 2;
+            const clickY = e && e.clientY ? e.clientY : window.innerHeight / 2;
+            fly.style.left = clickX + 'px'; 
+            fly.style.top = clickY + 'px'; 
+            document.body.appendChild(fly);
+
+            const cartBtn = document.getElementById('cartBtn'); 
+            const cartPos = cartBtn.getBoundingClientRect();
+            setTimeout(() => { 
+                fly.style.left = (cartPos.left + 20) + 'px'; 
+                fly.style.top = (cartPos.top + 20) + 'px'; 
+                fly.style.transform = 'scale(0.2)'; 
+                fly.style.opacity = '0'; 
+            }, 10);
+
+            setTimeout(() => { 
+                fly.remove(); 
+                updateCart(); 
+                cartBtn.classList.add('shake'); 
+                setTimeout(() => cartBtn.classList.remove('shake'), 500); 
+            }, 700);
+        }
+
+        function updateCart() {
+            const badge = document.getElementById('cartBadge'); badge.innerText = cart.length; badge.classList.toggle('show', cart.length > 0); currentTotal = 0;
+            document.getElementById('cartItemsList').innerHTML = cart.map((item, idx) => {
+                currentTotal += item.price;
+                let priceText = `${item.price} ج.م`;
+                return `<div class="cart-item-card"><img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"><div class="cart-item-info"><span class="cart-item-name">${item.name}</span><span class="cart-item-price">${priceText}</span></div><span class="remove-btn" onclick="removeFromCart(${idx})">حذف</span></div>`;
+            }).join('');
+            document.getElementById('totalAmount').innerText = `${currentTotal} ج.م`;
+        }
+
+        function removeFromCart(idx) { cart.splice(idx, 1); updateCart(); if(cart.length === 0) toggleCart(false); }
+        function toggleCart(s) { const modal = document.getElementById('cartModal'); if (s) { modal.style.display = 'flex'; history.pushState({ cartOpen: true }, ""); } else { modal.style.display = 'none'; } }
+        window.addEventListener('popstate', function (event) { const modal = document.getElementById('cartModal'); if (modal.style.display === 'flex') { modal.style.display = 'none'; } });
+
+        function setOrderType(type) {
+            selectedOrderType = type;
+            const deliveryBtn = document.getElementById('deliveryBtn');
+            const takeawayBtn = document.getElementById('takeawayBtn');
+            const addrInput = document.getElementById('uAddr');
+
+            if (type === 'delivery') {
+                deliveryBtn.classList.add('active');
+                takeawayBtn.classList.remove('active');
+                addrInput.style.display = 'block';
+            } else {
+                takeawayBtn.classList.add('active');
+                deliveryBtn.classList.remove('active');
+                addrInput.style.display = 'none';
+            }
+        }
+
+        let lastPlacedOrderId = null;
+        let lastPlacedOrderName = '';
+
+        async function sendToWA() {
+            const n = document.getElementById('uName').value.trim();
+            const p = document.getElementById('uPhone').value.trim();
+            const a = document.getElementById('uAddr').value.trim();
+            
+            if (!n || !p || cart.length === 0) {
+                return alert("يرجى إكمال البيانات واختيار الأصناف");
+            }
+            if (selectedOrderType === 'delivery' && !a) {
+                return alert("يرجى إدخال عنوان التوصيل بالتفصيل");
+            }
+
+            const typeLabel = selectedOrderType === 'delivery' ? 'دليفري' : 'تيك اواي';
+            
+            let orderDetailsStr = cart.map((i, index) => {
+                return `${index + 1}. ${i.name} [${i.category}] - (${i.price} ج.م)`;
+            }).join('\n');
+
+            const randomOrderId = Math.floor(1000 + Math.random() * 9000);
+            lastPlacedOrderId = randomOrderId;
+            lastPlacedOrderName = n;
+
+            localStorage.setItem('my_last_order_id', randomOrderId);
+            localStorage.setItem('my_last_order_name', n);
+            checkClientSavedOrder();
+
+            try {
+                const { collection, addDoc } = window.firebaseModules;
+                const db = window.db;
+                await addDoc(collection(db, "orders_log"), {
+                    orderId: randomOrderId,
+                    branch: currentSelectedBranch.name,
+                    name: n,
+                    phone: p,
+                    type: typeLabel,
+                    address: selectedOrderType === 'delivery' ? a : 'استلام من التيك أواي',
+                    itemsText: orderDetailsStr,
+                    total: currentTotal,
+                    timestamp: Date.now(),
+                    dateFormatted: new Date().toLocaleString('ar-EG')
+                });
+            } catch (err) {
+                console.log("Error saving order:", err);
+            }
+
+            const waNumber = currentSelectedBranch.phone; 
+            const textMsg = encodeURIComponent(
+                `🍗 *طلب جديد - فرع ${currentSelectedBranch.name}* 🍔\n` +
+                `------------------------------------\n` +
+                `📋 *رقم الطلب:* #${randomOrderId}\n` +
+                `👤 *الاسم:* ${n}\n` +
+                `📞 *الموبايل:* ${p}\n` +
+                `🛵 *نوع الطلب:* ${typeLabel}\n` +
+                (selectedOrderType === 'delivery' ? `📍 *العنوان:* ${a}\n` : '') +
+                `------------------------------------\n` +
+                `🛒 *الأصناف المطلوبـة:*\n${orderDetailsStr}\n` +
+                `------------------------------------\n` +
+                `💰 *الإجمالي الكلي:* ${currentTotal} ج.م`
+            );
+
+            window.open(`https://wa.me/${waNumber}?text=${textMsg}`, '_blank');
+
+            toggleCart(false);
+            cart = [];
+            updateCart();
+
+            document.getElementById('successOrderText').innerText = `تم تسجيل طلبك رقم #${randomOrderId} بنجاح لفرع (${currentSelectedBranch.name}). يمكنك التحدث في شات مباشر مع المطعم لمتابعة تجهيز وتوصيل أوردرك!`;
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        function openClientChatFromSuccess() {
+            closeSuccessModal();
+            openInAppChat(lastPlacedOrderId, lastPlacedOrderName, 'client');
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminPassInput').value = '';
+            const adminNotice = document.getElementById('adminAuthBranchName');
+            if (adminNotice) {
+                adminNotice.innerText = `📍 الإدارة لفرع: ${currentSelectedBranch.name}`;
+            }
+            document.getElementById('adminAuthView').style.display = 'block';
+            document.getElementById('adminDashboardView').style.display = 'none';
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function openFloatingModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                if (modalId === 'statusModal') {
+                    const statusBanner = document.getElementById('statusModalBranchBanner');
+                    if (statusBanner) statusBanner.innerText = `📍 جاري إدارة أصناف: فرع ${currentSelectedBranch.name}`;
+                    fetchAdminBranchItems(currentSelectedBranch.id);
+                }
+                if (modalId === 'logsModal') {
+                    renderOrderBranchTabs();
+                    renderAdminOrdersLogs();
+                }
+            }
+        }
+
+        function closeFloatingModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        let adminBranchStatusMap = {};
+
+        async function fetchAdminBranchItems(branchId) {
+            const { doc, getDoc } = window.firebaseModules;
+            const db = window.db;
+            try {
+                const docSnap = await getDoc(doc(db, "menu_status", branchId));
+                if (docSnap.exists()) {
+                    adminBranchStatusMap = docSnap.data();
+                } else {
+                    adminBranchStatusMap = {};
+                }
+                renderAdminItemsList();
+            } catch (e) {
+                console.error("خطأ في جلب بيانات فرع الإدارة:", e);
+            }
+        }
+
+        async function verifyAdminPassword() {
+            const inputPass = document.getElementById('adminPassInput').value.trim();
+
+            if (!inputPass) return alert("يرجى إدخال كلمة المرور");
+
+            try {
+                const { doc, getDoc } = window.firebaseModules;
+                const db = window.db;
+                const passDoc = await getDoc(doc(db, "settings", "password"));
+                
+                const correctPass = passDoc.exists() ? String(passDoc.data().value).trim() : "1234";
+
+                if (inputPass === correctPass) {
+                    cashierLoggedBranchId = currentSelectedBranch.id;
+                    adminSelectedBranchId = currentSelectedBranch.id;
+                    
+                    document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
+
+                    let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
+                    authCount += 1;
+                    localStorage.setItem('cashier_auth_count', authCount);
+                    localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
+
+                    if ('Notification' in window && Notification.permission !== 'granted') {
+                        Notification.requestPermission();
+                    }
+
+                    if (authCount >= 3) {
+                        localStorage.setItem('is_cashier_device', 'true');
+                        alert(`✅ تم الدخول بنجاح! تم اعتماد هذا الجهاز كـ (كاشير رسمي) لفرع [${currentSelectedBranch.name}] وسيتم إرسال الرنات والتنبيهات إليه فوراً.`);
+                    } else {
+                        alert(`✅ تم تسجيل الدخول بنجاح! (المرة رقم ${authCount} من 3 لاعتماد هذا الجهاز لاستقبال التنبيهات الصوتية).`);
+                    }
+
+                    document.getElementById('adminPassInput').value = '';
+                    document.getElementById('adminAuthView').style.display = 'none';
+                    document.getElementById('adminDashboardView').style.display = 'block';
+
+                    setupBranchChatNotifications();
+                    fetchAdminBranchItems(currentSelectedBranch.id);
+                } else {
+                    alert("كلمة المرور غير صحيحة!");
+                }
+            } catch (e) {
+                alert("حدث خطأ في الاتصال بقاعدة البيانات");
+            }
+        }
+
+        function openSupportWhatsApp() {
+            window.open('https://wa.me/201030252806?text=' + encodeURIComponent('مرحباً الدعم الفني لمطعم بروست الأمين، أحتاج لمساعدة في لوحة التحكم.'), '_blank');
+        }
+
+        function renderAdminItemsList() {
+            const container = document.getElementById('adminItemsList');
+            if (menuData.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:20px;">جاري تحميل الأصناف...</p>';
+                return;
+            }
+
+            container.innerHTML = menuData.map(item => {
+                let isEnabled = adminBranchStatusMap[item.name] !== false;
+                const safeName = item.name.replace(/'/g, "\\'");
+
+                return `
+                <div class="switch-row">
+                    <span class="switch-label">${item.name} (${item.category})</span>
+                    <label class="switch">
+                        <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleItemStatus('${safeName}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>`;
+            }).join('');
+        }
+
+        async function toggleItemStatus(itemName, status) {
+            adminBranchStatusMap[itemName] = status;
+            try {
+                const { doc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                await setDoc(doc(db, "menu_status", currentSelectedBranch.id), adminBranchStatusMap, { merge: true });
+            } catch (e) {
+                console.error("خطأ في تحديث حالة الصنف للفرع:", e);
+            }
+        }
+
+        async function setAllItemsStatus(status) {
+            menuData.forEach(item => {
+                adminBranchStatusMap[item.name] = status;
+            });
+            try {
+                const { doc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                await setDoc(doc(db, "menu_status", currentSelectedBranch.id), adminBranchStatusMap);
+                renderAdminItemsList();
+            } catch (e) {
+                console.error("خطأ في تحديث كافة الأصناف:", e);
+            }
+        }
+
+        function renderOrderBranchTabs() {
+            const container = document.getElementById('orderBranchTabs');
+            if (!container) return;
+
+            const totalAllCount = orderLogsList.length;
+            const isAllActive = selectedOrderLogBranchId === 'all';
+
+            let tabsHtml = `
+            <button type="button" class="order-tab-btn ${isAllActive ? 'active' : ''}" onclick="switchOrderLogBranch('all')">
+                <span>🌐 جميع الفروع</span>
+                <span class="order-tab-badge">${totalAllCount}</span>
+            </button>`;
+
+            tabsHtml += branchesData.map(b => {
+                const count = orderLogsList.filter(o => o.branch === b.name || (o.branch && o.branch.includes(b.name))).length;
+                const isActive = b.id === selectedOrderLogBranchId;
+
+                return `
+                <button type="button" class="order-tab-btn ${isActive ? 'active' : ''}" onclick="switchOrderLogBranch('${b.id}')">
+                    <span>${b.name}</span>
+                    <span class="order-tab-badge">${count}</span>
+                </button>`;
+            }).join('');
+
+            container.innerHTML = tabsHtml;
+        }
+
+        function switchOrderLogBranch(branchId) {
+            selectedOrderLogBranchId = branchId;
+            renderOrderBranchTabs();
+            renderAdminOrdersLogs();
+        }
+
+        function renderAdminOrdersLogs() {
+            const container = document.getElementById('adminOrdersLogsList');
+            const countLabel = document.getElementById('currentBranchOrdersCount');
+            if (!container) return;
+
+            let filteredOrders = [];
+            let currentViewTitle = '';
+
+            if (selectedOrderLogBranchId === 'all') {
+                filteredOrders = orderLogsList;
+                currentViewTitle = `جميع الفروع: (${filteredOrders.length})`;
+            } else {
+                const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+                filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+                currentViewTitle = `طلبات فرع ${activeBranchObj.name}: (${filteredOrders.length})`;
+            }
+
+            if (countLabel) {
+                countLabel.innerText = currentViewTitle;
+            }
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `<p style="text-align:center; padding:30px; color:var(--desc-text); font-weight:800;">لا توجد طلبات مسجلة في هذا القسم حتى الآن.</p>`;
+                return;
+            }
+
+            container.innerHTML = filteredOrders.map(order => {
+                const safeCustomerName = (order.name || 'عميل').replace(/'/g, "\\'");
+                const itemsLines = (order.itemsText || '').split('\n').filter(l => l.trim().length > 0);
+                const itemsHtml = itemsLines.map(line => `<li>${line}</li>`).join('');
+                const branchDisplay = order.branch ? `فرع ${order.branch}` : 'فرع غير محدد';
+
+                return `
+                <div class="order-card-custom">
+                    <div class="order-custom-header">
+                        <div class="order-user-name-box">
+                            <span class="order-user-icon">👤</span>
+                            <span>${order.name || 'عميل بدون اسم'}</span>
+                            <span class="order-branch-badge-pill">📍 ${branchDisplay}</span>
+                        </div>
+                        <button class="order-delete-btn-circ" title="حذف الطلب" onclick="deleteSingleOrder('${order.id}')">✕</button>
+                    </div>
+
+                    <div class="order-contact-sub">
+                        <span>📞 <a href="tel:${order.phone}">${order.phone || ''}</a></span>
+                        <span>|</span>
+                        <span>🛵 ${order.type || 'طلب'}</span>
+                        <span>|</span>
+                        <span>📍 ${order.address || 'استلام فرع'}</span>
+                        <span>|</span>
+                        <span style="font-size:0.75rem;">⏱️ ${order.dateFormatted || ''}</span>
+                    </div>
+
+                    <div class="order-items-box-custom">
+                        <ul class="order-items-list-custom">
+                            ${itemsHtml}
+                        </ul>
+                    </div>
+
+                    <div class="order-custom-footer">
+                        <div class="order-total-price-custom">
+                            <span>💰</span>
+                            <span>الإجمالي: ${order.total || 0} ج.م</span>
+                        </div>
+                        <button class="order-chat-btn-custom" onclick="openInAppChat('${order.orderId}', '${safeCustomerName}', 'admin')">
+                            <span>💬</span>
+                            <span>الشات المباشر</span>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openInAppChat(orderId, clientName, userType) {
+            if (!orderId) return;
+            currentActiveChatOrderId = String(orderId);
+            currentChatUserType = userType; 
+
+            document.getElementById('chatTitle').innerText = `محادثة أوردر #${orderId}`;
+            document.getElementById('chatSub').innerText = userType === 'admin' ? `العميل: ${clientName}` : `محادثة حية مع إدارة المطعم`;
+            document.getElementById('chatInputField').value = '';
+
+            const finishBtn = document.getElementById('finishOrderBtn');
+            if (finishBtn) {
+                finishBtn.style.display = userType === 'client' ? 'block' : 'none';
+            }
+
+            document.getElementById('chatModal').style.display = 'flex';
+            listenToChatMessages(currentActiveChatOrderId);
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+            if (chatUnsubscribe) {
+                chatUnsubscribe();
+                chatUnsubscribe = null;
+            }
+        }
+
+        function listenToChatMessages(orderId) {
+            const { collection, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            if (chatUnsubscribe) chatUnsubscribe();
+
+            const messagesContainer = document.getElementById('chatMessagesArea');
+            messagesContainer.innerHTML = '<p style="text-align:center; padding:15px; color:var(--desc-text); font-weight:700;">جاري تحميل الرسائل...</p>';
+
+            chatUnsubscribe = onSnapshot(collection(db, "order_chats", orderId, "messages"), (snapshot) => {
+                const msgs = [];
+                snapshot.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
+                msgs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+                if (msgs.length === 0) {
+                    messagesContainer.innerHTML = '<p style="text-align:center; padding:20px; color:var(--desc-text); font-weight:700;">لا توجد رسائل سابقة. ابدأ المحادثة الآن!</p>';
+                    return;
+                }
+
+                messagesContainer.innerHTML = msgs.map(m => {
+                    const bubbleClass = m.sender === 'admin' ? 'admin' : 'client';
+                    return `
+                    <div class="chat-bubble ${bubbleClass}">
+                        ${m.text}
+                        <span class="chat-bubble-time">${m.timeFormatted || ''}</span>
+                    </div>`;
+                }).join('');
+
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInputField');
+            const text = input.value.trim();
+            if (!text || !currentActiveChatOrderId) return;
+
+            input.value = '';
+
+            try {
+                const { collection, addDoc } = window.firebaseModules;
+                const db = window.db;
+                await addDoc(collection(db, "order_chats", currentActiveChatOrderId, "messages"), {
+                    text: text,
+                    sender: currentChatUserType,
+                    timestamp: Date.now(),
+                    timeFormatted: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+                });
+            } catch (e) {
+                console.error("خطأ أثناء إرسال الرسالة:", e);
+            }
+        }
+
+        async function deleteSingleOrder(orderDocId) {
+            if (!confirm("هل أنت متأكد من حذف هذا الطلب من السجل؟")) return;
+            try {
+                const { doc, deleteDoc } = window.firebaseModules;
+                const db = window.db;
+                await deleteDoc(doc(db, "orders_log", orderDocId));
+            } catch (e) {
+                alert("حدث خطأ أثناء حذف الطلب");
+            }
+        }
+
+        async function clearCurrentBranchOrderLogs() {
+            let filteredOrders = [];
+            let label = '';
+
+            if (selectedOrderLogBranchId === 'all') {
+                filteredOrders = orderLogsList;
+                label = 'جميع الفروع';
+            } else {
+                const activeBranchObj = branchesData.find(b => b.id === selectedOrderLogBranchId) || branchesData[0];
+                filteredOrders = orderLogsList.filter(o => o.branch === activeBranchObj.name || (o.branch && o.branch.includes(activeBranchObj.name)));
+                label = `فرع ${activeBranchObj.name}`;
+            }
+
+            if (filteredOrders.length === 0) {
+                return alert(`لا توجد طلبات لحذفها في (${label})`);
+            }
+
+            if (!confirm(`هل أنت متأكد من رغبتك في مسح كافة طلبات (${label})؟`)) return;
+            try {
+                const { deleteDoc, doc } = window.firebaseModules;
+                const db = window.db;
+                for (let o of filteredOrders) {
+                    await deleteDoc(doc(db, "orders_log", o.id));
+                }
+                alert(`تم مسح طلبات (${label}) بنجاح!`);
+            } catch (e) {
+                alert("حدث خطأ أثناء حذف الطلبات");
+            }
+        }
+
+        async function updateAdminPassword() {
+            const currentPass = document.getElementById('currentAdminPass').value.trim();
+            const newPass = document.getElementById('newAdminPass').value.trim();
+            const confirmPass = document.getElementById('confirmAdminPass').value.trim();
+
+            if (!currentPass || !newPass || !confirmPass) {
+                return alert("يرجى ملء جميع الحقول");
+            }
+            if (newPass !== confirmPass) {
+                return alert("كلمة المرور الجديدة غير متطابقة");
+            }
+
+            try {
+                const { doc, getDoc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                const passDoc = await getDoc(doc(db, "settings", "password"));
+                const realCurrent = passDoc.exists() ? String(passDoc.data().value).trim() : "1234";
+
+                if (currentPass !== realCurrent) {
+                    return alert("كلمة المرور الحالية غير صحيحة");
+                }
+
+                await setDoc(doc(db, "settings", "password"), {
+                    value: newPass,
+                    version: Date.now().toString()
+                });
+
+                alert("تم تحديث كلمة المرور بنجاح!");
+                document.getElementById('currentAdminPass').value = '';
+                document.getElementById('newAdminPass').value = '';
+                document.getElementById('confirmAdminPass').value = '';
+                closeFloatingModal('passwordModal');
+            } catch (e) {
+                alert("حدث خطأ أثناء حفظ كلمة المرور الجديدة");
+            }
+        }
+    </script>
+</body>
+</html>
