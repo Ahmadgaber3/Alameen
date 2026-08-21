@@ -575,7 +575,7 @@
         .order-type-btn { flex: 1; border: none; background: transparent; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--desc-text); transition: all 0.2s ease; }
         .order-type-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.2); }
 
-        .user-fields input { background: var(--bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; }
+        .user-fields input, .user-fields select { background: var(--bg); border: 1.5px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; outline: none; }
         #uAddr { transition: all 0.2s ease; }
         .submit-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
 
@@ -981,7 +981,7 @@
             font-size: 0.84rem;
             font-weight: 800;
             color: #334155;
-            line-height: 1.7;
+            line-host: 1.7;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1352,9 +1352,19 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 20px;">طلباتك</h2>
             <div id="cartItemsList"></div>
-            <div style="margin: 20px 0; padding: 15px; background: rgba(230, 81, 0, 0.08); border-radius: 18px; display: flex; justify-content: space-between;">
-                <b>المجموع</b>
-                <b id="totalAmount">0 ج.م</b>
+            <div style="margin: 20px 0; padding: 15px; background: rgba(230, 81, 0, 0.08); border-radius: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                    <span>مجموع الأصناف:</span>
+                    <span id="itemsSubtotalAmount">0 ج.م</span>
+                </div>
+                <div id="deliveryFeeRow" style="display: none; justify-content: space-between; font-size: 0.9rem;">
+                    <span>رسوم التوصيل:</span>
+                    <span id="deliveryFeeAmount">0 ج.م</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 6px;">
+                    <b>الإجمالي الكلي</b>
+                    <b id="totalAmount">0 ج.م</b>
+                </div>
             </div>
 
             <div class="order-type-container">
@@ -1370,6 +1380,13 @@
                 <input type="text" id="uName" placeholder="الاسم بالكامل">
                 <input type="tel" id="uPhone" placeholder="رقم الموبايل">
                 <input type="text" id="uAddr" placeholder="العنوان بالتفصيل">
+                
+                <div id="branchDeliveryAreaBox" style="display: none; margin-bottom: 10px; text-align: right;">
+                    <label id="deliveryAreaLabel" style="display: block; font-size: 0.85rem; font-weight: 800; color: var(--main-text); margin-bottom: 6px;">اختر منطقة التوصيل *</label>
+                    <select id="uDeliveryAreaSelect" onchange="updateCart()">
+                        <option value="" disabled selected>-- اختر منطقة التوصيل --</option>
+                    </select>
+                </div>
             </div>
             <button class="submit-btn" onclick="sendToWA()">تأكيد الطلب عبر واتساب</button>
         </div>
@@ -1456,10 +1473,102 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAndHandleInstallBtn();
+            updateDeliveryAreaOptions();
         });
 
         const IMAGES_PATH = "./images/"; 
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTA4Xr8wQ9COOV3ZTkrJHRnt3T6Rd_W4fzL-0jSxf8KxAFYwlAQXvCy5_Q9lVRpTz3lddtozuWGL8rM/pub?output=csv";
+
+        const branchDeliveryAreasMap = {
+            maadi: [
+                { name: "شارع العروبة", fee: 25 },
+                { name: "أبراج المهندسين", fee: 20 },
+                { name: "شارع الصفا والمروة", fee: 25 },
+                { name: "شارع الجسر", fee: 35 },
+                { name: "شارع 9 المعادي", fee: 45 },
+                { name: "حدائق المعادي", fee: 35 },
+                { name: "زهراء المعادي", fee: 70 },
+                { name: "دار السلام", fee: 35 },
+                { name: "شارع عبد المنعم العسقلاني", fee: 35 },
+                { name: "المشتل", fee: 30 },
+                { name: "مركب نايل كريستال", fee: 30 },
+                { name: "مصر القديمة", fee: 35 },
+                { name: "القصر العيني", fee: 50 },
+                { name: "شارع آسيا", fee: 25 },
+                { name: "نزلة البنك", fee: 25 },
+                { name: "البنك الأهلي", fee: 20 },
+                { name: "نزلة أندريا", fee: 25 },
+                { name: "هيلتون المعادي", fee: 30 },
+                { name: "مصر حلوان الزراعي", fee: 35 },
+                { name: "خلف المحاكم الدستورية", fee: 30 },
+                { name: "أبراج المعادي ستار", fee: 30 },
+                { name: "أبراج الرياض", fee: 25 },
+                { name: "مستشفى النيل البدراوي", fee: 30 },
+                { name: "مستشفى السلام", fee: 30 },
+                { name: "شارع جابر عبد الفتاح", fee: 25 },
+                { name: "نادي الضباط", fee: 20 },
+                { name: "نادي المعلمين", fee: 30 },
+                { name: "نادي نقابة المحامين", fee: 30 },
+                { name: "شارع بيبو وبشير", fee: 25 },
+                { name: "صقر قريش", fee: 70 },
+                { name: "حلوان", fee: 110 },
+                { name: "المعصرة", fee: 70 },
+                { name: "المعادي", fee: 45 },
+                { name: "المدن - معادي", fee: 40 },
+                { name: "طرة", fee: 60 },
+                { name: "البحر الأعظم", fee: 60 },
+                { name: "المنيل", fee: 50 },
+                { name: "المنيب", fee: 60 }
+            ],
+            fustat: [
+                { name: "المنيل", fee: 50 },
+                { name: "المقطم", fee: 50 },
+                { name: "الهضبة الوسطى", fee: 50 },
+                { name: "زهراء مصر القديمة", fee: 35 },
+                { name: "جامع عمرو", fee: 35 },
+                { name: "الجيارة", fee: 35 },
+                { name: "عين الصيرة", fee: 35 },
+                { name: "أرض الجمعية", fee: 35 },
+                { name: "كوبري العاشر", fee: 35 },
+                { name: "قرية الفخار", fee: 30 },
+                { name: "درب 17/18", fee: 30 },
+                { name: "عزبة خير الله", fee: 30 },
+                { name: "الخيالية", fee: 30 },
+                { name: "منتجع عين الحياة", fee: 20 },
+                { name: "الإمام الشافعي", fee: 30 },
+                { name: "الإمام الليثي", fee: 30 },
+                { name: "الباتية", fee: 45 },
+                { name: "بير أم سلطان", fee: 45 },
+                { name: "دار السلام", fee: 45 },
+                { name: "مجرى العيون", fee: 30 },
+                { name: "المدبح", fee: 30 },
+                { name: "السيدة زينب", fee: 45 },
+                { name: "فم الخليج", fee: 45 },
+                { name: "السيدة عائشة", fee: 30 },
+                { name: "القلعة", fee: 40 },
+                { name: "مدينة نصر", fee: 100 },
+                { name: "الملك الصالح", fee: 40 },
+                { name: "ميدان الجيزة", fee: 80 }
+            ]
+        };
+
+        function updateDeliveryAreaOptions() {
+            const selectEl = document.getElementById('uDeliveryAreaSelect');
+            const labelEl = document.getElementById('deliveryAreaLabel');
+            const boxEl = document.getElementById('branchDeliveryAreaBox');
+            if (!selectEl || !boxEl) return;
+
+            const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
+            const areas = branchDeliveryAreasMap[currentBranchId];
+
+            if (areas && areas.length > 0) {
+                if (labelEl) labelEl.innerText = `اختر منطقة التوصيل (فرع ${currentSelectedBranch.name}) *`;
+                selectEl.innerHTML = '<option value="" disabled selected>-- اختر منطقة التوصيل --</option>' +
+                    areas.map(a => `<option value="${a.name}" data-fee="${a.fee}">${a.name} (${a.fee} ج.م)</option>`).join('');
+            } else {
+                selectEl.innerHTML = '<option value="" disabled selected>-- اختر منطقة التوصيل --</option>';
+            }
+        }
 
         let menuData = [], cart = [];
         let currentTotal = 0; 
@@ -1975,6 +2084,8 @@
             const statusBanner = document.getElementById('statusModalBranchBanner');
             if (statusBanner) statusBanner.innerText = `📍 جاري إدارة أصناف: فرع ${branchObj.name}`;
 
+            updateDeliveryAreaOptions();
+            updateCart();
             listenToBranchMenuStatus(branchObj.id);
         }
 
@@ -2208,17 +2319,46 @@
         }
 
         function updateCart() {
-            const badge = document.getElementById('cartBadge'); badge.innerText = cart.length; badge.classList.toggle('show', cart.length > 0); currentTotal = 0;
+            const badge = document.getElementById('cartBadge'); 
+            badge.innerText = cart.length; 
+            badge.classList.toggle('show', cart.length > 0); 
+            
+            let itemsSubtotal = 0;
             document.getElementById('cartItemsList').innerHTML = cart.map((item, idx) => {
-                currentTotal += item.price;
+                itemsSubtotal += item.price;
                 let priceText = `${item.price} ج.م`;
                 return `<div class="cart-item-card"><img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='${IMAGES_PATH}default.jpg'"><div class="cart-item-info"><span class="cart-item-name">${item.name}</span><span class="cart-item-price">${priceText}</span></div><span class="remove-btn" onclick="removeFromCart(${idx})">حذف</span></div>`;
             }).join('');
+
+            let deliveryFee = 0;
+            const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
+            const hasBranchAreas = branchDeliveryAreasMap[currentBranchId] && branchDeliveryAreasMap[currentBranchId].length > 0;
+            const deliveryBox = document.getElementById('branchDeliveryAreaBox');
+            const feeRow = document.getElementById('deliveryFeeRow');
+            const feeAmountEl = document.getElementById('deliveryFeeAmount');
+            const subtotalEl = document.getElementById('itemsSubtotalAmount');
+
+            if (hasBranchAreas && selectedOrderType === 'delivery') {
+                if (deliveryBox) deliveryBox.style.display = 'block';
+                const selectEl = document.getElementById('uDeliveryAreaSelect');
+                if (selectEl && selectEl.selectedIndex > 0) {
+                    const selectedOpt = selectEl.options[selectEl.selectedIndex];
+                    deliveryFee = parseFloat(selectedOpt.dataset.fee) || 0;
+                }
+                if (feeRow) feeRow.style.display = 'flex';
+                if (feeAmountEl) feeAmountEl.innerText = `${deliveryFee} ج.م`;
+            } else {
+                if (deliveryBox) deliveryBox.style.display = 'none';
+                if (feeRow) feeRow.style.display = 'none';
+            }
+
+            currentTotal = itemsSubtotal + deliveryFee;
+            if (subtotalEl) subtotalEl.innerText = `${itemsSubtotal} ج.م`;
             document.getElementById('totalAmount').innerText = `${currentTotal} ج.م`;
         }
 
         function removeFromCart(idx) { cart.splice(idx, 1); updateCart(); if(cart.length === 0) toggleCart(false); }
-        function toggleCart(s) { const modal = document.getElementById('cartModal'); if (s) { modal.style.display = 'flex'; history.pushState({ cartOpen: true }, ""); } else { modal.style.display = 'none'; } }
+        function toggleCart(s) { const modal = document.getElementById('cartModal'); if (s) { modal.style.display = 'flex'; updateCart(); history.pushState({ cartOpen: true }, ""); } else { modal.style.display = 'none'; } }
         window.addEventListener('popstate', function (event) { const modal = document.getElementById('cartModal'); if (modal.style.display === 'flex') { modal.style.display = 'none'; } });
 
         function setOrderType(type) {
@@ -2236,6 +2376,7 @@
                 deliveryBtn.classList.remove('active');
                 addrInput.style.display = 'none';
             }
+            updateCart();
         }
 
         let lastPlacedOrderId = null;
@@ -2249,8 +2390,26 @@
             if (!n || !p || cart.length === 0) {
                 return alert("يرجى إكمال البيانات واختيار الأصناف");
             }
-            if (selectedOrderType === 'delivery' && !a) {
-                return alert("يرجى إدخال عنوان التوصيل بالتفصيل");
+
+            let selectedAreaName = '';
+            let deliveryFeeVal = 0;
+            const currentBranchId = currentSelectedBranch ? currentSelectedBranch.id : '';
+            const hasBranchAreas = branchDeliveryAreasMap[currentBranchId] && branchDeliveryAreasMap[currentBranchId].length > 0;
+
+            if (selectedOrderType === 'delivery') {
+                if (hasBranchAreas) {
+                    const selectEl = document.getElementById('uDeliveryAreaSelect');
+                    if (!selectEl || selectEl.selectedIndex <= 0) {
+                        return alert(`يرجى اختيار منطقة التوصيل الخاصة بفرع ${currentSelectedBranch.name}`);
+                    }
+                    const selectedOpt = selectEl.options[selectEl.selectedIndex];
+                    selectedAreaName = selectedOpt.value;
+                    deliveryFeeVal = parseFloat(selectedOpt.dataset.fee) || 0;
+                } else {
+                    if (!a) {
+                        return alert("يرجى إدخال عنوان التوصيل بالتفصيل");
+                    }
+                }
             }
 
             const typeLabel = selectedOrderType === 'delivery' ? 'دليفري' : 'تيك اواي';
@@ -2259,6 +2418,10 @@
                 return `${index + 1}. ${i.name} [${i.category}] - (${i.price} ج.م)`;
             }).join('\n');
 
+            if (deliveryFeeVal > 0) {
+                orderDetailsStr += `\n📦 توصيل لمنطقة (${selectedAreaName}): ${deliveryFeeVal} ج.م`;
+            }
+
             const randomOrderId = Math.floor(1000 + Math.random() * 9000);
             lastPlacedOrderId = randomOrderId;
             lastPlacedOrderName = n;
@@ -2266,6 +2429,10 @@
             localStorage.setItem('my_last_order_id', randomOrderId);
             localStorage.setItem('my_last_order_name', n);
             checkClientSavedOrder();
+
+            const fullAddressText = hasBranchAreas && selectedOrderType === 'delivery'
+                ? `المنطقة: ${selectedAreaName} - تفاصيل: ${a || 'لا يوجد'}`
+                : (selectedOrderType === 'delivery' ? a : 'استلام من التيك أواي');
 
             try {
                 const { collection, addDoc } = window.firebaseModules;
@@ -2276,7 +2443,7 @@
                     name: n,
                     phone: p,
                     type: typeLabel,
-                    address: selectedOrderType === 'delivery' ? a : 'استلام من التيك أواي',
+                    address: fullAddressText,
                     itemsText: orderDetailsStr,
                     total: currentTotal,
                     timestamp: Date.now(),
@@ -2294,7 +2461,7 @@
                 `👤 *الاسم:* ${n}\n` +
                 `📞 *الموبايل:* ${p}\n` +
                 `🛵 *نوع الطلب:* ${typeLabel}\n` +
-                (selectedOrderType === 'delivery' ? `📍 *العنوان:* ${a}\n` : '') +
+                (selectedOrderType === 'delivery' ? `📍 *العنوان:* ${fullAddressText}\n` : '') +
                 `------------------------------------\n` +
                 `🛒 *الأصناف المطلوبـة:*\n${orderDetailsStr}\n` +
                 `------------------------------------\n` +
