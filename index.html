@@ -45,7 +45,7 @@
         .food-card[data-category*="العروض"] .item-img-box {
             width: 100% !important;
             height: auto !important;
-            aspect-ratio: 1 / 1 !important; /* أبعاد مربعة */
+            aspect-ratio: 1 / 1 !important; 
             max-height: 480px !important;
             border-radius: 20px !important;
             overflow: hidden !important;
@@ -1334,9 +1334,9 @@
                     <span>⚠️</span>
                     <span>قسم الشكاوى والمقترحات - المعادي والفسطاط</span>
                 </div>
-                <a href="tel:01023388168" class="complaints-number">
+                <a href="tel:01274505042" class="complaints-number">
                     <span>📞</span>
-                    <span>01023388168</span>
+                    <span>01274505042</span>
                 </a>
             </div>
         </div>
@@ -1400,6 +1400,27 @@
     </script>
 
     <script>
+        // دالة العداد المحسنة لضمان البدء
+        function startCreativeCounter() {
+            const counterEl = document.getElementById('loadPercentage');
+            const barFill = document.getElementById('progressBarFill');
+            if (!counterEl || !barFill) return; 
+            
+            let count = 0;
+            const duration = 3000;
+            const intervalTime = duration / 100;
+
+            const timer = setInterval(() => {
+                count++;
+                if (count <= 100) {
+                    counterEl.innerText = count;
+                    barFill.style.width = count + '%';
+                } else {
+                    clearInterval(timer);
+                }
+            }, intervalTime);
+        }
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -1456,6 +1477,8 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAndHandleInstallBtn();
+            // تشغيل العداد عند تحميل الصفحة مباشرة
+            startCreativeCounter();
         });
 
         const IMAGES_PATH = "./images/"; 
@@ -1649,24 +1672,6 @@
                 }));
             });
             return Promise.all(promises);
-        }
-
-        function startCreativeCounter() {
-            const counterEl = document.getElementById('loadPercentage');
-            const barFill = document.getElementById('progressBarFill');
-            let count = 0;
-            const duration = 4000;
-            const intervalTime = duration / 100;
-
-            const timer = setInterval(() => {
-                count++;
-                if (count <= 100) {
-                    counterEl.innerText = count;
-                    barFill.style.width = count + '%';
-                } else {
-                    clearInterval(timer);
-                }
-            }, intervalTime);
         }
 
         function listenToBranchMenuStatus(branchId) {
@@ -1920,7 +1925,6 @@
         }
 
         async function loadMenu() {
-            startCreativeCounter();
             renderFooterBranches();
 
             setTimeout(() => {
