@@ -1384,19 +1384,19 @@
         </div>
     </div>
 
-    <!-- نافذة طلب الباسورد السريع لسجل الطلبات -->
+    <!-- نافذة إدخال كلمة السر لفتح سجل الطلبات -->
     <div class="quick-auth-modal" id="quickOrdersAuthModal" onclick="if(event.target==this) closeQuickOrdersAuthModal()">
         <div class="admin-box">
             <div class="admin-header">
-                <h3>📜 سجل الطلبات الواردة</h3>
+                <h3>📜 فتح سجل الطلبات</h3>
                 <button class="admin-close" onclick="closeQuickOrdersAuthModal()">✕</button>
             </div>
             <div class="pass-form">
                 <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px; padding: 10px; margin-bottom: 15px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--accent);">
-                    🔒 أدخل كلمة المرور لفتح سجل الطلبات:
+                    🔒 كلمة المرور مطلوبة لفتح سجل الطلبات:
                 </div>
-                <input type="password" id="quickOrdersPassInput" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') verifyQuickOrdersPassword()" autofocus>
-                <button onclick="verifyQuickOrdersPassword()">فتح السجل</button>
+                <input type="password" id="quickOrdersPassInput" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter') verifyQuickOrdersPassword()" autofocus>
+                <button onclick="verifyQuickOrdersPassword()">دخول السجل</button>
             </div>
         </div>
     </div>
@@ -2991,13 +2991,8 @@
         }
 
         function openOrdersLogDirectly() {
-            const alreadyVerified = localStorage.getItem('is_cashier_device') === 'true';
-            if (alreadyVerified) {
-                openFloatingModal('logsModal');
-            } else {
-                document.getElementById('quickOrdersPassInput').value = '';
-                document.getElementById('quickOrdersAuthModal').style.display = 'flex';
-            }
+            document.getElementById('quickOrdersPassInput').value = '';
+            document.getElementById('quickOrdersAuthModal').style.display = 'flex';
         }
 
         function closeQuickOrdersAuthModal() {
@@ -3016,7 +3011,6 @@
 
                 if (authCount >= 5) {
                     localStorage.setItem('is_cashier_device', 'true');
-                    alert(`✅ تم اعتماد هذا الجهاز رسمياً كـ (كاشير) لفرع [${currentSelectedBranch.name}]. سيفتح السجل مباشرة مستقبلاً.`);
                 }
 
                 if ('Notification' in window && Notification.permission !== 'granted') {
