@@ -215,7 +215,13 @@
             z-index: 10;
         }
 
-        .theme-toggle, .admin-trigger-btn {
+        .header-action-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle, .admin-trigger-btn, .orders-log-trigger-btn {
             width: 38px;
             height: 38px;
             background: var(--bg);
@@ -230,7 +236,7 @@
             box-shadow: 0 2px 6px var(--card-shadow);
             transition: transform 0.15s ease;
         }
-        .theme-toggle:active, .admin-trigger-btn:active {
+        .theme-toggle:active, .admin-trigger-btn:active, .orders-log-trigger-btn:active {
             transform: scale(0.92);
         }
 
@@ -1305,8 +1311,11 @@
     <header>
         <div class="header-top">
             <div class="header-right-actions">
-                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي / النهاري">🌙</button>
-                <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
+                <div class="header-action-row">
+                    <button class="orders-log-trigger-btn" onclick="openDirectOrdersLog()" title="سجل الطلبات الواردة">📜</button>
+                    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي / النهاري">🌙</button>
+                </div>
+                <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم الرئيسية" style="width: 100%;">⚙️</button>
             </div>
             
             <div class="header-logo-container">
@@ -2949,6 +2958,33 @@
             openInAppChat(lastPlacedOrderId, lastPlacedOrderName, 'client');
         }
 
+        function openDirectOrdersLog() {
+            const isVerified = localStorage.getItem('is_cashier_device') === 'true';
+            if (isVerified) {
+                openFloatingModal('logsModal');
+                return;
+            }
+
+            const inputPass = prompt("🔐 أدخل كلمة مرور سجل الطلبات:");
+            if (inputPass === null) return;
+
+            if (inputPass.trim() === "1133") {
+                let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
+                authCount += 1;
+                localStorage.setItem('cashier_auth_count', authCount);
+                localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
+
+                if (authCount >= 5) {
+                    localStorage.setItem('is_cashier_device', 'true');
+                    alert(`✅ تم اعتماد هذا الجهاز رسمياً كجهاز كاشير لفرع [${currentSelectedBranch.name}]. سيفتح السجل مباشرة بدون باسورد.`);
+                }
+
+                openFloatingModal('logsModal');
+            } else {
+                alert("❌ كلمة المرور غير صحيحة!");
+            }
+        }
+
         function openAdminPanel() {
             document.getElementById('adminPassInput').value = '';
             const adminNotice = document.getElementById('adminAuthBranchName');
@@ -3098,20 +3134,6 @@
                     adminSelectedBranchId = currentSelectedBranch.id;
                     
                     document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
-
-                    const alreadyVerified = localStorage.getItem('is_cashier_device') === 'true';
-
-                    if (!alreadyVerified) {
-                        let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
-                        authCount += 1;
-                        localStorage.setItem('cashier_auth_count', authCount);
-                        localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
-
-                        if (authCount >= 5) {
-                            localStorage.setItem('is_cashier_device', 'true');
-                            alert(`✅ تم اعتماد هذا الجهاز رسمياً كـ (كاشير) لفرع [${currentSelectedBranch.name}]. لن تظهر هذه الرسالة مرة أخرى.`);
-                        }
-                    }
 
                     if ('Notification' in window && Notification.permission !== 'granted') {
                         Notification.requestPermission();
