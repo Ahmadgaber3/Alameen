@@ -210,18 +210,18 @@
             top: 50%;
             transform: translateY(-50%);
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 6px;
             z-index: 10;
         }
 
-        .header-action-row {
+        .header-right-col {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 6px;
         }
 
-        .theme-toggle, .admin-trigger-btn, .orders-log-trigger-btn {
+        .theme-toggle, .admin-trigger-btn, .orders-log-btn {
             width: 38px;
             height: 38px;
             background: var(--bg);
@@ -236,7 +236,7 @@
             box-shadow: 0 2px 6px var(--card-shadow);
             transition: transform 0.15s ease;
         }
-        .theme-toggle:active, .admin-trigger-btn:active, .orders-log-trigger-btn:active {
+        .theme-toggle:active, .admin-trigger-btn:active, .orders-log-btn:active {
             transform: scale(0.92);
         }
 
@@ -796,7 +796,7 @@
             padding: 10px 20px; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; width: 100%;
         }
 
-        .admin-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.72); z-index: 4000; display: none; justify-content: center; align-items: center; padding: 14px; }
+        .admin-modal, .quick-auth-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.72); z-index: 4000; display: none; justify-content: center; align-items: center; padding: 14px; }
         .admin-box { background: var(--white); width: 100%; max-width: 480px; border-radius: 28px; padding: 22px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: smoothFadeIn 0.2s ease-out; }
         
         .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
@@ -1311,11 +1311,11 @@
     <header>
         <div class="header-top">
             <div class="header-right-actions">
-                <div class="header-action-row">
-                    <button class="orders-log-trigger-btn" onclick="openDirectOrdersLog()" title="سجل الطلبات الواردة">📜</button>
+                <div class="header-right-col">
                     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="الوضع الليلي / النهاري">🌙</button>
+                    <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم">⚙️</button>
                 </div>
-                <button class="admin-trigger-btn" onclick="openAdminPanel()" title="لوحة التحكم الرئيسية" style="width: 100%;">⚙️</button>
+                <button class="orders-log-btn" onclick="openOrdersLogDirectly()" title="سجل الطلبات">📜</button>
             </div>
             
             <div class="header-logo-container">
@@ -1380,6 +1380,23 @@
             <div class="chat-input-bar">
                 <input type="text" id="chatInputField" placeholder="اكتب رسالتك هنا..." onkeydown="if(event.key==='Enter') sendChatMessage()">
                 <button class="chat-send-btn" onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة طلب الباسورد السريع لسجل الطلبات -->
+    <div class="quick-auth-modal" id="quickOrdersAuthModal" onclick="if(event.target==this) closeQuickOrdersAuthModal()">
+        <div class="admin-box">
+            <div class="admin-header">
+                <h3>📜 سجل الطلبات الواردة</h3>
+                <button class="admin-close" onclick="closeQuickOrdersAuthModal()">✕</button>
+            </div>
+            <div class="pass-form">
+                <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid var(--accent); border-radius: 14px; padding: 10px; margin-bottom: 15px; font-weight: 800; font-size: 0.9rem; text-align: center; color: var(--accent);">
+                    🔒 أدخل كلمة المرور لفتح سجل الطلبات:
+                </div>
+                <input type="password" id="quickOrdersPassInput" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') verifyQuickOrdersPassword()" autofocus>
+                <button onclick="verifyQuickOrdersPassword()">فتح السجل</button>
             </div>
         </div>
     </div>
@@ -2649,13 +2666,13 @@
         function isMealCategory(cat) {
             if (!cat) return false;
             const c = cat.trim().toLowerCase();
-            return c.includes('وجب') || c.includes('وجبات') || c.includes('meal');
+            return c.includes('وجب') || c.includes('وجبات') || c.includes('meal') || c.includes('عروض') || c.includes('العروض') || c.includes('offer');
         }
 
         function isExemptCategory(cat) {
             if (!cat) return false;
             const c = cat.trim().toLowerCase();
-            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية') || c.includes('عروض') || c.includes('العروض') || c.includes('offer');
+            return c.includes('اكسترا') || c.includes('إكسترا') || c.includes('extra') || c.includes('سوري') || c.includes('سورية');
         }
 
         function orderCardItem(e, btn, cardId, baseName, img) {
@@ -2695,7 +2712,7 @@
             let optionsList = [];
 
             if (isMealCategory(category)) {
-                titleEl.innerText = 'اختر نكهة الوجبة';
+                titleEl.innerText = 'اختر نكهة الوجبة / العرض';
                 optionsList = [
                     { label: '🍗 عادي', value: 'عادي' },
                     { label: '🔥 سبايسي', value: 'سبايسي' },
@@ -2958,33 +2975,6 @@
             openInAppChat(lastPlacedOrderId, lastPlacedOrderName, 'client');
         }
 
-        function openDirectOrdersLog() {
-            const isVerified = localStorage.getItem('is_cashier_device') === 'true';
-            if (isVerified) {
-                openFloatingModal('logsModal');
-                return;
-            }
-
-            const inputPass = prompt("🔐 أدخل كلمة مرور سجل الطلبات:");
-            if (inputPass === null) return;
-
-            if (inputPass.trim() === "1133") {
-                let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
-                authCount += 1;
-                localStorage.setItem('cashier_auth_count', authCount);
-                localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
-
-                if (authCount >= 5) {
-                    localStorage.setItem('is_cashier_device', 'true');
-                    alert(`✅ تم اعتماد هذا الجهاز رسمياً كجهاز كاشير لفرع [${currentSelectedBranch.name}]. سيفتح السجل مباشرة بدون باسورد.`);
-                }
-
-                openFloatingModal('logsModal');
-            } else {
-                alert("❌ كلمة المرور غير صحيحة!");
-            }
-        }
-
         function openAdminPanel() {
             document.getElementById('adminPassInput').value = '';
             const adminNotice = document.getElementById('adminAuthBranchName');
@@ -2998,6 +2988,47 @@
 
         function closeAdminPanel() {
             document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function openOrdersLogDirectly() {
+            const alreadyVerified = localStorage.getItem('is_cashier_device') === 'true';
+            if (alreadyVerified) {
+                openFloatingModal('logsModal');
+            } else {
+                document.getElementById('quickOrdersPassInput').value = '';
+                document.getElementById('quickOrdersAuthModal').style.display = 'flex';
+            }
+        }
+
+        function closeQuickOrdersAuthModal() {
+            document.getElementById('quickOrdersAuthModal').style.display = 'none';
+        }
+
+        function verifyQuickOrdersPassword() {
+            const pass = document.getElementById('quickOrdersPassInput').value.trim();
+            if (!pass) return alert("يرجى إدخال كلمة المرور");
+
+            if (pass === "1133") {
+                let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
+                authCount += 1;
+                localStorage.setItem('cashier_auth_count', authCount);
+                localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
+
+                if (authCount >= 5) {
+                    localStorage.setItem('is_cashier_device', 'true');
+                    alert(`✅ تم اعتماد هذا الجهاز رسمياً كـ (كاشير) لفرع [${currentSelectedBranch.name}]. سيفتح السجل مباشرة مستقبلاً.`);
+                }
+
+                if ('Notification' in window && Notification.permission !== 'granted') {
+                    Notification.requestPermission();
+                }
+
+                closeQuickOrdersAuthModal();
+                setupBranchChatNotifications();
+                openFloatingModal('logsModal');
+            } else {
+                alert("كلمة المرور غير صحيحة!");
+            }
         }
 
         function openFloatingModal(modalId) {
@@ -3134,6 +3165,20 @@
                     adminSelectedBranchId = currentSelectedBranch.id;
                     
                     document.getElementById('activeAdminBranchText').innerText = `📍 الفرع الحالي: فرع ${currentSelectedBranch.name}`;
+
+                    const alreadyVerified = localStorage.getItem('is_cashier_device') === 'true';
+
+                    if (!alreadyVerified) {
+                        let authCount = parseInt(localStorage.getItem('cashier_auth_count') || '0');
+                        authCount += 1;
+                        localStorage.setItem('cashier_auth_count', authCount);
+                        localStorage.setItem('cashier_registered_branch', currentSelectedBranch.name);
+
+                        if (authCount >= 5) {
+                            localStorage.setItem('is_cashier_device', 'true');
+                            alert(`✅ تم اعتماد هذا الجهاز رسمياً كـ (كاشير) لفرع [${currentSelectedBranch.name}]. لن تظهر هذه الرسالة مرة أخرى.`);
+                        }
+                    }
 
                     if ('Notification' in window && Notification.permission !== 'granted') {
                         Notification.requestPermission();
@@ -3471,3 +3516,4 @@
     </script>
 </body>
 </html>
+
