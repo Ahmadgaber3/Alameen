@@ -31,7 +31,6 @@
             --border-color: #d1d5db;
         }
 
-        /* تنسيق كارت العروض */
         .food-card[data-category*="عروض"],
         .food-card[data-category*="العروض"] {
             flex-direction: column !important;
@@ -580,7 +579,6 @@
         .user-fields input { background: var(--bg); border: 1.5px solid var(--border-color); padding: 16px; border-radius: 14px; width: 100%; margin-bottom: 10px; color: var(--main-text); text-align: right; outline: none; }
         #uAddr { transition: all 0.2s ease; }
 
-        /* زر اختيار المنطقة المطور والراقي بالخلفية البيضاء */
         .chic-area-picker-btn {
             width: 100%;
             background: #ffffff;
@@ -637,7 +635,6 @@
             font-weight: 900;
         }
 
-        /* نافذة المودال لاختيار المناطق (Bottom Sheet) */
         .areas-modal {
             position: fixed;
             top: 0;
@@ -881,6 +878,7 @@
         .card-avatar-box.blue-bg { background: #dbeafe; }
         .card-avatar-box.green-bg { background: #dcfce7; }
         .card-avatar-box.purple-bg { background: #f3e8ff; }
+        .card-avatar-box.red-bg { background: #fee2e2; }
 
         .card-title {
             font-size: 0.98rem;
@@ -1416,21 +1414,106 @@
                         <div class="card-subtitle">عرض طلبات كل الفروع معاً أو تصفية حسب الفرع والشات</div>
                     </div>
 
-                    <div class="admin-nav-card" onclick="openFloatingModal('passwordModal')">
+                    <div class="admin-nav-card" onclick="openFloatingModal('contactsModal')">
                         <div class="card-badge-num gray">3</div>
+                        <div class="card-avatar-box red-bg">📞</div>
+                        <div class="card-title">أرقام الفروع والشكاوى</div>
+                        <div class="card-subtitle">تعديل رقم استلام الأوردرات ورقمي الفوتر والشكاوى لكل فرع</div>
+                    </div>
+
+                    <div class="admin-nav-card" onclick="openFloatingModal('passwordModal')">
+                        <div class="card-badge-num gray">4</div>
                         <div class="card-avatar-box green-bg">👨‍💼</div>
                         <div class="card-title">تغيير كلمة المرور</div>
                         <div class="card-subtitle">حماية اللوحة وتغيير كلمة السر الخاصة بالإدارة</div>
                     </div>
 
-                    <div class="admin-nav-card" onclick="openSupportWhatsApp()">
-                        <div class="card-badge-num gray">4</div>
+                    <div class="admin-nav-card" onclick="openSupportWhatsApp()" style="grid-column: span 2;">
+                        <div class="card-badge-num gray">5</div>
                         <div class="card-avatar-box purple-bg">🧑‍💻</div>
                         <div class="card-title">الدعم والمساعدة</div>
                         <div class="card-subtitle">تواصل مباشر مع الدعم الفني للمساعدة عبر الواتساب</div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الأرقام لحظياً لجميع الفروع -->
+    <div class="floating-sub-modal" id="contactsModal" onclick="if(event.target==this) closeFloatingModal('contactsModal')">
+        <div class="floating-card-box">
+            <div class="floating-header">
+                <h4>📞 التحكم في أرقام الفروع بالكامل</h4>
+                <button class="admin-close" onclick="closeFloatingModal('contactsModal')">✕</button>
+            </div>
+            
+            <!-- فرع الفسطاط -->
+            <div style="background: rgba(46, 125, 50, 0.08); border: 1.5px solid #2e7d32; border-radius: 16px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-weight: 900; font-size: 0.98rem; color: #2e7d32; margin-bottom: 10px;">🟢 فرع الفسطاط الجديدة:</div>
+                
+                <div class="admin-custom-input-group">
+                    <label>📱 رقم استلام الأوردرات (واتساب الفرع):</label>
+                    <input type="tel" id="edit_fustat_order_phone" placeholder="01028098424">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (1):</label>
+                    <input type="tel" id="edit_fustat_display_phone1" placeholder="01028098424">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (2):</label>
+                    <input type="tel" id="edit_fustat_display_phone2" placeholder="01110280402">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>⚠️ رقم شكاوى فرع الفسطاط:</label>
+                    <input type="tel" id="edit_fustat_complaint_phone" placeholder="01023388168">
+                </div>
+            </div>
+
+            <!-- فرع شبرا الخيمة -->
+            <div style="background: rgba(230, 81, 0, 0.08); border: 1.5px solid #e65100; border-radius: 16px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-weight: 900; font-size: 0.98rem; color: #e65100; margin-bottom: 10px;">🟠 فرع شبرا الخيمة:</div>
+                
+                <div class="admin-custom-input-group">
+                    <label>📱 رقم استلام الأوردرات (واتساب الفرع):</label>
+                    <input type="tel" id="edit_shobra_order_phone" placeholder="01006767442">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (1):</label>
+                    <input type="tel" id="edit_shobra_display_phone1" placeholder="01006767442">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (2):</label>
+                    <input type="tel" id="edit_shobra_display_phone2" placeholder="01006767442">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>⚠️ رقم شكاوى فرع شبرا:</label>
+                    <input type="tel" id="edit_shobra_complaint_phone" placeholder="01006767442">
+                </div>
+            </div>
+
+            <!-- فرع المعادي -->
+            <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 16px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-weight: 900; font-size: 0.98rem; color: #0284c7; margin-bottom: 10px;">🔵 فرع المعادي:</div>
+                
+                <div class="admin-custom-input-group">
+                    <label>📱 رقم استلام الأوردرات (واتساب الفرع):</label>
+                    <input type="tel" id="edit_maadi_order_phone" placeholder="01055388545">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (1):</label>
+                    <input type="tel" id="edit_maadi_display_phone1" placeholder="01055388545">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>📞 رقم الفوتر (2):</label>
+                    <input type="tel" id="edit_maadi_display_phone2" placeholder="01274505042">
+                </div>
+                <div class="admin-custom-input-group">
+                    <label>⚠️ رقم شكاوى فرع المعادي:</label>
+                    <input type="tel" id="edit_maadi_complaint_phone" placeholder="01023388168">
+                </div>
+            </div>
+
+            <button class="admin-save-btn" onclick="saveContactsToFirebase()">💾 حفظ وتحديث كل الأرقام فوراً</button>
         </div>
     </div>
 
@@ -1495,28 +1578,7 @@
     <footer class="restaurant-footer">
         <div class="branches-container" id="footerBranchesContainer"></div>
 
-        <div class="complaints-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-            <div class="complaints-box">
-                <div class="complaints-title">
-                    <span>⚠️</span>
-                    <span>قسم الشكاوى والمقترحات - شبرا</span>
-                </div>
-                <a href="tel:01006767442" class="complaints-number">
-                    <span>📞</span>
-                    <span>01006767442</span>
-                </a>
-            </div>
-            <div class="complaints-box">
-                <div class="complaints-title">
-                    <span>⚠️</span>
-                    <span>قسم الشكاوى والمقترحات - المعادي والفسطاط</span>
-                </div>
-                <a href="tel:01023388168" class="complaints-number">
-                    <span>📞</span>
-                    <span>01023388168</span>
-                </a>
-            </div>
-        </div>
+        <div class="complaints-container" id="footerComplaintsContainer" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;"></div>
 
         <p class="footer-rights">جميع الحقوق محفوظة لـ بروست الأمين 2026 ©</p>
         <div class="dev-credit">
@@ -1558,7 +1620,6 @@
                 <input type="text" id="uName" placeholder="الاسم بالكامل">
                 <input type="tel" id="uPhone" placeholder="رقم الموبايل">
                 
-                <!-- زر اختيار المنطقة المطور -->
                 <div id="branchDeliveryAreaBox" style="display: none;">
                     <div class="chic-area-picker-btn" onclick="openAreasSheet()">
                         <div class="chic-area-content">
@@ -1578,7 +1639,6 @@
         </div>
     </div>
 
-    <!-- نافذة عصرية لاختيار المناطق (Bottom Sheet) بخلفية بيضاء راقية -->
     <div class="areas-modal" id="areasModal" onclick="if(event.target==this) closeAreasSheet()">
         <div class="areas-sheet">
             <div class="areas-sheet-header">
@@ -1586,9 +1646,7 @@
                 <button class="areas-close-btn" onclick="closeAreasSheet()">✕</button>
             </div>
             <input type="text" class="areas-search-input" id="areaSearchField" placeholder="🔍 ابحث عن منطقتك..." oninput="filterDeliveryAreasList()">
-            <div class="areas-list-scroll" id="areasListContainer">
-                <!-- يتم ملؤها ديناميكياً -->
-            </div>
+            <div class="areas-list-scroll" id="areasListContainer"></div>
         </div>
     </div>
 
@@ -1904,10 +1962,34 @@
         let chatUnsubscribe = null;
         let clientChatListenerUnsub = null;
 
-        const branchesData = [
-            { id: 'fustat', name: 'الفسطاط الجديدة', address: '51 س المجاورة الأولى', phone: '201028098424', altPhone: '01110280402' },
-            { id: 'shobra', name: 'شبرا الخيمة', address: 'أرض الجنينة بجوار جامع السلام', phone: '201006767442', altPhone: '01006767442' },
-            { id: 'maadi', name: 'المعادي', address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', phone: '201055388545', altPhone: '01055388545' }
+        let branchesData = [
+            { 
+                id: 'fustat', 
+                name: 'الفسطاط الجديدة', 
+                address: '51 س المجاورة الأولى', 
+                orderPhone: '201028098424', 
+                displayPhone1: '01028098424', 
+                displayPhone2: '01110280402',
+                complaintPhone: '01023388168'
+            },
+            { 
+                id: 'shobra', 
+                name: 'شبرا الخيمة', 
+                address: 'أرض الجنينة بجوار جامع السلام', 
+                orderPhone: '201006767442', 
+                displayPhone1: '01006767442', 
+                displayPhone2: '01006767442',
+                complaintPhone: '01006767442'
+            },
+            { 
+                id: 'maadi', 
+                name: 'المعادي', 
+                address: 'أبراج سرايا المشرق أول الكورنيش بجوار البنك الأهلي', 
+                orderPhone: '201055388545', 
+                displayPhone1: '01055388545', 
+                displayPhone2: '01274505042',
+                complaintPhone: '01023388168'
+            }
         ];
 
         let savedBranchId = localStorage.getItem('selected_branch_id') || branchesData[0].id;
@@ -2122,6 +2204,50 @@
             });
         }
 
+        function listenToContactsSettings() {
+            const { doc, onSnapshot } = window.firebaseModules;
+            const db = window.db;
+
+            onSnapshot(doc(db, "settings", "contacts"), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.branches) {
+                        data.branches.forEach(bUpdated => {
+                            const b = branchesData.find(x => x.id === bUpdated.id);
+                            if (b) {
+                                b.orderPhone = bUpdated.orderPhone || b.orderPhone;
+                                b.displayPhone1 = bUpdated.displayPhone1 || b.displayPhone1;
+                                b.displayPhone2 = bUpdated.displayPhone2 || b.displayPhone2;
+                                b.complaintPhone = bUpdated.complaintPhone || b.complaintPhone;
+                            }
+                        });
+                        const updatedSelected = branchesData.find(x => x.id === currentSelectedBranch.id);
+                        if (updatedSelected) currentSelectedBranch = updatedSelected;
+                    }
+                    renderFooterBranches();
+                    renderFooterComplaints();
+                }
+            });
+        }
+
+        function renderFooterComplaints() {
+            const container = document.getElementById('footerComplaintsContainer');
+            if (!container) return;
+
+            container.innerHTML = branchesData.map(b => `
+                <div class="complaints-box">
+                    <div class="complaints-title">
+                        <span>⚠️</span>
+                        <span>قسم الشكاوى والمقترحات - فرع ${b.name}</span>
+                    </div>
+                    <a href="tel:${b.complaintPhone}" class="complaints-number">
+                        <span>📞</span>
+                        <span>${b.complaintPhone}</span>
+                    </a>
+                </div>
+            `).join('');
+        }
+
         function triggerSystemNotification(title, body) {
             try {
                 if ('Notification' in window && Notification.permission === 'granted') {
@@ -2148,6 +2274,7 @@
             const db = window.db;
 
             listenToBranchMenuStatus(currentSelectedBranch.id);
+            listenToContactsSettings();
             listenToRealtimeMenu();
             autoSyncSheetInBackground();
             checkClientSavedOrder();
@@ -2355,6 +2482,7 @@
         async function loadMenu() {
             startCreativeCounter();
             renderFooterBranches();
+            renderFooterComplaints();
 
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('splash-hidden');
@@ -2366,7 +2494,7 @@
             document.getElementById('footerBranchesContainer').innerHTML = branchesData.map(b => `
                 <div class="branch-item">
                     <strong>📍 فرع ${b.name}:</strong> ${b.address}<br>
-                    📞 ${b.phone.replace('20', '0')} - ${b.altPhone}
+                    📞 ${b.displayPhone1} - ${b.displayPhone2}
                 </div>
             `).join('');
         }
@@ -2784,7 +2912,10 @@
                 console.log("Error saving order:", err);
             }
 
-            const waNumber = currentSelectedBranch.phone; 
+            let purePhone = (currentSelectedBranch.orderPhone || '').replace(/[^0-9]/g, '');
+            if (purePhone.startsWith('0')) purePhone = '2' + purePhone;
+            else if (!purePhone.startsWith('20') && purePhone.length === 11) purePhone = '2' + purePhone;
+
             const textMsg = encodeURIComponent(
                 `🍗 *طلب جديد - فرع ${currentSelectedBranch.name}* 🍔\n` +
                 `------------------------------------\n` +
@@ -2799,7 +2930,7 @@
                 `💰 *الإجمالي الكلي:* ${currentTotal} ج.م` + (selectedDeliveryAreaObj && selectedDeliveryAreaObj.isCustom ? ' (يضاف سعر التوصيل بالاتفاق مع المطعم)' : '')
             );
 
-            window.open(`https://wa.me/${waNumber}?text=${textMsg}`, '_blank');
+            window.open(`https://wa.me/${purePhone}?text=${textMsg}`, '_blank');
 
             toggleCart(false);
             cart = [];
@@ -2846,6 +2977,9 @@
                     renderOrderBranchTabs();
                     renderAdminOrdersLogs();
                 }
+                if (modalId === 'contactsModal') {
+                    populateContactsAdminFields();
+                }
             }
         }
 
@@ -2853,6 +2987,79 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'none';
+            }
+        }
+
+        function populateContactsAdminFields() {
+            const fustat = branchesData.find(b => b.id === 'fustat');
+            const shobra = branchesData.find(b => b.id === 'shobra');
+            const maadi = branchesData.find(b => b.id === 'maadi');
+
+            if (fustat) {
+                document.getElementById('edit_fustat_order_phone').value = fustat.orderPhone.replace(/^20/, '0');
+                document.getElementById('edit_fustat_display_phone1').value = fustat.displayPhone1;
+                document.getElementById('edit_fustat_display_phone2').value = fustat.displayPhone2;
+                document.getElementById('edit_fustat_complaint_phone').value = fustat.complaintPhone;
+            }
+            if (shobra) {
+                document.getElementById('edit_shobra_order_phone').value = shobra.orderPhone.replace(/^20/, '0');
+                document.getElementById('edit_shobra_display_phone1').value = shobra.displayPhone1;
+                document.getElementById('edit_shobra_display_phone2').value = shobra.displayPhone2;
+                document.getElementById('edit_shobra_complaint_phone').value = shobra.complaintPhone;
+            }
+            if (maadi) {
+                document.getElementById('edit_maadi_order_phone').value = maadi.orderPhone.replace(/^20/, '0');
+                document.getElementById('edit_maadi_display_phone1').value = maadi.displayPhone1;
+                document.getElementById('edit_maadi_display_phone2').value = maadi.displayPhone2;
+                document.getElementById('edit_maadi_complaint_phone').value = maadi.complaintPhone;
+            }
+        }
+
+        async function saveContactsToFirebase() {
+            const formatWaPhone = (p) => {
+                let pure = p.replace(/[^0-9]/g, '');
+                if (pure.startsWith('0')) return '2' + pure;
+                if (!pure.startsWith('20') && pure.length === 11) return '2' + pure;
+                return pure;
+            };
+
+            const updatedBranches = [
+                { 
+                    id: 'fustat', 
+                    orderPhone: formatWaPhone(document.getElementById('edit_fustat_order_phone').value.trim()), 
+                    displayPhone1: document.getElementById('edit_fustat_display_phone1').value.trim(),
+                    displayPhone2: document.getElementById('edit_fustat_display_phone2').value.trim(),
+                    complaintPhone: document.getElementById('edit_fustat_complaint_phone').value.trim()
+                },
+                { 
+                    id: 'shobra', 
+                    orderPhone: formatWaPhone(document.getElementById('edit_shobra_order_phone').value.trim()), 
+                    displayPhone1: document.getElementById('edit_shobra_display_phone1').value.trim(),
+                    displayPhone2: document.getElementById('edit_shobra_display_phone2').value.trim(),
+                    complaintPhone: document.getElementById('edit_shobra_complaint_phone').value.trim()
+                },
+                { 
+                    id: 'maadi', 
+                    orderPhone: formatWaPhone(document.getElementById('edit_maadi_order_phone').value.trim()), 
+                    displayPhone1: document.getElementById('edit_maadi_display_phone1').value.trim(),
+                    displayPhone2: document.getElementById('edit_maadi_display_phone2').value.trim(),
+                    complaintPhone: document.getElementById('edit_maadi_complaint_phone').value.trim()
+                }
+            ];
+
+            try {
+                const { doc, setDoc } = window.firebaseModules;
+                const db = window.db;
+                await setDoc(doc(db, "settings", "contacts"), {
+                    branches: updatedBranches,
+                    lastUpdated: Date.now()
+                });
+
+                alert("✅ تم حفظ وتحديث كافة الأرقام لكل الفروع بنجاح!");
+                closeFloatingModal('contactsModal');
+            } catch (err) {
+                console.error("Error saving contacts:", err);
+                alert("حدث خطأ أثناء حفظ الأرقام");
             }
         }
 
